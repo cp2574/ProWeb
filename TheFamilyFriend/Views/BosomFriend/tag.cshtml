@@ -1,0 +1,192 @@
+﻿@model IEnumerable<TheFamilyFriend.Models.Lblhelpmessage>
+@{
+    ViewBag.Title = "板针";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <ul class="notes">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <li>
+                            <div id="@item.LblId">
+                                <small><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.SignTime</font></font></small>
+                                <h4><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Title </font></font></h4>
+                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@item.Explain</font></font></p>
+                                <a href="#" class="dele"><i class="fa fa-trash-o "></i></a>
+                            </div>
+                        </li>
+                    }
+                }
+                <li>
+                    <div>
+                        <small><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></small>
+                        <h4><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> </font></font></h4>
+                        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></p>
+                        <a href="#" id="add"><i class="fa fa-plus-square-o "></i></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="height:auto">
+            <div class="modal-header">
+                <strong>详细信息:</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><label class="control-label"></label><input class="form-control" id="titleid" type="hidden" /></p>
+                <p><label class="control-label">标题</label><input class="form-control" id="title" /></p>
+                <p><label class="control-label">心里话</label><textarea cols="6" rows="4" class="form-control" id="Explain"></textarea></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">关闭</font></font></button>
+                <button type="button" class="btn btn-primary" id="UpdataSave"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保存更改</font></font></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="height:auto">
+            <div class="modal-header">
+                <strong>详细信息:</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><label class="control-label">标题</label><input class="form-control" id="Title" /></p>
+                <p><label class="control-label">心里话</label><textarea cols="6" rows="4" class="form-control" id="Explains"></textarea></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">关闭</font></font></button>
+                <button type="button" class="btn btn-primary" id="AddSave"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保存更改</font></font></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+@section scripts{
+    <script>
+            $(function () {
+                ///删除
+                $(".dele").on("click", function () {
+                    if (confirm("你确定要删除吗")) {
+                        $.ajax("/BosomFriend/DelectLbl", {
+                            type: "post",
+                            data: {
+                                Id: $(this).parent().attr("id")
+                            },
+                        }).done(function (result) {
+                            if (result) {
+                                toastr.info("修改成功")
+                            } else {
+                                toastr.error("修改失败")
+                            }
+                            location.reload();
+                        }).fail(function (result) {
+                            console.error(result)
+                            toastr.error("请联系管理人员")
+                        })
+                    }
+                })
+                //编辑
+                $(".dele").parent().on("click", function () {
+                    $("#myModal").modal('show');
+                    $("#titleid").val($(this).attr("id"));
+                    $("#title").val($(this).children('h4').text());
+                    $("#Explain").val($(this).children('p').text());
+                })
+                //保存
+                $("#UpdataSave").on("click", function () {
+                    if (title() == "") {
+                        toastr.warning("信息不能为空！");
+                    } else {
+
+                        $.ajax("/BosomFriend/UpdateLbl", {
+                            type: "post",
+                            data: title(),
+                        }).done(function (result) {
+                            if (result) {
+                                toastr.info("修改成功")
+                            } else {
+                                toastr.error("修改失败")
+                            }
+                            //window.location.href = "/BosomFriend/tag"
+                            location.reload();
+                        }).fail(function (result) {
+                            console.error(result)
+                            toastr.error("请联系管理人员")
+                        })
+
+                    }
+                })
+
+                //新增
+                $("#add").on("click", function () {
+                    $("#AddModal").modal('show');
+                })
+                $("#AddSave").on("click", function () {
+                    if ($("#Title").val() == "" || $("#Explains").val() == "") {
+                        toastr.warning("信息不能为空！");
+                    } else {
+
+                        $.ajax("/BosomFriend/AddLbl", {
+                            type: "post",
+                            data: {
+                                Title: $("#Title").val(), Explain: $("#Explains").val()
+                            },
+                        }).done(function (result) {
+                            if (result) {
+                                toastr.info("新增成功")
+                            } else {
+                                toastr.error("新增失败")
+                            }
+                            location.reload();
+                        }).fail(function (result) {
+                            console.error(result)
+                            toastr.error("请联系管理人员")
+                        })
+
+                    }
+                })
+            })
+
+            function title() {
+                if ($("#title").val() == "" || $("#Explain").val() == "") {
+                    return "";
+                } else {
+                    $("#title").val() == "" || $("#Explain").val() == ""
+                    var Json = {
+                        Title: $("#title").val(), Explain: $("#Explain").val(), LblId: $("#titleid").val()
+                    }
+                    return Json;
+                }
+            }
+
+    </script>
+}
+
+

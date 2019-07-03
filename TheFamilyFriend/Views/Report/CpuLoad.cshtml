@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewBag.Title = "CPU使用率";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <a href="@Url.Action("Index", "Report")"><strong>@ViewBag.Title</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content col-sm-12" style="height:400px">
+                    <div id="CPUChart" style="height:400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/EChart/echarts.min.js"></script>
+    <script src="~/Scripts/EChart/dark.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.3.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        ///下面的代码声明对中心代理的引用。
+        var chat = $.connection.cpuHub;
+        $.connection.hub.start();
+        var myChart = echarts.init(document.getElementById('CPUChart'), "dark");
+        //自适应宽高
+        var myChartContainer = function () {
+            myChart.style.width = window.innerWidth + 'px';
+            myChart.style.height = window.innerHeight + 'px';
+        };
+        myChart.showLoading();
+        var time = []
+
+        var data = [];
+        //接受服务端数据
+        chat.client.addNewMessageToPage = function (mes) {
+            console.warn(mes);
+            time.push(getTime(new Date()));
+            data.push(mes);
+        };
+        $(function () {
+
+         
+            //function addData(shift) {
+            //    if (shift) {
+            //        data.shift();
+            //        time.shift();
+            //        console.log("data 数据后的长度：" + data.length);
+            //        console.log("time 数据后的长度：" + time.length);
+            //    }
+            //}
+
+           
+            //setInterval(function () {
+            //    data.shift();
+            //    time.shift();
+            //},1000)
+            option = {
+                title: {
+                    text: 'cpu占用率',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                toolbox: {//平铺、折叠、生成png图片
+                    show: true,
+                    feature: {
+                        //dataView:{ readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    splitLine: {
+                        show: true,//是否显示网格线
+                    },
+                    name: "时间"
+                },
+                yAxis: {
+                    boundaryGap: [0, '50%'],
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}'
+                    },
+                    name: "单位（%）",
+                    splitLine: {
+                        show: true,//是否显示网格线
+                    },
+                    max: 100
+                },
+                series: [
+                    {
+                        name: 'CPU',
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        stack: 'a',
+                        data: data
+                    }
+                ]
+            };
+            myChart.setOption(option);
+            window.onresize = myChart.resize;
+            //多图表自适应
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+            myChart.hideLoading();
+            setInterval(function () {
+                //addData(true)
+                console.log("data 数据前的长度：" + data.length);
+                console.log("time 数据前的长度：" + time.length);
+                myChart.setOption({
+                    xAxis: {
+                        data: time,
+                    },
+                    series: [{
+                        name: 'CPU',
+                        data: data
+                    }]
+                });
+
+                window.onresize = myChart.resize;
+            }, 2000);
+        })
+
+        //浏览器大小改变时重置大小
+        window.onresize = function () {
+            myChartContainer();
+            myChart.resize();
+            alert(1)
+        };
+        //window.onresize = myChart.resize;
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+        function getTime(date) {
+            var Hours = date.getHours();//获取当前小时数(0-23)
+            if (Hours < 10) {
+                Hours = "0" + Hours;
+            }
+            var Minutes = date.getMinutes(); //获取当前分钟数(0-59)
+            if (Minutes < 10) {
+                Minutes = "0" + Minutes;
+            }
+
+            var Seconds = date.getSeconds();//获取当前秒数(0-59)
+            if (Seconds < 10) {
+                Seconds = "0" + Seconds;
+            }
+            var Milliseconds = date.getMilliseconds();//获取当前毫秒数(0-999)
+            return Hours + ":" + Minutes + ":" + Seconds
+        }
+    </script>}
+
+
+
+

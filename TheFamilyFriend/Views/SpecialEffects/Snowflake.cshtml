@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "满屏雪花";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "SpecialEffects")">粒子漩涡</a>
+            </li>
+            <li class="active">
+                <a href="@Url.Action("Snowflake", "SpecialEffects")"><strong>@ViewBag.Title</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/threecanvas.js"></script>
+
+  <script src="~/Scripts/snow.min.js"></script>
+    
+}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row"  onload="initsnow('~/Content/images/ParticleSmoke.png', 1000, 0.05, 0.05, 10000, 70)">
+    </div>
+</div>

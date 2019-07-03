@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "系统配置";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+@section styles{
+    <link href="~/Content/bootstrap-switch-master/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <font style="vertical-align: inherit;">
+                            <font style="vertical-align: inherit;">基本设置 </font>
+                        </font>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group  row">
+                                <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">是否开启背景音乐</font></label>
+                                <div class="col-sm-4" style="vertical-align:middle; text-align:right">
+                                    <button class="btn btn-info btn-rounded" id="push" state="true">
+                                        <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">已开启</font></font>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            @*<div class="col-lg-2">服务器图片地址</div>
+                                <div class="col-lg-5">
+                                    <input type="text" class="form-control" />
+                                </div>*@
+                            <div class="form-group  row">
+                                <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">服务器图片地址</font></label>
+                                <div class="col-sm-4" style="vertical-align: middle;"><input type="text" class="form-control" value="@ViewBag.ServerPicture" id="ServerPicture"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/bootstrap-switch-master/bootstrap-switch.min.js"></script>
+    <script>
+        $(function () {
+            $.post('@Url.Action("loadstate")', function (result) {
+
+                $("#push").removeAttr("class"); $("#push").removeAttr("state")
+                if (result == "true") {
+                    $("#push").attr("class", "btn btn-info btn-rounded");
+                    $("#push").attr("state", "true");
+                    $("#push").text("已开启");
+                } else {
+                    $("#push").attr("class", "btn btn-default btn-rounded");
+                    $("#push").attr("state", "false");
+                    $("#push").text("已关闭");
+                }
+            })
+            $("#push").click(function () {
+                var state = $(this).attr("state")
+                $(this).removeAttr("class"); $(this).removeAttr("state")
+                if (state =="true") {
+                    $(this).attr("class", "btn btn-default btn-rounded");
+                    $(this).attr("state", "false");
+                    $(this).text("已关闭");
+
+                } else {
+                    $(this).attr("class", "btn btn-info btn-rounded");
+                    $(this).attr("state", "true");
+                    $(this).text("已开启");
+                }
+                var newstate= $(this).attr("state");
+                $.post('@Url.Action("BackMuisc")',{state:newstate},function (result) {
+                    if(result.ReturnValue){
+                        toastr.success("修改成功！")
+                        setTimeout(function () {
+                            window.location.reload();
+                        },2000)
+
+                    }
+                })
+            })
+
+            $("#ServerPicture").blur(function () {
+                $.post('@Url.Action("SetServerPicture")', { state: $(this).val() }, function (result) {
+                    if(result.ReturnValue){
+                        toastr.success("修改成功！")
+                        setTimeout(function () {
+                            window.location.reload();
+                        },2000)
+
+                    }
+                })
+            })
+
+        })
+
+    </script>
+}

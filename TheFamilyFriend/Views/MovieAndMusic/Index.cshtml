@@ -1,0 +1,193 @@
+﻿@model IEnumerable<TheFamilyFriend.Controllers.Music>
+@{
+    ViewBag.Title = "简易音乐播放器";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "MovieAndMusic")">影音视听</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeIn">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    简易音乐播放器
+                </div>
+                <div class="panel-body">
+                    <audio controls="controls" style="width:100%;" preload="auto" id="music" dataID="@Model.FirstOrDefault().Id">
+                        <source src="@Model.FirstOrDefault().Path" />
+                        你的浏览器版本太低，不支持audio标签
+                    </audio>
+                    <p class="col-xs-12">
+                        <h3 class="text-center titleName">@Model.FirstOrDefault().Name</h3>
+                    </p>
+                    <p class="row text-center">
+                        <a class="btn btn-lg btn-info btn-rounded " href="#" title="上一首" id="up"><i class="fa fa-backward"></i></a>
+                        <a class="btn btn-lg btn-info btn-rounded" href="#" title="开始/暂停" id="play"><i class="fa fa-play"></i></a>@*fa fa-pause*@
+                        <a class="btn btn-lg btn-info btn-rounded" href="#" title="下一首" id="down"><i class="fa fa-forward"></i></a>
+                        <a class="btn btn-lg btn-info btn-rounded" href="#" title="列表" id="list"><i class="fa fa-th-list"></i></a>
+                    </p>
+                    <div class="row" hidden="hidden" id="songlist">
+                        <div class="col-sm-12">
+                            <h5>歌曲列表 </h5>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>编号</th>
+                                        <th>歌手</th>
+                                        <th>歌曲</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        for (int i = 0; i < @Model.Count(); i++)
+                                        {
+                                            <tr id="@Model.ElementAt(i).Id">
+                                                <td>@(i + 1)</td>
+                                                <td>@Model.ElementAt(i).Name.Substring(0, @Model.ElementAt(i).Name.IndexOf("-"))</td>
+                                                <td>@Model.ElementAt(i).Name</td>
+                                                <td class="play"><i class="fa fa-play"></i></td>@*fa fa-pause*@
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    @section Scripts{
+        <script>
+            var m = document.getElementById('music');
+            $(function () {
+                m.load();
+                $("#up").on("click", function () {
+                    //alert(11)
+                    $.post("/MovieAndMusic/Cut", { Id: $("#music").attr("dataID"), option: 'up' }, function (result) {
+                        if (result.ReturnValue) {
+                            $("#music").children("source").attr("src", result.Music.Path)
+                            $("#music").attr("dataID", result.Music.Id);
+                            m.load();
+                            m.autoplay = true;//自动播放
+
+                            //m.play();//播放
+                            $(".titleName").text(result.Music.Name)
+                            $(".play").children("i").attr("class", "fa fa-play")
+                            $("#songlist tr td").each(function () {
+                                if ($(this).text() == $(".titleName").text()) {
+                                    $(this).next().children("i").attr("class", "fa fa-pause")//表示播放中。。。。
+                                }
+                            })
+                        } else {
+                            toastr.info(result.Message)
+                        }
+                    })
+                })
+                $("#play").on("click", function () {
+                    //m.load();
+                    $(this).children("i").attr("class")
+                    if ($(this).children("i").attr("class") == "fa fa-play") {
+                        m.play()// 自动播放
+                        $(this).children("i").attr("class", "fa fa-pause")
+                    } else {
+                        m.pause();//暂停
+                        $(this).children("i").attr("class", "fa fa-play")
+                    }
+                })
+                $("#down").on("click", function () {
+                    $.post("/MovieAndMusic/Cut", { Id: $("#music").attr("dataID"), option: 'down' }, function (result) {
+                        if (result) {
+                            $("#music").children("source").attr("src", result.Music.Path)
+                            $("#music").attr("dataID", result.Music.Id);
+                            m.load();
+                            m.autoplay = true;//自动播放
+                            $(".titleName").text(result.Music.Name)
+                            $(".play").children("i").attr("class", "fa fa-play")
+                            $("#songlist tr td").each(function () {
+                                if ($(this).text() == $(".titleName").text()) {
+                                    $(this).next().children("i").attr("class", "fa fa-pause")//表示播放中。。。。
+                                }
+                            })
+                        } else {
+                            toastr.info(result.Message)
+                        }
+                    })
+                })
+                $("#list").on("click", function () {
+                    if ($("#songlist").is(":hidden")) {
+                        $("#songlist").attr("hidden", false);
+                    } else {
+                        $("#songlist").attr("hidden", true);
+                    }                                  
+                })
+                setInterval(Test, 100);
+                $("#songlist tr .play").click(function () {
+                    if ($(this).children("i").attr("class") == "fa fa-pause") {
+                        m.pause();//暂停                    
+                        $(this).next().children("i").attr("class", "fa fa-play")
+                    } else {
+                        $(".play").children("i").attr("class", "fa fa-play")
+                        $(this).children("i").attr("class", "fa fa-pause")
+                        $.post("/MovieAndMusic/Cut", { Id: $(this).parent().attr("id"), option: 'now' }, function (result) {
+                            if (result) {
+                                $("#music").children("source").attr("src", result.Music.Path)
+                                $("#music").attr("dataID", result.Music.Id);
+                                m.load();
+                                m.autoplay = true;//自动播放
+                                $(".titleName").text(result.Music.Name)
+
+                                $("#songlist tr td").each(function () {
+                                    if ($(this).text() == $(".titleName").text()) {
+                                        $(this).next().children("i").attr("class", "fa fa-pause")//表示播放中。。。。
+                                    }
+                                })
+                            } else {
+                                toastr.info(result.Message)
+                            }
+                        })
+                    }                
+                })
+            })
+
+            function Test() {
+                $(".play").children("i").attr("class", "fa fa-play")
+                if (!m.paused){
+                    $("#play").children("i").attr("class", "fa fa-pause")//表示播放中。。。。
+                    
+                    $("#songlist tr td").each(function () {
+                        if ($(this).text() == $(".titleName").text()) {
+                            $(this).next().children("i").attr("class", "fa fa-pause")//表示播放中。。。。
+                        }
+                    })
+
+                } else {
+                    $("#play").children("i").attr("class", "fa fa-play")
+                    $("#songlist tr td").each(function () {
+                        if ($(this).text() == $(".titleName").text()) {
+                            $(this).next().children("i").attr("class", "fa fa-play")//表示播放中。。。。
+                        }
+                    })
+                }
+
+            }
+        </script>
+    }

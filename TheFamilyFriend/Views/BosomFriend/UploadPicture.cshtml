@@ -1,0 +1,264 @@
+﻿@*显示集合*@
+@model IEnumerable<TheFamilyFriend.Models.PictureType>
+@{
+    ViewBag.Title = "上传";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "BosomFriend")">主页</a>
+            </li>
+            <li class="active">
+
+                <a href="@Url.Action("UploadPicture", "BosomFriend")">  <strong>@ViewBag.Title</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+@*<div class="ibox-content" id="Upload">
+        <div id="actions" class="row">
+            <div class="col-lg-7">
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>添加文件...</span>
+                </span>
+            </div>
+        </div>
+        <div class="table table-no-bordered files row" id="previews">
+            <div id="template" class="file-row">
+                <div class="col-lg-3">
+                    <span class="preview"><img data-dz-thumbnail /></span>
+                </div>
+                <div class="col-lg-3">
+                    <p class="name" data-dz-name></p>
+                    <strong class="error text-danger" data-dz-errormessage></strong>
+                </div>
+                <div class="col-lg-3">
+                        <p class="size" data-dz-size></p>
+                        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                            </div>
+                    </div>
+                <div class="col-lg-3">
+                    <button class="btn btn-primary start">
+                        <i class="glyphicon glyphicon-upload"></i>
+                        <span>上传</span>
+                    </button>
+                    <button data-dz-remove class="btn btn-warning cancel">
+                        <i class="glyphicon glyphicon-ban-circle"></i>
+                        <span>取消</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row col-lg-offset-5">
+             <a href="@Url.Action("Index","User")" class="btn btn-white">取消</a>
+             <button type="button" class="btn btn-primary" id="SaveUser">新增</button>
+            </div>
+
+    </div>*@
+
+
+
+
+<div class="main-container" id="main-container">
+    @*<div id="dropzone">
+            <form action="/Home/Upload" class="dropzone">
+                <div class="fallback">
+                    <input name="file" type="file" multiple="" />
+                </div>
+            </form>
+        </div>*@
+    <form action="/"
+          class="dropzone"
+          enctype="multipart/form-data"
+          id="my-dropzone"
+          method="post">
+        <!--上传图片时，需要同时提交的数据，这里做个演示-->
+        @Html.Hidden("hidAlbumId")
+    </form>
+
+    <br />
+    <div class="row"><div class="form-group col-sm-6">
+    <label class="col-sm-2 control-label ">选择类型</label>
+    <div class="col-sm-10">
+        <select class="form-control m-b" name="account" id="PictureType">
+            @{
+                foreach (var item in Model)
+                {
+                    <option value="@item.PictureTypeId">@item.PictureTypeName</option>
+                }
+
+            }
+        </select>
+
+
+    </div>
+    </div>
+        <!--上传按钮，提供多张图片一次性上传的功能-->
+        <div class="col-sm-1"><button type="submit" id="submit-all" disabled="disabled" class="btn btn-info">上传</button></div>      
+    </div>
+    <!-- PAGE CONTENT ENDS -->
+</div>
+
+
+@section styles{
+    <link href="~/Content/upload/dropzone.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/dropzone.min.js"></script>
+
+    <script type="text/javascript">
+        //Dropzone的初始化，myDropzone为form的id
+        Dropzone.options.myDropzone = {
+            method: "post",
+            //指定上传的类型
+            paramName: "file",
+            //指定上传图片的路径
+            url: "@Url.Action("BatchUpload", "BosomFriend")",
+            //acceptedFiles: ".jpg,.png,.gif",//上传的类型 ,在手机测试上传中存在无法获取文件的bug,因此只能在后台去判断上传是否为图片
+            maxFilesize:1024, //MB
+            dictDefaultMessage:
+                '<span class="bigger-150 bolder"><i class="icon-caret-right red"></i> 拖放文件</span> 上传 \
+				<span class="smaller-80 grey">(或点击)</span> <br /> \
+				<i class="upload-icon icon-cloud-upload blue icon-3x"></i>'
+              ,
+            dictResponseError: 'Error while uploading file!',
+            //添加上传取消和删除预览图片的链接，默认不添加
+            addRemoveLinks: true,
+
+            //关闭自动上传功能，默认会true会自动上传
+            //也就是添加一张图片向服务器发送一次请求
+            autoProcessQueue: false,
+
+            //允许上传多个照片
+            uploadMultiple: true,
+
+            //每次上传的最多文件数，经测试默认为2，坑啊
+            //记得修改web.config 限制上传文件大小的节
+            parallelUploads: 2147483647,
+            dictRemoveFile: "移除文件",
+            dictUploadCanceled: "取消",
+            dictResponseError: "文件上传失败!",
+            dictFileTooBig: "文件过大,上传失败!",
+            init: function () {
+                var submitButton = document.querySelector("#submit-all")
+                myDropzone = this; // closure
+
+                //为上传按钮添加点击事件
+                submitButton.addEventListener("click", function () {
+                    //手动上传所有图片
+                    myDropzone.processQueue();
+                });
+
+                //当添加图片后的事件，上传按钮恢复可用
+                this.on("addedfile", function () {
+                    $("#submit-all").removeAttr("disabled");
+                    //$(".dz-remove").text("移除");
+                });
+
+                //当上传完成后的事件，接受的数据为JSON格式
+                this.on("complete", function (data) {
+                    if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                        var res = eval('(' + data.xhr.responseText + ')');
+                        var msg;
+                        if (res.Result) {
+                            msg = "恭喜，已成功上传" + res.Count + "张照片！";
+                            toastr.success(msg, "", 5000);
+                            $("#submit-all").attr("disabled", true);
+                        }
+                        else {
+                            msg = "上传失败，失败的原因是：" + res.Message;
+                            toastr.error(msg, "", 5000);
+                        }
+                    }
+                    //this.removeFile(data);//上传完后自动消失
+                });
+
+                //删除图片的事件，当上传的图片为空时，使上传按钮不可用状态
+                this.on("removedfile", function () {
+                    if (this.getAcceptedFiles().length === 0) {
+                        $("#submit-all").attr("disabled", true);
+                    }
+                });
+                this.on('sending', function (data, xhr, formData) {
+                    //向后台发送该文件的参数
+                    formData.append('PictureTypeId', $("#PictureType").val());//以键值对的方式向后台传值
+                });
+                //this.on("canceled", function (file, data) {
+                //                          // alert("canceled");
+                //                          this.removeFile(file);
+
+                //});
+                //this.on("error", function (file, data) {
+
+                //});
+            }
+        };
+    </script>
+
+
+    @*<script>
+            // Get the template HTML and remove it from the doument
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            //开始先删除单个文件的布局
+            previewNode.parentNode.removeChild(previewNode);
+            var myDropzone = new Dropzone(document.body, { // 指定拖拽区为body
+                //指定上传文件的路径
+                url: "@Url.Action("BatchUpload", "BosomFriend")",
+                thumbnailWidth: 80,
+                thumbnailHeight: 80,
+                parallelUploads: 20,
+                maxFiles: 50,//一次性最多上传文件
+                maxFilesize: 20, //文件的大小
+                acceptedFiles: ".JPG,.PNG,.JPEG", //上传的类型
+                previewTemplate: previewTemplate,
+                autoQueue: false, // 当队列有文件，是否立刻自动上传到服务器
+                previewsContainer: "#previews", // 指定存放文件队列区
+                clickable: ".fileinput-button", // 点击某个按钮或区域后出现选择电脑中本地图片，默认是previewsContainer指定的区域
+
+                ////关闭自动上传功能，默认会true会自动上传
+                ////也就是添加一张图片向服务器发送一次请求
+                //autoProcessQueue: false,
+
+                ////允许上传多个照片
+                //uploadMultiple: true,
+
+                ////每次上传的最多文件数，经测试默认为2，坑啊
+                ////记得修改web.config 限制上传文件大小的节
+                //parallelUploads: 100,
+            });
+            myDropzone.on("addedfile", function (file) {
+                // 让模版中的单个文件可以点击上传
+                file.previewElement.querySelector(".start").onclick = function () {
+                    myDropzone.enqueueFile(file);
+                };
+            });
+            //当上传完成后的事件，接受的数据为JSON格式
+            myDropzone.on("complete", function (data) {
+                if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                    var res = eval('(' + data.xhr.responseText + ')');
+                    var msg;
+                    if (res.Result) {
+                        msg = "恭喜，已成功上传" + res.Count + "张照片！";
+                        toastr.success(msg, "", 5000);
+                    }
+                    else {
+                        msg = "上传失败，失败的原因是：" + res.Message;
+                        toastr.error(msg, "", 5000);
+                    }
+                }
+            });
+        </script>*@
+}
+

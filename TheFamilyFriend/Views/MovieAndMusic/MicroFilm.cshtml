@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "视频";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "MovieAndMusic")">音乐</a>
+            </li>
+            <li class="active">
+                <a href="@Url.Action("MicroFilm", "MovieAndMusic")"> <strong>@ViewBag.Title</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+@section styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video-js.min.css" rel="stylesheet">
+}
+@section scripts{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video.min.js"></script>
+}
+<video id="example_video_1" class="video-js vjs-default-skin" controls preload="none"style="height:300px;"
+       poster="http://vjs.zencdn.net/v/oceans.png">
+    <source src="~/Film/d0fed1d77667843d121076d410bc472c.mp4" type="video/mp4" style="height:250px;">
+    此浏览器版本过低不支持播放！
+</video>

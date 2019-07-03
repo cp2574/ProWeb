@@ -1,0 +1,75 @@
+﻿
+@{
+    /**/
+
+    ViewBag.Title = "画板工具";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <a href="@Url.Action("Signature", "Tool")"><strong>@ViewBag.Title</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn ">
+    <div class="row">
+        <div class="row text-center"><h4>签名区域</h4></div>
+        <div class="row container">
+            <div id="jSignature" class="col-lg-6"></div>
+            <br /><br />
+            <div class="col-lg-12  text-center">
+                <button type="button" class="btn btn-info col-lg-offset-5" id="clear" data-action="clear">重签</button>
+                <button type="button" class="btn btn-info " id="save" data-action="clear">确定</button>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="row container">
+            <img src="data" id="showimg" class="row" hidden="hidden" />
+        </div>
+    </div> 
+</div>
+
+
+
+@section scripts{
+
+    <script src="~/Scripts/jSignature-master/src/jSignature.js"></script>
+    <script src="~/Scripts/jSignature-master/src/plugins/jSignature.UndoButton.js"></script>
+   
+    <script>
+        $(function () {
+            // lineWidth, color, background - color, decor - color, showUndoButton, data, signatureLine
+            var $sigdiv = $("#jSignature").jSignature(
+                {
+                    'UndoButton': true,// 初始化jSignature插件-撤销功能
+                    //'color': "red",//设置字体颜色
+                    //'decor-color': 'red',// 初始化jSignature插件-设置横线颜色
+                    //'lineWidth': "6",// 初始化jSignature插件-设置横线粗细
+                    //"decor-color": "transparent",// 初始化jSignature插件-去掉横线
+                    'height': 350,
+                    "background-color":"#fff",
+                    //'width': 200// 初始化jSignature插件-设置书写范围(大小)
+                })
+            $("#clear").click(function () {
+                $sigdiv.jSignature("reset") //清除画布并重新渲染的装饰就可以了
+                $("#showimg").hide();
+            })
+            $("#save").click(function () {
+                //获取数据 
+                var datapair = $sigdiv.jSignature("getData", "image"); //设置输出的格式，具体可以参考官方文档
+                var i = new Image();
+                i.src = "data:" + datapair[0] + "," + datapair[1];
+                $("#showimg").show();
+                $("#showimg").attr("src", i.src)
+                //将数据显示在文本框
+                //$('#text').val(data)
+            })
+        })
+    </script>
+}

@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "电子地图";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <a href="@Url.Action("Map", "Tool")"><strong>@ViewBag.Title</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn">
+    <div id="gmap" class="gmap" style="width:100%;height:500px;"></div>
+    <input type="text" placeholder="经度" name="lng" class="form-control">
+    <input type="text" placeholder="纬度" name="lat" class="form-control">
+    <input type="text" placeholder="地址" name="address" class="form-control">
+
+    @section scripts{
+        <script type="text/javascript" src='http://webapi.amap.com/maps?v=1.4.0&key='></script>
+        <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+        <script type="text/javascript">
+            var map = new AMap.Map('gmap', {
+                mapStyle: 'amap://styles/blue',
+                zoom: 12,
+
+
+
+            });
+            AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
+                var toolBar = new AMap.ToolBar();
+                var scale = new AMap.Scale();
+                map.addControl(toolBar);
+                map.addControl(scale);
+            });
+            var arr = new Array();
+            arr[0] = new AMap.Marker({
+                position: [114.340865, 30.493187],
+                draggable: true,
+                cursor: 'move',
+                raiseOnDrag: true,
+                zIndex: 100
+            });
+            arr[1] = new AMap.Marker({
+                position: [114.347459, 30.491964],
+                draggable: true,
+                cursor: 'move',
+                raiseOnDrag: true,
+                zIndex: 101,
+
+            });
+            map.setCenter([114.347459, 30.491964]);
+            //arr[0].setMap(map);
+            //arr[1].setMap(map);
+            map.add(arr)
+            for (var i = 0; i < arr.length; i++) {
+                arr[i].on('dragend', function () {
+                    var p = this.getPosition()
+                    geocoder = new AMap.Geocoder({
+                        radius: 1000,
+                        extensions: "all"
+                    });
+                    //引入高德地图自带的Geocoder
+                    geocoder.getAddress(p, function (status, result) {
+                        if (status == 'complete' && result.info == 'OK') {
+                            var address = result.regeocode.formattedAddress; //返回地址描述
+                            $('input[name=lng]').val(p.getLng());
+                            $('input[name=lat]').val(p.getLat());
+                            $('input[name=address]').val(address);
+                            alert(address);
+                            alert(p);
+                        }
+                    });
+                });
+            }
+        </script>
+    }
+</div>
+

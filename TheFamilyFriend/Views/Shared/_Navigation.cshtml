@@ -1,0 +1,118 @@
+﻿<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                        <img alt="image" class="rounded-circle" src="~/Content/Images/LOG.png" width="75" height="75">
+                        <span class="block m-t-xs font-bold">@User.Identity.Name</span>
+
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs" x-placement="bottom-start" style="position: absolute; top: 91px; left: 0px; will-change: top, left;">
+                        <li><a class="dropdown-item" href="@Url.Action("PersonInfo", "Home")">个人信息</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("SetPersonInfo", "Home")">修改信息</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Login", "Account")">登出</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    <img alt="image" class="rounded-circle" src="~/Content/Images/LOG.png" width="40" height="40">
+                </div>
+            </li>
+            <li class="@Html.IsSelected(controller:"Home")">
+                <a href="@Url.Action("Index", "Home", new { area = "" })"><i class="fa fa-desktop"></i> <span class="nav-label">主页</span></a>
+            </li>
+            <li class="@Html.IsSelected(controller:"People")">
+                <a href="@Url.Action("Index", "People", new { area = "" })"><i class="fa fa-address-card"></i> <span class="nav-label">家人</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"People",action :null, cssClass: "in")">
+                    <li class="@Html.IsSelected( "People","Index", "")"><a href="@Url.Action("Index", "People", new { area = "" })">首页</a></li>
+                    <li class="@Html.IsSelected("People","Father",  "")"><a href="@Url.Action("Father", "People", new { area = "" })">爸爸</a></li>
+                    <li class="@Html.IsSelected( "People","Mother", "")"><a href="@Url.Action("Mother", "People", new { area = "" })">妈妈</a></li>
+                    <li class="@Html.IsSelected( "People", "Sister","")"><a href="@Url.Action("Sister", "People", new { area = "" })">姐姐和姐夫</a></li>
+                </ul>
+            </li>
+            @*<li class="@Html.IsSelected(controller:"MysteryMan")">
+            <a href="@Url.Action("Index", "MysteryMan", new { area = "" })"><i class="fa fa-female"></i> <span class="nav-label">神秘人</span></a>
+        </li>*@
+            <li class="@Html.IsSelected(controller:"BosomFriend")">
+                <a href="@Url.Action("Primary", "BosomFriend", new { area = "" })"><i class="fa fa-user-plus"></i> <span class="nav-label">挚友</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"BosomFriend",action :null, cssClass: "in")">
+                    <li>
+                        <a href="@Url.Action("Primary", "BosomFriend", new { area = "" })" aria-expanded="false"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">同学 </font></font><span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level collapse" aria-expanded="false" style="height: 0px;">
+                            <li class="@Html.IsSelected("BosomFriend", "Primary", "")"><a href="@Url.Action("Primary",   "BosomFriend", new { area = "" })">小学同学</a></li>
+                            <li class="@Html.IsSelected("BosomFriend","Middle",  "")"><a href="@Url.Action("Middle", "BosomFriend", new { area = "" })">初中同学</a></li>
+                            <li class="@Html.IsSelected( "BosomFriend","Senior", "")"><a href="@Url.Action("Senior", "BosomFriend", new { area = "" })">高中同学</a></li>
+                            <li class="@Html.IsSelected( "BosomFriend","University", "")"><a href="@Url.Action("University", "BosomFriend", new { area = "" })">大学同学</a></li>
+                        </ul>
+                    </li>
+                    <li class="@Html.IsSelected("BosomFriend", "Special", "")"><a href="@Url.Action("Special",   "BosomFriend", new { area = "" })">同事</a></li>
+                    <li class="@Html.IsSelected("BosomFriend", "tag", "")"><a href="@Url.Action("tag",   "BosomFriend", new { area = "" })">板针</a></li>
+                    <li class="@Html.IsSelected("BosomFriend", "Picture", "")"><a href="@Url.Action("Picture", "BosomFriend", new { area = "" })">照片墙</a></li>
+                    <li class="@Html.IsSelected("BosomFriend", "NewPeople", "")"><a href="@Url.Action("NewPeople", "BosomFriend", new { area = "" })">新增朋友</a></li>
+                    <li class="@Html.IsSelected("BosomFriend", "UploadPicture", "")"><a href="@Url.Action("UploadPicture", "BosomFriend", new { area = "" })">上传照片墙</a></li>
+                </ul>
+            </li>
+            <li class="@Html.IsSelected(controller:"SpecialEffects")">
+                <a href="@Url.Action("Index", "SpecialEffects", new { area = "" })"><i class="fa fa-spinner fa-spin"></i> <span class="nav-label">特效</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"Tool",action :null, cssClass: "in")">
+                    <li class="@Html.IsSelected("SpecialEffects","Index",  "")"><a href="@Url.Action("Index",   "SpecialEffects", new { area = "" })">粒子旋涡</a></li>
+                    <li class="@Html.IsSelected("SpecialEffects","ThreeDShine",  "")"><a href="@Url.Action("ThreeDShine",   "SpecialEffects", new { area = "" })">3D旋转物</a></li>
+                    <li class="@Html.IsSelected("SpecialEffects","FireWorks",  "")"><a href="@Url.Action("FireWorks",   "SpecialEffects", new { area = "" })">炫酷烟花</a></li>
+                    <li class="@Html.IsSelected("SpecialEffects","Bildschirmtext",  "")"><a href="@Url.Action("Bildschirmtext",   "SpecialEffects", new { area = "" })">粒子效果文字动画</a></li>
+                </ul>
+            </li>
+            <li class="@Html.IsSelected(controller:"Tool")">
+                <a href="@Url.Action("Index", "Tool", new { area = "" })"><i class="fa fa-suitcase"></i> <span class="nav-label">工具</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"Tool",action :null, cssClass: "in")">
+                    <li class="@Html.IsSelected("Tool","Index",  "")"><a href="@Url.Action("Index",   "Tool", new { area = "" })">文字识别</a></li>
+                    <li class="@Html.IsSelected("Tool","Signature",  "")"><a href="@Url.Action("Signature",   "Tool", new { area = "" })">画板工具</a></li>
+                    <li class="@Html.IsSelected("Tool","Map",  "")"><a href="@Url.Action("Map",   "Tool", new { area = "" })">电子地图</a></li>
+          
+                </ul>
+            </li>
+            @*<li class="@Html.IsSelected(controller:"Map")">
+                <a href="@Url.Action("Index", "Map", new { area = "" })"><i class="fa fa-globe"></i> <span class="nav-label">电子地图</span></a>
+            </li>*@
+            <li class="@Html.IsSelected(controller:"Report")">
+                <a href="@Url.Action("Index", "Report", new { area = "" })"><i class="fa fa-pie-chart"></i> <span class="nav-label">报表总览</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"Report",action :null, cssClass: "in")">
+                    <li class="@Html.IsSelected( "Report","Index", "")"><a href="@Url.Action("Index",   "Report", new { area = "" })">磁盘占用率</a></li>
+                    <li class="@Html.IsSelected( "Report","CpuLoad", "")"><a href="@Url.Action("CpuLoad",   "Report", new { area = "" })">CPU使用率</a></li>
+                </ul>
+            </li>
+            <li class="@Html.IsSelected(controller:"MovieAndMusic")">
+                <a href="@Url.Action("Index", "MovieAndMusic", new { area = "" })"><i class="fa  fa-film"></i> <span class="nav-label">影音视听</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"MovieAndMusic",action :null, cssClass: "in")">
+                    <li class="@Html.IsSelected( "MovieAndMusic","Index", "")"><a href="@Url.Action("Index",   "MovieAndMusic", new { area = "" })">简易音乐播放器</a></li>
+                    @*<li class="@Html.IsSelected("MovieAndMusic","Index",  "")"><a href="@Url.Action("Index",   "MovieAndMusic", new { area = "" })">简易视频播放器</a></li>*@
+                </ul>
+            </li>
+            <li class="@Html.IsSelected(controller:"Photo")">
+                <a href="@Url.Action("Index", "WeatherReport", new { area = "" })"><i class="fa fa-cloud"></i> <span class="nav-label">天气实况</span></a>
+            </li>
+            <li class="@Html.IsSelected(controller:"UserManger")">
+                <a href="@Url.Action("Index", "UserManger", new { area = "" })"><i class="fa fa-address-card"></i> <span class="nav-label">用户管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"UserManger",action :null, cssClass: "in")">
+                    <li class="@Html.IsSelected( "UserManger","Index", "")"><a href="@Url.Action("Index",   "UserManger", new { area = "" })">用户列表</a></li>
+
+                </ul>
+            </li>
+            <li class="@Html.IsSelected(controller:"WealthManagement")">
+                <a href="@Url.Action("Index", "WealthManagement", new { area = "" })"><i class="fa fa-address-card"></i> <span class="nav-label">账户管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"WealthManagement",action :null, cssClass: "in")">
+                    <li class="@Html.IsSelected( "WealthManagement","Index", "")"><a href="@Url.Action("Index",   "WealthManagement", new { area = "" })">支出报表</a></li>
+                    <li class="@Html.IsSelected( "WealthManagement","ConsumerList", "")"><a href="@Url.Action("ConsumerList",   "WealthManagement", new { area = "" })">消费清单</a></li>
+                    <li class="@Html.IsSelected( "WealthManagement","ConsumerEntry", "")"><a href="@Url.Action("ConsumerEntry",   "WealthManagement", new { area = "" })">消费录入</a></li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "SystemConfiguration", new { area = "" })"><i class="fa fa-wrench"></i> <span class="nav-label">系统配置</span></a>
+                @*<ul class="nav nav-second-level collapse @Html.IsSelected(controller:"BosomFriend",action :null, cssClass: "in")">
+                <li class="@Html.IsSelected("Index", "SystemConfiguration", "")"><a href="@Url.Action("Index",   "SystemConfiguration", new { area = "" })">江章鑫</a></li>
+            </ul>*@
+            </li>
+        </ul>
+    </div>
+</nav>

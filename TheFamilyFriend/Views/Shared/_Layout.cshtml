@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>@ViewBag.Title</title>   
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/font-awesome/css")
+    @Styles.Render("~/Content/child/css")
+    @RenderSection("styles", required: false)
+  
+
+</head>
+
+<body>
+    <!-- Wrapper-->
+    <div id="wrapper">
+        <!-- Navigation -->
+        @Html.Partial("_Navigation")
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg">
+
+            <!-- Top Navbar -->
+            @Html.Partial("_TopNavbar")
+
+            <!-- Main view  -->
+            @RenderBody()
+
+            <!-- Footer -->
+            @Html.Partial("_Footer")
+            @{
+                System.Configuration.ConfigurationManager.RefreshSection("appSettings");          //读取之前强制刷新节点清除缓存
+                if (Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings.Get("BackgroundMusic")))
+                {
+                    @Html.Partial("_BackgroundMusic")
+                };
+            }
+        </div>
+        <!-- End page wrapper-->
+        @Html.Partial("_AppSetPartial")
+    </div>
+    <!-- End wrapper-->
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/plugins/metsiMenu")
+    @Scripts.Render("~/plugins/pace")
+    @Scripts.Render("~/plugins/slimScroll")
+    @Scripts.Render("~/bundles/inspinia")
+    <script src="~/Scripts/toastr/toastr.min.js"></script>
+    <script src="~/Scripts/AppSet.js"></script>
+    <script src="~/Scripts/_Layout.js"></script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

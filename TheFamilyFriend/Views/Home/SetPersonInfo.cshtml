@@ -1,0 +1,123 @@
+﻿@model TheFamilyFriend.Models.Personage
+@{
+    ViewBag.Title = "修改个人信息";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">@User.Identity.Name</a>
+            </li>
+            <li>
+                <strong>用户</strong>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基本资料</font></font></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+               
+                </div>
+            </div>
+            <div class="ibox-content" style="">
+                <form method="get">
+                    <div class="form-group  row">
+                        <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">姓名</font></label>                       
+                        <div class="col-sm-4" style="vertical-align: middle;"><input type="text" class="form-control" value="@Model.Name" id="Name" readonly="readonly"></div>
+                        <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">昵称</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control"  value="@Model.Nickname"  id="Nickname"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">出生年月</font></label>
+                        <div class="col-sm-4" style="vertical-align: middle;"><input class="form_datetime form-control col-sm-12" id="Birthday" value="@Model.Birthday.Value.ToString("yyyy-MM-dd")" name="StartTime" type="text" size="16"></div>
+
+
+                        <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">性别</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" value="@Model.Gender" id="Gender"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 text-right text-right  col-form-label"><font style="vertical-align: inherit;">血型</font></label>
+                        <div class="col-sm-4" style="vertical-align: middle;"><input type="text" class="form-control" value="@Model.Blood" id="Blood"></div>
+                        <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">星座</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" value="@Model.Constellation" id="Constellation"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">邮箱</font></label>
+                        <div class="col-sm-4" style="vertical-align: middle;"><input type="text" class="form-control"value="@Model.Email" id="Email"></div>
+                        <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">联系方式</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" value="@Model.Phone" id="Phone"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <a class="btn btn-white btn-sm" href="@Url.Action("Index","Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">取消</font></font></a>
+                            <button class="btn btn-primary btn-sm" type="button" id="SaveBtn"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保存更改</font></font></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+<script src="~/Scripts/time/moment-with-locales.min.js"></script>
+<script src="~/Scripts/time/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        function person() {
+            if ($("#Name").val() == "" || $("#Gender").val() == "" || $("#Birthday").val() == "") {
+                return ""
+            } else {
+                var Name = $("#Name").val(); var Nickname = $("#Nickname").val();
+                var Gender = $("#Gender").val(); var Birthday = $("#Birthday").val();
+                var Blood = $("#Blood").val(); var Constellation = $("#Constellation").val();
+                var Email = $("#Email").val(); var Phone = $("#Phone").val();
+                var returnJson = {
+                    Name: Name, Nickname: Nickname, Gender: Gender, Birthday: Birthday, Blood: Blood,
+                    Constellation: Constellation, Email: Email, Phone: Phone
+                }
+                return returnJson;
+            }
+        }
+        $(function () {          
+            $("#SaveBtn").on("click", function () {
+                if (person()=="") {
+                    toastr.warning("信息不全!") //toastr.warning    toastr.success                  
+                } else {
+                    $.ajax("/Home/Generate", {
+                        type: "post",
+                        data: person(),
+                    }).done(function (result) {
+                        if (result) {
+                            toastr.info("修改成功")
+                        } else {
+                            toastr.error("修改失败")
+                        }
+                    }).fail(function (result) {
+                        console.error(result)
+                        toastr.error("请联系管理人员")
+                    })
+                }            
+            })
+            $(".form_datetime").datetimepicker({ format: 'YYYY-MM-DD' });
+        })
+    </script>
+}

@@ -1,0 +1,256 @@
+﻿@model IEnumerable<TheFamilyFriend.Models.PictureType>
+@{
+    ViewBag.Title = "相册";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "BosomFriend")">主页</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <select class="form-control m-b col-lg-3" name="account" id="PictureType">
+                        @{
+                            <option value="0">全部</option>
+                            foreach (var item in Model)
+                            {
+                                <option value="@item.PictureTypeId">@item.PictureTypeName</option>
+                            }
+
+                        }
+                    </select>
+                    <div class="row">
+                        <div class="lightBoxGallery" id="links">
+
+             
+                        </div>
+                    </div>
+                    <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
+                    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" style="display: none;">
+                        <div class="slides" style="width: 98352px;"></div>
+                        <h3 class="title"></h3>
+                        <a class="prev"></a>
+                        <a class="next"></a>
+                        <a class="close"></a>
+                        <a class="play-pause"></a>
+                        <ol class="indicator"></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*https://github.com/blueimp/Gallery/blob/master/README.md*@
+@section scripts{
+
+    <script src="~/Scripts/Gallery-master/js/jquery.blueimp-gallery.min.js"></script>
+    <script>
+        $(function () {
+           var url="@ViewBag.ServerPicture";   
+            $("#links").ready(function () {
+                $.post("@Url.Action("ShowPicture", "BosomFriend")", function (result) {
+                    if (result.length > 0) {
+                        $("#links").text('');
+                        for (var i = 0; i < result.length; i++) {
+                            //通过value获取文本
+                            var type = $("#PictureType option[value=" + result[i].PictureTypeId + "]").text();
+
+                            var str = ' <a href="' + url + result[i].PicturePath + '" title="' + type + '" data-gallery=""><img src="' + url + result[i].PicturePath + '" class="img-thumbnail" width="150" height="150"></a>'
+                            $("#links").append(str);
+
+                        }
+                    }
+                })
+            })
+            $("#PictureType").change(function () {
+                $.post("@Url.Action("ShowSingerTypePicture", "BosomFriend")", { PictureTypeId: $("#PictureType").val() }, function (result) {
+                    $("#links").text('');
+                    if (result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            //通过value获取文本
+                         var type=   $("#PictureType option[value=" + result[i].PictureTypeId + "]").text();
+                            var str = ' <a href="' + url + result[i].PicturePath + '" title="' + type + '" data-gallery=""><img src="' + url +  result[i].PicturePath + '" class="img-thumbnail" width="150" height="150"></a>'
+                            $("#links").append(str);
+                        }
+                    }
+                })
+            })
+
+        })
+    </script>
+
+
+
+
+    <script>
+
+
+        //var gallery =  blueimp.Gallery(
+        //    document.getElementById('links').getElementsByTagName('a'),
+        //    options
+        //);
+
+        //blueimp.Gallery([
+        //    {
+        //        title: 'Banana',
+        //        href: '/upload/Koala.jpg',
+        //        type: 'image/jpeg',
+        //        thumbnail: '/upload/Koala.jpg'
+        //    }
+
+        //], options);
+
+
+        var options = {
+            //图库窗口小部件的Id,element或querySelector:
+            container: '＃blueimp-gallery ',
+            //幻灯片容器的标记名称,Id,元素或querySelector:
+            slidesContainer: ' div ',
+            // title元素的标签名称,Id,element或querySelector:
+            titleElement: ' h3 ',
+            //图库可见时要添加的类:
+            displayClass: ' blueimp-gallery-display ',
+            //当库控件可见时要添加的类:
+            controlsClass: ' blueimp-gallery-controls ',
+            //当库只显示一个元素时要添加的类:
+            singleClass: ' blueimp-gallery-single ',
+            //到达左边缘时要添加的类:
+            leftEdgeClass: ' blueimp-gallery-left ',
+            //当到达右边缘时要添加的类:
+            rightEdgeClass: ' blueimp-gallery-right ',
+            //自动幻灯片激活时添加的类:
+            playingClass: ' blueimp-gallery-playing ',
+            //所有幻灯片的类:
+            slideClass: ' slide ',
+            //加载元素的幻灯片类:
+            slideLoadingClass: ' slide-loading ',
+            //无法加载的元素的幻灯片类:
+            slideErrorClass: ' slide-error ',
+            //加载到每张幻灯片中的内容元素的类:
+            slideContentClass: ' slide-content ',
+            // “toggle”控件的类:
+            toggleClass: ' toggle ',
+            // “prev”控件的类:
+            prevClass: ' prev ',
+            // “next”控件的类:
+            nextClass: ' next ',
+            // “close”控件的类:
+            closeClass: '关闭',
+            // “播放 - 暂停”切换控件的类:
+            playPauseClass: ' play-pause ',
+            //具有对象类型的列表对象属性（或数据属性）:
+            typeProperty: ' type ',
+            //列表对象属性（或数据属性）,对象标题:
+            titleProperty: ' title ',
+            //列表对象属性（或数据属性）,对象为alt text:
+            altTextProperty: ' alt ',
+            //带有对象URL的列表对象属性（或数据属性）:
+            urlProperty: ' href ',
+            //带有对象srcset URL的列表对象属性（或数据属性）:
+            srcsetProperty: ' urlset ',
+            //库在触发
+            //打开和关闭事件之前侦听transitionend事件,除非以下选项设置为false:
+            displayTransition: true,
+            //定义是否从库模式中清除图库幻灯片,
+            //或者重新用于下一个图库初始化:
+            clearSlides: true,
+            //定义是否应拉伸图像以填充可用空间,
+            //同时保持其宽高比（仅对浏览器启用
+            //支持background-size =“contains”,不包括IE <9）。
+            //设置为“cover”,使图像覆盖所有可用空间（需要
+            //支持background-size =“cover”,不包括IE <9）:
+            stretchImages: false,
+            //按下Return键切换控件:
+            toggleControlsOnReturn: true,
+            //切换幻灯片上的控件点击:
+            toggleControlsOnSlideClick: true,
+            //按空格键切换自动幻灯片显示间隔:
+            toggleSlideshowOnSpace: true,
+            //在键盘上按左右键导航库:
+            enableKeyboardNavigation: true,
+            //按ESC键关闭图库:
+            closeOnEscape: true,
+            //单击空白幻灯片区域时关闭图库:
+            closeOnSlideClick: true,
+            //向上或向下滑动关闭图库:
+            closeOnSwipeUpOrDown: true,
+            //在鼠标指针设备（如桌面浏览器）上模拟触摸事件:
+            emulateTouchEvents: true,
+            //停止触摸事件从冒泡到图库的祖先元素:
+            stopTouchEventsPropagation: false,
+            //隐藏页面滚动条:
+            hidePageScrollbars: true,
+            //通过滚动页面停止容器上的任何触摸:
+            disableScroll: true,
+            //轮播模式（轮播特定选项的快捷方式）:
+            carousel: false,
+            //允许连续导航,从最后一个移动到第一个
+            //从第一个到最后一个幻灯片:
+            continuous: true,
+            //从DOM中删除预加载范围之外的元素:
+            unloadElements: true,
+            //以自动幻灯片放映开始:
+            startSlideshow: false,
+            //自动幻灯片  放映幻灯片之间的延迟（以毫秒为单位）:
+            slideshowInterval: 5000,
+            //起始索引为整数。
+            //也可以是给定列表的对象,
+            //或具有相同url属性的相等对象:
+            index: 0,
+            //要加载当前索引的元素数:
+            preloadRange: 2,
+            //转换速度幻灯片之间的更改（以毫秒为单位）:
+            transitionSpeed: 400,
+            //自动幻灯片更改的转换速度,设置为整数
+            //大于0以覆盖默认转换速度:
+            slideshowTransitionSpeed: undefined,
+            //将 在Gallery初始化时取消默认操作的事件对象 //（例如,打开Gallery的click事件）:
+            event: undefined,
+            //初始化Gallery时执行的回调函数。
+            //使用库实例作为“this”对象调用:
+            onopen: undefined,
+            //初始化Gallery时执行的回调函数
+            //初始化转换已完成。
+            //使用库实例作为“this”对象调用:
+            onopened: undefined,
+            //在幻灯片更改时执行回调函数。
+            //使用库实例作为“this”对象调用,
+            //当前索引和幻灯片作为参数调用:
+            onslide: undefined,
+            //在幻灯片更改过渡后执行回调函数。
+            //使用库实例作为“this”对象调用,
+            //当前索引和幻灯片作为参数调用:
+            onslideend: undefined,
+            //在幻灯片内容加载时执行回调函数。
+            //使用库实例作为“this”对象调用
+            //幻灯片索引和幻灯片元素作为参数:
+            onslidecomplete: undefined,
+            //当Gallery即将关闭时执行的回调函数。
+            //使用库实例作为“this”对象调用:
+            onclose: undefined,
+            //关闭Gallery时执行的回调函数
+            //并且结束转换已完成。
+            //使用库实例作为“this”对象调用:
+            onclosed: undefined
+        };
+    </script>
+}
+@section styles{
+    <link href="~/Content/Gallery-master/css/blueimp-gallery.min.css" rel="stylesheet" />
+}

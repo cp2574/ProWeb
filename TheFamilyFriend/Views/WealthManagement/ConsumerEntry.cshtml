@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewBag.Title = "消费登记";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "WealthManagement")">首页</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">登记信息</font></font></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+
+                </div>
+            </div>
+            <div class="ibox-content" style="">
+                <form method="get">
+                    <div class="form-group  row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-center  col-form-label"><font style="vertical-align: central;">商品名称</font></label>
+                            <div class="col-sm-8" style="vertical-align: middle;"><input type="text" class="form-control" id="GoodName"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">消费金额</font></label>
+                            <div class="col-sm-8"><input type="text" class="form-control" id="Money"></div>
+                        </div>
+
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">登记时间</font></label>
+                            <div class="col-sm-8" style="vertical-align: middle;"><input class="form_datetime form-control col-sm-12" id="RegisterTime" name="RegisterTime" type="text" size="16" value="@DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")"></div>
+                          
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">商品类型</font></label>
+                            <div class="col-sm-8">
+                       
+                                <select class="form-control" id="GoodType">
+                                    <option value="蔬菜类">蔬菜类</option>
+                                    <option value="水果类">水果类</option>
+                                    <option value="服装类">服装类</option>
+                                    <option value="出行类">出行类</option>
+                                    <option value="饮食类">饮食类</option>                                
+                                    <option value="其它">其它</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right text-right  col-form-label"><font style="vertical-align: inherit;">支付方式</font></label>
+                            <div class="col-sm-8" style="vertical-align: middle;">
+                         
+                                <select class="form-control" id="PaymentMethod">
+                                    <option value="微信">微信</option>
+                                    <option value="支付宝">支付宝</option>
+                                    <option value="现金">现金</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">支出来源</font></label>
+                            <div class="col-sm-8">                    
+                                <select class="form-control" id="BackCard">
+                                    <option value="中国银行卡">中国银行卡</option>
+                                    <option value="中国工商卡">中国工商卡</option>
+                                    <option value="浦发银行卡">浦发银行卡</option>
+                                </select>
+                            </div>
+                         
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">消费地点</font></label>
+                            <div class="col-sm-8" style="vertical-align: middle;"><input type="text" class="form-control" id="SpentPlace"></div>
+                        </div>
+                    
+
+                    </div>
+          
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <a class="btn btn-white btn-sm" href="@Url.Action("Index","WealthManagement")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">取消</font></font></a>
+                            <button class="btn btn-primary btn-sm" type="button" id="SaveBtn"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保存更改</font></font></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section styles{
+    <link href="~/Content/fileinput/fileinput.min.css" rel="stylesheet" />
+    <link href="~/Scripts/fileinput/themes/explorer/theme.min.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/time/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/time/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(function () {    
+           
+        
+            $("#SaveBtn").on("click", function () {
+                var data = {
+                    GoodName: $("#GoodName").val(),
+                    Money: $("#Money").val(),
+                    RegisterTime: $("#RegisterTime").val(),
+                    GoodType: $("#GoodType").val(),
+                    PaymentMethod: $("#PaymentMethod").val(),
+                    BackCard: $("#BackCard").val(),
+                    SpentPlace: $("#SpentPlace").val()
+                }
+                $.post("/WealthManagement/AddConsumer", data,function (result) {
+                    if (result.succeed) {
+                        toastr.success(result.message)
+                    } else {
+                        toastr.error(result.message)  
+                    }
+                })
+
+            })
+
+
+           $(".form_datetime").datetimepicker({
+                locale: 'zh-cn',
+                showTodayButton: true
+            });
+        })
+    </script>
+}

@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "神秘人";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="ibox-content text-center p-md" style="border:1px solid red;height:450px;" id="ConText">
+        <canvas style="border:1px solid blue" id="canvas">浏览器版本过低！</canvas>
+    </div>
+</div>
+@section scripts{
+    <script>
+
+        //console.warn($("#ConText").height());
+        //console.warn($("#ConText").width());
+        var canvas = document.getElementById('canvas');
+        canvas.width = $("#ConText").width();
+        canvas.height = $("#ConText").height();
+        var ctx = canvas.getContext('2d');
+        //三次贝塞尔曲线
+        ctx.fillStyle = "#FF0000";
+        if (canvas.getContext) {
+            setInterval(function() {
+                ctx.clearRect(0, 0, canvas.height, canvas.height);
+            },4000)     
+            setInterval(function () {
+                Heart();
+                ctx.translate(0, 100);
+            }, 1000)
+
+            ctx.clearRect(0, 0, 0, canvas.height);
+           
+        }
+
+        function Heart() {
+            ctx.beginPath();
+            ctx.moveTo(75, 40);
+            ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+            ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+            ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+            ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+            ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+            ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+            ctx.closePath();
+            ctx.fill();
+        }
+        function Heart1() {
+            ctx.beginPath();
+            ctx.moveTo(75, 40);
+            ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+            ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+            ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+            ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+            ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+            ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+            ctx.closePath();
+            ctx.fill();
+        }
+    </script>
+}
+

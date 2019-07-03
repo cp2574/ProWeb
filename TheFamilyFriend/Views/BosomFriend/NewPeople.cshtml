@@ -1,0 +1,273 @@
+﻿
+@{
+    ViewBag.Title = "新增朋友";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Middle", "BosomFriend")">挚友</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">基本资料</font></font></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+
+                </div>
+            </div>
+            <div class="ibox-content" style="">
+                <form method="get">
+                    <div class="form-group  row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-center  col-form-label"><font style="vertical-align: central;">姓名</font></label>
+                            <div class="col-sm-8" style="vertical-align: middle;"><input type="text" class="form-control" id="Name"></div>                        
+                            <label class="col-sm-1 text-left  col-form-label"><font style="vertical-align:central;">*</font></label>
+                        </div>
+                      <div class="col-sm-6">
+                          <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">昵称</font></label>
+                          <div class="col-sm-8"><input type="text" class="form-control" id="Nickname"></div>
+                      </div>
+                    
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">出生年月</font></label>
+                            <div class="col-sm-8" style="vertical-align: middle;"><input class="form_datetime form-control col-sm-12" id="Birthday" name="StartTime" type="text" size="16"></div>
+                            <label class="col-sm-1 text-left  col-form-label"><font style="vertical-align: central;">*</font></label>
+                        </div>
+                      <div class="col-sm-6">
+                          <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">性别</font></label>
+                          @*<div class="col-sm-8"><input type="text" class="form-control" id="Gender"></div>
+                          <label class="col-sm-1 text-left  col-form-label"><font style="vertical-align: central;">*</font></label>*@
+                          <div class="radio radio-info radio-inline col-sm-offset-1">
+                              <input type="radio" class="Gender" value="男" name="radioInline" checked="checked"><label>男 </label>                            
+                          </div>
+                          <div class="radio radio-info radio-inline">
+                              <input type="radio" class="Gender" value="女" name="radioInline"><label>女</label>        
+                          </div>
+                      </div>                      
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right text-right  col-form-label"><font style="vertical-align: inherit;">血型</font></label>
+                            <div class="col-sm-8" style="vertical-align: middle;"><input type="text" class="form-control" id="Blood"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">星座</font></label>
+                            <div class="col-sm-8"><input type="text" class="form-control" id="Constellation"></div>
+                        </div>                       
+                        </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">邮箱</font></label>
+                            <div class="col-sm-8" style="vertical-align: middle;"><input type="text" class="form-control" id="Email"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">联系方式</font></label>
+                            <div class="col-sm-8"><input type="text" class="form-control" id="Phone"></div>
+                        </div>
+                      
+                       
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                          <div class="col-sm-6">
+                              <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">属于</font></label>
+                              <div class="col-sm-8" style="vertical-align: middle;">
+                                  @Html.DropDownList("Type", @ViewBag.TypePeopen as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                              </div>
+                          </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">上传头像</font></label>
+                            <div class="col-sm-8"><input type="file" name="HeadPortrait" id="HeadPortrait" class="file-loading" /></div>
+                        </div>
+                        
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <a class="btn btn-white btn-sm" href="@Url.Action("Index","Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">取消</font></font></a>
+                            <button class="btn btn-primary btn-sm" type="button" id="SaveBtn"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保存更改</font></font></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section styles{
+    <link href="~/Content/fileinput/fileinput.min.css" rel="stylesheet" />
+    <link href="~/Scripts/fileinput/themes/explorer/theme.min.css" rel="stylesheet" />  
+
+}
+@section scripts{   
+    <script src="~/Scripts/time/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/time/bootstrap-datetimepicker.min.js"></script> 
+    <script src="~/Scripts/fileinput/fileinput.min.js"></script>
+    <script src="~/Scripts/fileinput/themes/explorer/theme.min.js"></script>
+    <script src="~/Scripts/fileinput/themes/fas/theme.min.js"></script>
+    <script src="~/Scripts/fileinput/locales/zh.js"></script>
+    <script>
+        function person() {
+           
+            if ($("#Name").val() == "" || $("#Birthday").val() == "") {
+                return ""
+            } else {
+                var Name = $("#Name").val(); var Nickname = $("#Nickname").val();
+                
+             
+                var Gender
+                $(".Gender").each(function () {
+                    if ($(this).is(":checked")) {
+                        Gender = $(this).val()
+                        return false;
+                    }
+                })
+                var Birthday = $("#Birthday").val();
+                var Blood = $("#Blood").val(); var Constellation = $("#Constellation").val();
+                var Email = $("#Email").val(); var Phone = $("#Phone").val();
+                var Type = $("#Type").val();
+                var returnJson = {
+                    Name: Name, Nickname: Nickname, Gender: Gender, Birthday: Birthday, Blood: Blood,
+                    Constellation: Constellation, Email: Email, Phone: Phone, Type: Type
+                }             
+                return returnJson;
+            }
+        }
+        $(function () {
+            var oFileInput = new FileInput();
+            oFileInput.Init("HeadPortrait", "/BosomFriend/UpdateHeadPortrait");
+            $("#SaveBtn").on("click", function () {
+                if (person()=="") {
+                    toastr.warning("*号不能为空！");//toastr.warning    toastr.success
+                } else {
+                    $.ajax("/BosomFriend/CreateNewpeopen", {
+                        type: "post",
+                        data: person(),
+                    }).done(function (result) {
+                        if (result.ReturnValue) {
+                            var img = $("#HeadPortrait").val()      
+                            var picturename = img.substring($("#HeadPortrait").val().indexOf('.'), $("#HeadPortrait").val().length).toUpperCase();
+                            if (picturename = ".JPG" || picturename == ".PNG" || picturename == ".JPEG"||picturename == ".GIF") {                            
+                                //alert(result.UserId)
+                                //增加肖像的上传处理
+                                initPortrait("HeadPortrait", result.UserId);//使用写入的ID进行更新
+                                $('#HeadPortrait').fileinput('upload'); //触发插件开始上传。                            
+                            }
+                            window.location.href = '/BosomFriend/' + result.message;
+                        } else {
+                            toastr.error(result.message)
+                        }
+                    }).fail(function (result) {
+                        console.error(result)
+                        toastr.error("请联系管理人员")
+                    })
+                }                           
+            })
+           
+         
+            $(".form_datetime").datetimepicker({
+                locale: 'zh-cn',
+                format: 'L',
+                showTodayButton: true
+            });
+        })
+
+        var FileInput = function () {
+            var oFile = new Object();
+            //初始化fileinput控件（第一次初始化）
+            oFile.Init = function (ctrlName, uploadUrl) {
+                var control = $('#' + ctrlName);
+                //初始化上传控件的样式
+                control.fileinput({
+                    language: 'zh', //设置语言
+                    uploadUrl: uploadUrl, //上传的地址
+                    allowedFileExtensions: ['jpg', 'gif', 'png',"jpeg"],//接收的文件后缀                  
+                    showCaption: true,//是否显示标题
+                    browseClass: "btn btn-primary", //按钮样式     
+                    showPreview: true,//是否显示预览
+                    layoutTemplates: {
+                        // actionDelete:'', //去除上传预览的缩略图中的删除图标
+                        actionUpload: '',//去除上传预览缩略图中的上传图片；
+                        actionZoom: '',   //去除上传预览缩略图中的查看详情预览的缩略图标。
+                        footer: '<div class="file-thumbnail-footer">\n' +
+                        '<div class="file-caption-name" style="width:{width}">{caption}</div>\n' +
+                          '{progress} {actions}\n' +
+                         '</div>',
+                    },
+                    //overwriteInitial: false,
+                    //previewFileIcon: '<i class="fa fa-file"></i>',
+                    dropZoneEnabled: false,//是否显示拖拽区域
+                    //minImageWidth: 50, //图片的最小宽度
+                    //minImageHeight: 50,//图片的最小高度
+                    //maxImageWidth: 350,//图片的最大宽度
+                    //maxImageHeight: 350,//图片的最大高度
+                      maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+                    //minFileCount: 0,                
+                      showUpload: false, //是否显示上传按钮
+                    //showRemove: false, //不显示移除按钮
+                    //showBrowse: shwoKey,//是否显示选择按钮
+                    showCaption: true,//是否显示选择输入框
+                    maxFileCount: 1, //表示允许同时上传的最大文件个数
+                    enctype: 'multipart/form-data',
+                    validateInitialCount: true,
+                    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+                    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                    previewFileIcon :true,//是否显示文件icon 默认图片是直接显示缩略图 文件会展示相关内容         
+                    preferIconicPreview: true,//是否强制相关文件展示icon
+                    initialPreviewAsData: true,
+                    //previewFileIconSettings: {}//配置相关文件展示的icon
+                    //fileActionSettings: {
+                    //    showZoom: true,
+                    //    showDrag: false,
+                    //    showRemove: false,
+                    //    showUpload: false
+                    //}
+                    //uploadExtraData: function(previewId, index) {   //额外参数的关键点
+                    //    //index = 2;
+                    // }
+                });
+                //导入文件上传完成之后的事件   这个方法注册上传完成后的回调事件。也就是后天处理上传的文件之后进入这个方法
+                $("#HeadPortrait").on("fileuploaded", function (event, data, previewId, index) {
+                    if (data.response) {
+                        toastr.success("上传成功！")
+                    }                  
+                });
+            }
+            return oFile;
+        };
+        function initPortrait(ctrlName, id) {
+            var control = $('#' + ctrlName);
+            var imageurl = '/BosomFriend/UpdateHeadPortrait?id=' + id + '&r=' + Math.random();
+            //重要，需要更新控件的附加参数内容，以及图片初始化显示
+            control.fileinput('refresh', {
+                uploadExtraData: { id: id },
+                initialPreview: [ //预览图片的设置
+                "<img src='" + imageurl + "' class='file-preview-image' alt='肖像图片' title='肖像图片'>",
+                ],
+            });
+        }
+    </script>
+}

@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewBag.Title = "支出报表";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+
+       
+
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content col-sm-12" style="height:500px">
+                    <div id="main" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script src="~/Scripts/EChart/echarts.min.js"></script>
+    <script src="~/Scripts/EChart/Carousel.js"></script>
+    <script src="~/Scripts/EChart/dark.js"></script>
+
+    <script>
+        // 第二个参数可以指定前面引入的主题
+        var myChart = echarts.init(document.getElementById('main'), 'Carousel');
+
+        //自适应宽高
+        //var myChartContainer = function () {
+        //    myChart.style.width = window.innerWidth + 'px';
+        //    myChart.style.height = window.innerHeight + 'px';
+        //};
+        //浏览器大小改变时重置大小
+        window.onresize = function () {
+            //myChartContainer();
+            myChart.resize();
+            //alert(1)
+        };
+        //window.onresize = myChart.resize;
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+        myChart.showLoading();
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                top: "top",//指定标题 容器的相对位置
+                left: "center",
+                text: '2019年的支出报表',
+                //subtext: '纯属虚构'//副标题
+            },
+            //backgroundColor:'rgba(128, 128, 128, 0.1)' //rgba设置透明度0.1
+            //backgroundColor:'' //设置无背景色
+            tooltip: {
+                trigger: 'axis'
+            },
+            grid: {
+                containLabel: true,//防止标签文字过长，显示不全
+            },
+            toolbox: {//平铺、折叠、生成png图片
+                show: true,
+                feature: {
+
+                    dataView: { readOnly: false },
+                    magicType: { show: true, type: ['stack', 'tiled', 'line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            //legend: {//对应不同的图标
+            //    //data: ['销量', '进货'],//系列1
+            //    //bottom: "bottom",//指定图标 容器的相对位置
+            //},
+            xAxis: {
+                data: ["1月", "2月", "3月", "4月", "5月", "6月","7月", "8月", "9月", "10月", "11月", "12月"],
+                axisLabel: {
+                    show: true,
+                    interval: 0,
+                    rotate: 45,//防止文字重叠，进行偏移
+                    margin: 2,
+                    textStyle: {
+                        color: "#222"
+                    },
+
+                    //formatter: function (val) {  //文字竖立显示
+                    //    return val.split("").join("\n");
+                    //}
+                    boundaryGap: false,//设置为false代表是零刻度开始，设置为true代表离零刻度间隔一段距离
+                },
+            },
+                yAxis: {
+                    splitLine: {
+                        show: true,//是否显示网格线
+                    }
+
+                    //axisTick: {
+                    // show: true,
+                    // alignWithLabel: true,标签与文字对齐
+                    // interval: 0
+                    // },
+                },
+                series: [{
+                    name: '销量',
+                    type: 'bar',
+                    data: [5, 20, 36, 10, 10, 20,
+                    ],
+                    //markPoint: {
+                    //    data: [
+                    //        { type: 'max', name: '最大值' },
+                    //        { type: 'min', name: '最小值' }
+                    //    ]
+                    //},
+                    //markLine: {
+                    //    data: [
+                    //        { type: 'average', name: '平均值' }
+                    //    ]
+                    //}
+                }
+                ],
+
+            };
+            // 使用刚指定的配置项和数据显示图表。
+        myChart.hideLoading();
+            myChart.setOption(
+                option
+        );
+
+        var data = @Html.Raw(ViewBag.SumPrice)
+         console.info(data);   
+        myChart.setOption({
+            series: [{
+                name: '消费',
+                type: 'bar',
+                data: data,
+                markPoint: {
+                    data: [
+                        { type: 'max', name: '最大值' },
+                        { type: 'min', name: '最小值' }
+                    ]
+                },
+                //markLine: {
+                //    data: [
+                //        { type: 'average', name: '平均值' }
+                //    ]
+                //}
+            }
+            ]
+        }
+        );
+    </script>
+
+}
+

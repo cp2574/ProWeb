@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "磁盘占用率";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+       <ol class="breadcrumb">
+            <li>
+               <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <a href="@Url.Action("CpuLoad", "Report")"><strong>@ViewBag.Title</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+        @{
+                var n = 0;
+                foreach (var item in @ViewBag.GetDrives as List<Lemony.SystemInfo.DriveInfo>)
+                {
+                <div class="col-lg-3" >
+                    <div class="ibox" >
+                        <div class="ibox-content"style="height:300px;">
+                            <h3><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">驱动器名:@item.Name.Split('\\')[0]</font></font></h3>
+                            <h5><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">卷标:@item.VolumeLabel</font></font></h5>
+                            <h5><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">是否就绪:@item.IsReady   分区格式:@item.DriveFormat</font></font></h5>                           
+                            <div class="text-center">
+                                <div id="Drive_@n" style="width:200px;height:200px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                n++;
+            }
+        }
+    </div>
+</div>
+
+
+@section scripts{
+<script src="~/Scripts/EChart/echarts.min.js"></script>
+<script src="~/Scripts/EChart/dark.js"></script>
+<script src="~/Scripts/EChart/Carousel.js"></script>
+<script>
+    $(function () {    
+      $.post("@Url.Action("GetDisk")", function (result) {             
+          LoadData(result);
+         })         
+    })
+    function LoadData(result) {
+        for (var i = 0; i < result.length; i++) {
+            var myChart = echarts.init(document.getElementById('Drive_' + i), 'Carousel');        
+            var option={
+                //color: ['#99d2dd','#1c7099'],
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}:({d}%)",
+                        position: function (pos, params, dom, rect, size) {
+                            // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+                    var obj = {top: 60};
+                    obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+                    return obj;
+                         }
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'left',
+                    data: ['磁盘空闲', '磁盘使用'],
+                 },
+             
+                series : [
+                   {
+                       name:'磁盘使用率',
+                       type:'pie',
+                       radius: ['35%', '55%'],
+                       avoidLabelOverlap: false,
+                       label: {
+                           normal: {
+                               show: false,
+                               position: 'center'
+                           },
+                           emphasis: {
+                               show: true,
+                               textStyle: {
+                                   fontSize: '8',
+                                   fontWeight: 'bold'
+                               }
+                           }
+                       },
+                       labelLine: {
+                           normal: {
+                               show: false
+                           }
+                       },
+                       data:[
+                     { value: parseFloat(result[i].TotalFreeSpace), name: '磁盘空闲' },
+                     { value: parseFloat(result[i].TotalSize) - parseFloat(result[i].TotalFreeSpace), name: '磁盘使用' }
+               
+                       ]
+                   }
+                ]
+            };
+            myChart.setOption(option);                         
+            window.addEventListener("resize", function () {
+                myChart.resize();
+             
+            });
+
+        }
+    }  
+    var labelTop = {
+        normal : {
+            label : {
+                show : true,
+                position : 'right',
+                formatter : '{b}',
+                textStyle: {
+                    baseline : 'bottom',
+                    fontSize : '12',
+                    fontWeight : 'bold'
+                }
+            },
+            labelLine : {
+                show : false
+            }
+        }
+    };
+    var labelFromatter = {
+        normal : {
+            label : {
+                formatter : function (a,b,c,d){return (100 - d).toFixed(2) + '%'},
+                textStyle: {
+                    baseline : 'top',
+                    fontSize : '12',
+                    fontWeight : 'bold'
+                }
+            }
+        },
+    }
+    var labelBottom = {
+        normal : {
+            label : {
+                show : true,
+                position : 'center'
+            },
+            labelLine : {
+                show : false
+            }
+        },
+        emphasis: {
+	        
+        }
+    };
+
+
+</script>
+}

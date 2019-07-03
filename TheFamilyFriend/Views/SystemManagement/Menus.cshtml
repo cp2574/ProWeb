@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "菜单管理";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+            <li class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>查询条件</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row center-block">
+                        <p class="col-md-4">
+                            <label class="control-label col-sm-12">控制器:</label>
+                            <select id="control" class="form-control col-sm-12"  size="16">
+                                
+                            </select>
+                           
+                        </p>
+                        <p class="col-md-4">
+                            <label class="control-label col-sm-12">方法:</label>
+                     
+                        </p>
+                        <p class="col-md-4">
+                            <label>&nbsp;</label>
+                            <button type="button" class="btn btn-w-m btn-primary col-sm-12" id="submit">查询</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="ibox ui-resizable">
+                <div class="ibox-content">
+                    <table id="tab"></table>
+                </div>
+                <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles{
+    <link href="~/Content/table/bootstrap-table.css" rel="stylesheet" />
+    <link href="~/Content/table/bootstrap-table-pagejump.css" rel="stylesheet" />
+    <link href="~/Content/time/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/table/dist/bootstrap-table.min.js"></script>
+    <script src="~/Scripts/table/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/Scripts/table/bootstrap-table-pagejump.js"></script>
+
+    <script src="~/Scripts/time/moment.min.js"></script>
+    <script src="~/Scripts/time/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/time/bootstrap-datetimepicker.min.js"></script>
+    @*<script src="~/Scripts/time/locales/bootstrap-datetimepicker.zh-CN.js"></script>*@
+    <script>
+        $(function () {
+            var rootUrl = "@Url.Content("~")";//获取根路径,防止iis部署位置不同
+            //$("#tab").bootstrapTable('destroy');
+            $('#tab').bootstrapTable('refresh', { url: rootUrl +"SystemManagement/GetMenusList" });
+            //$("#submit").click(function () {
+            //    $('#tab').bootstrapTable('refresh', { url: rootUrl +"WealthManagement/GetConsumerLists" });
+            //})
+    
+        })
+
+        $('#tab').bootstrapTable({
+            //contentType: "application/x-www-form-urlencoded",//必须要有！！！！ ,测试了下不是必须的
+            //请求方法
+            method: 'get',
+            //是否显示行间隔色
+            striped: true,
+            //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            cache: false,
+            //是否显示分页（*）
+            pagination: true,
+            //是否启用排序
+            sortable: true,
+            //排序方式
+            sortOrder: "asc",
+            //初始化加载第一页，默认第一页
+            //我设置了这一项，但是貌似没起作用，而且我这默认是0,- -
+            pageNumber: 1,
+            //每页的记录行数（*）
+            pageSize: 10,
+            //可供选择的每页的行数（*）
+            pageList: [10, 25, 50],
+            //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
+            data: [],
+            //是否显示搜索
+            search: true,
+            strictSearch: true,
+            idField: "Id",
+            pagination: true,
+            showHeader: true,
+            showRefresh: false,
+            paginationShowPageGo: true,
+            showToggle: false,//切换
+            showColumns: true,//显示列
+            queryParamsType: 'limit',//查询参数组织方式
+            sidePagination: 'server',//指定服务器端分页
+            queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的
+                return {//这里的params是table提供的
+                    //pageNumber ：  当前页（必须）
+                    //pageSize : 每页行数（必须）
+                    pageNumber: params.offset / params.limit + 1,
+                    pageSize: params.limit,
+                    //这里可以加上其他参数
+                    StartTime: $("#StartTime").val(),
+                    EndTime: $("#EndTime").val()
+                };
+            },
+            columns: [
+                { title: '编号', field: 'Id', align: 'center', valign: 'middle', sortable: true, visible: false },
+                { title: '名称', field: 'Name', align: 'center', valign: 'middle', sortable: true },
+                { title: '控制器', field: 'Controller', align: 'center', valign: 'middle', sortable: true },
+                { title: '方法', field: 'Action', align: 'center', valign: 'middle', sortable: true },
+                { title: '级别', field: 'Level', align: 'center', valign: 'middle', sortable: true },
+                {
+                    title: '创建时间', field: 'CreateTime', align: 'center', valign: 'middle', sortable: true,
+
+                    //获取日期列的值进行转换
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(value)
+                    }
+                },
+                { title: '图标', field: 'Icon', align: 'center', valign: 'middle', sortable: true },
+                { title: '父级', field: 'parentID', align: 'center', valign: 'middle', sortable: true },
+             
+
+            ],
+        });
+        //转换日期格式(时间戳转换为datetime格式)
+        function changeDateFormat(cellval) {
+            var dateVal = cellval + "";
+            if (cellval != null) {
+                var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+                return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
+            }
+        }
+    </script>}
+
+
