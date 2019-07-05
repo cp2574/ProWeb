@@ -21,6 +21,17 @@ namespace TheFamilyFriend.Models
         /// 创建时间
         /// </summary>
         public Nullable<DateTime> CreateTime { get; set; }
+
+
+        /// <summary>
+        /// 头像
+        /// </summary>       
+        public string Avatar { get; set; }
+
+        /// <summary>
+        /// 主页皮肤
+        /// </summary>       
+        public string  Skip { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

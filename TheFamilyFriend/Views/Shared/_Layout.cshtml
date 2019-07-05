@@ -1,20 +1,32 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>@ViewBag.Title</title>   
+
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/font-awesome/css")
     @Styles.Render("~/Content/child/css")
     @RenderSection("styles", required: false)
-  
+
 
 </head>
-
-<body>
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity;
+@using TheFamilyFriend.Models;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@{
+    string skip = "";
+    var manage = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+    var currentUser = manage.FindById(User.Identity.GetUserId());
+    if (currentUser!= null&& !string.IsNullOrEmpty( currentUser.Skip))
+    {
+        skip =currentUser.Skip;
+    }
+}
+<body class="@skip">
     <!-- Wrapper-->
     <div id="wrapper">
         <!-- Navigation -->
@@ -54,6 +66,24 @@
     <script src="~/Scripts/AppSet.js"></script>
     <script src="~/Scripts/_Layout.js"></script>
     @RenderSection("scripts", required: false)
+    <script>
+        $(function () {
+            //pace - done body - small skin - 1
+            $('.skin-name a').click(function () {
+                var skip = "pace-done body-small " + $(this).attr("class").substring(2, $(this).attr("class").length);
+                $.post("@Url.Action("UpdateUserSkip","UserManger")", { newskip: skip }, function (result) {
+                    if (!result.Issuccess) {
+                        toastr.error(result.message);
+                    } else {
+                        toastr.success(result.message);
+                        location.reload();
+                    }
+                })
+            })
+        })
 
+
+
+    </script>
 </body>
 </html>
