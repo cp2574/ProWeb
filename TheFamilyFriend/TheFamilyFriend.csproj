@@ -191,9 +191,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BosomFriendController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MailboxController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MovieAndMusicController.cs" />
     <Compile Include="Controllers\MysteryManController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
@@ -289,6 +287,7 @@
     <Content Include="Content\patterns\otis_redding.png" />
     <Content Include="Content\patterns\shattered.png" />
     <Content Include="Content\patterns\triangular.png" />
+    <Content Include="Content\plugins\summernote\summernote-bs4.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\table\bootstrap-table-pagejump.css" />
     <Content Include="Content\table\bootstrap-table.css" />
@@ -469,7 +468,11 @@
     <Content Include="Scripts\FireWorks\Stats.min.js" />
     <Content Include="Scripts\FireWorks\three.min.js" />
     <Content Include="Scripts\Bildschirmtext\Bildschirmtext.js" />
+    <Content Include="Scripts\plugins\summernote\summernote-bs4.js" />
     <Content Include="Scripts\snow.min.js" />
+    <Content Include="Scripts\table\dist\bootstrap-table-export.js" />
+    <Content Include="Scripts\table\dist\jquery.base64.js" />
+    <Content Include="Scripts\table\dist\tableExport.js" />
     <Content Include="Scripts\threecanvas.js" />
     <Content Include="Scripts\ThreeDShine.js" />
     <Content Include="Scripts\jquery.signalR-2.3.0.js" />
@@ -567,98 +570,6 @@
     <Content Include="Scripts\table\dist\extensions\tree-column\bootstrap-table-tree-column.min.js" />
     <Content Include="Scripts\table\dist\extensions\treegrid\bootstrap-table-treegrid.js" />
     <Content Include="Scripts\table\dist\extensions\treegrid\bootstrap-table-treegrid.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-af-ZA.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-af-ZA.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ar-SA.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ar-SA.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ca-ES.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ca-ES.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-cs-CZ.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-cs-CZ.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-da-DK.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-da-DK.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-de-DE.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-de-DE.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-el-GR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-el-GR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-en-US.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-en-US.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-AR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-AR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-CL.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-CL.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-CR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-CR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-ES.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-ES.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-MX.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-MX.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-NI.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-NI.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-SP.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-es-SP.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-et-EE.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-et-EE.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-eu-EU.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-eu-EU.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-fa-IR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-fa-IR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-fr-BE.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-fr-BE.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-fr-FR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-fr-FR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-he-IL.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-he-IL.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-hr-HR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-hr-HR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-hu-HU.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-hu-HU.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-id-ID.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-id-ID.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-it-IT.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-it-IT.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ja-JP.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ja-JP.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ka-GE.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ka-GE.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ko-KR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ko-KR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ms-MY.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ms-MY.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-nb-NO.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-nb-NO.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-nl-NL.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-nl-NL.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-pl-PL.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-pl-PL.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-pt-BR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-pt-BR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-pt-PT.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-pt-PT.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ro-RO.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ro-RO.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ru-RU.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ru-RU.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-sk-SK.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-sk-SK.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-sv-SE.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-sv-SE.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-th-TH.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-th-TH.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-tr-TR.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-tr-TR.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-uk-UA.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-uk-UA.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ur-PK.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-ur-PK.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-uz-Latn-UZ.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-uz-Latn-UZ.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-vi-VN.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-vi-VN.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-zh-CN.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-zh-CN.min.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-zh-TW.js" />
-    <Content Include="Scripts\table\dist\locale\bootstrap-table-zh-TW.min.js" />
     <Content Include="Scripts\time\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\time\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -723,6 +634,9 @@
     <Content Include="Content\Gallery-master\img\error.svg" />
     <Content Include="Content\Gallery-master\img\play-pause.svg" />
     <Content Include="Content\Gallery-master\img\video-play.svg" />
+    <Content Include="Content\plugins\summernote\font\summernote.eot" />
+    <Content Include="Content\plugins\summernote\font\summernote.ttf" />
+    <Content Include="Content\plugins\summernote\font\summernote.woff" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -746,6 +660,7 @@
     <Content Include="Views\WealthManagement\Index.cshtml" />
     <Content Include="Views\SystemManagement\Menus.cshtml" />
     <Content Include="Views\SystemManagement\AddMenus.cshtml" />
+    <Content Include="Views\Tool\Mailbox.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -758,8 +673,6 @@
     <Content Include="Views\BosomFriend\tag.cshtml" />
     <Content Include="Views\BosomFriend\Picture.cshtml" />
     <Content Include="Views\BosomFriend\UploadPicture.cshtml" />
-    <Content Include="Views\Mailbox\Index.cshtml" />
-    <Content Include="Views\Map\Index.cshtml" />
     <None Include="Web References\cn.com.webxml.www\weatherwebservice.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -849,8 +762,7 @@
     <Content Include="Views\Shared\_TopNavbar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\People\Index.cshtml" />
-    <Content Include="Views\People\Father.cshtml" />
-    <Content Include="Views\People\Mother.cshtml" />
+    <Content Include="Views\People\Parents.cshtml" />
     <Content Include="Views\People\Sister.cshtml" />
     <Content Include="Views\BosomFriend\Primary.cshtml" />
     <Content Include="Views\BosomFriend\Senior.cshtml" />
@@ -905,6 +817,19 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <IncludeIisSettings>false</IncludeIisSettings>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\</OutputPath>

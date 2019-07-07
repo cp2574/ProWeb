@@ -52,5 +52,16 @@ namespace TheFamilyFriend.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 电子地图
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Mailbox()
+        {
+
+            return View();
+        }
+        
+
     }
 }

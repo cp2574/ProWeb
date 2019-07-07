@@ -26,9 +26,8 @@
                 <a href="@Url.Action("Index", "People", new { area = "" })"><i class="fa fa-address-card"></i> <span class="nav-label">家人</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"People",action :null, cssClass: "in")">
                     <li class="@Html.IsSelected( "People","Index", "")"><a href="@Url.Action("Index", "People", new { area = "" })">首页</a></li>
-                    <li class="@Html.IsSelected("People","Father",  "")"><a href="@Url.Action("Father", "People", new { area = "" })">爸爸</a></li>
-                    <li class="@Html.IsSelected( "People","Mother", "")"><a href="@Url.Action("Mother", "People", new { area = "" })">妈妈</a></li>
-                    <li class="@Html.IsSelected( "People", "Sister","")"><a href="@Url.Action("Sister", "People", new { area = "" })">姐姐和姐夫</a></li>
+                    <li class="@Html.IsSelected("People","Parents",  "")"><a href="@Url.Action("Parents", "People", new { area = "" })">爸爸和妈妈</a></li>
+                    <li class="@Html.IsSelected("People","Sister",  "")"><a href="@Url.Action("Sister", "People", new { area = "" })">姐姐和姐夫</a></li>
                 </ul>
             </li>
             @*<li class="@Html.IsSelected(controller:"MysteryMan")">

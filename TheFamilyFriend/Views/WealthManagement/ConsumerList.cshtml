@@ -63,7 +63,9 @@
     <script src="~/Scripts/table/dist/bootstrap-table.min.js"></script>
     <script src="~/Scripts/table/bootstrap-table-zh-CN.min.js"></script>
     <script src="~/Scripts/table/bootstrap-table-pagejump.js"></script>
-
+    <script src="~/Scripts/table/dist/bootstrap-table-export.js"></script>
+    <script src="~/Scripts/table/dist/tableExport.js"></script>
+    <script src="~/Scripts/table/dist/jquery.base64.js"></script>
     <script src="~/Scripts/time/moment.min.js"></script>
     <script src="~/Scripts/time/moment-with-locales.min.js"></script>
     <script src="~/Scripts/time/bootstrap-datetimepicker.min.js"></script>
@@ -113,6 +115,10 @@
             //是否显示搜索
             search: true,
             strictSearch: true,
+          //  showFooter: true,//显示列脚
+            paginationLoop: false, //设置为 true 启用分页条无限循环的功能。
+         //   sortName: sort_name,//按照这个排序
+          //  sortOrder: 'desc', //降序排列
             idField: "Id",
             pagination: true,
             showHeader: true,
@@ -120,6 +126,13 @@
             paginationShowPageGo: true,
             showToggle: false,//切换
             showColumns: true,//显示列
+
+            //导出功能设置（关键代码）
+            exportDataType: 'all',//'basic':当前页的数据, 'all':全部的数据, 'selected':选中的数据
+            showExport: true,  //是否显示导出按钮
+            buttonsAlign: "right",  //按钮位置
+            exportTypes: ['excel'],  //导出文件类型，[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf']
+
             queryParamsType: 'limit',//查询参数组织方式
             sidePagination: 'server',//指定服务器端分页
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的

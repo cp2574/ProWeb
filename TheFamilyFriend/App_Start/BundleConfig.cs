@@ -38,7 +38,9 @@ namespace TheFamilyFriend
             bundles.Add(new ScriptBundle("~/plugins/pace").Include(
                       "~/Scripts/plugins/pace/pace.min.js"));
 
-
+            // summernote 
+            bundles.Add(new ScriptBundle("~/plugins/summernote").Include(
+                      "~/Scripts/plugins/summernote/summernote-bs4.js"));
 
 
             // css全局
@@ -58,7 +60,9 @@ namespace TheFamilyFriend
                      ).Include(
                 "~/fonts/font-awesome/css/build.css", new CssRewriteUrlTransform()
                       ));
-           
+            // summernote styles
+            bundles.Add(new StyleBundle("~/plugins/summernoteStyles").Include(
+                      "~/Content/plugins/summernote/summernote-bs4.css"));
         }
     }
 }

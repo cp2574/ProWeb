@@ -15,14 +15,10 @@ namespace TheFamilyFriend.Controllers
         {
             return View();
         }
-        public ActionResult Father()
+        public ActionResult Parents()
         {
             return View();
-        }
-        public ActionResult Mother()
-        {
-            return View();
-        }
+        }      
         public ActionResult Sister()
         {
             return View();
