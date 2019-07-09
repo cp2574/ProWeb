@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "新增角色";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("RoleList", "SystemManagement")">角色管理</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">角色</font></font></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+
+                </div>
+            </div>
+            <div class="ibox-content" style="">
+                <form method="get">
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">角色名称</font></label>
+                            <div class="col-sm-8"><input type="text" class="form-control" id="Name"></div>
+                        </div>
+                    </div>
+                    @*<div class="form-group row">
+                        <div class="col-sm-12">
+                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">备注</font></label>
+                            <div class="col-sm-8"><input type="text" class="form-control" id="RoleMark"></div>
+                        </div>
+                    </div>*@
+
+                    <div class="form-group row">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <a class="btn btn-white btn-sm" href="@Url.Action("RoleList","SystemManagement")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">取消</font></font></a>
+                            <button class="btn btn-primary btn-sm" type="button" id="SaveBtn"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保存</font></font></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script>
+    $(function () {
+        $("#SaveBtn").bind("click", function () {
+            if ($("#Name").val() != "" /*&& $("#RoleMark").val() != ""*/) {
+                $.post("@Url.Action("AddRole","SystemManagement")", { Name: $("#Name").val()/*, RoleMark: $("#RoleMark").val() */}, function (reslut) {
+                    if (!reslut.issucess) {
+                        toastr.error(reslut.message);
+                    } else {
+                        window.location.href = "@Url.Action("RoleList", "SystemManagement")";
+                    }
+                }
+               )
+            } else {
+                toastr.warning("信息不能为空！");
+            }
+           
+        })
+    })
+
+</script>   
+ }
+

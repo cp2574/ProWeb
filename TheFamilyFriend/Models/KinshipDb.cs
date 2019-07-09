@@ -20,7 +20,7 @@ namespace TheFamilyFriend.Models
         public virtual DbSet<ConsumptionExpenditure> ConsumptionExpenditure { get; set; }
 
         public virtual DbSet<Menus> Menus { get; set; }
-
+        public DbSet<TLogs> Logs { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Personage>()

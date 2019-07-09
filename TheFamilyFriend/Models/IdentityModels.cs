@@ -4,6 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace TheFamilyFriend.Models
 {
@@ -34,12 +38,27 @@ namespace TheFamilyFriend.Models
         public string  Skip { get; set; }
     }
 
+    //[NotMapped]
+    //public class ApplicationRole : IdentityRole
+    //{
+    //    public ApplicationRole():base() {}
+    //    public ApplicationRole(string roleName) : base(roleName) { }
+    //    //[Display(Name = "角色描述")]
+    //    //[StringLength(256, ErrorMessage = "{0}不能超过50个字符")]
+    //    //public string RoleMark { get; set; }//角色表里新增加的字段
+    //}
+
+
+
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+
+        //public new IDbSet<ApplicationRole> Roles { get; set; }//一定要重写这个方法，不然能用，网页中也能获取数据，就是代码里点不出来~~
 
         public static ApplicationDbContext Create()
         {

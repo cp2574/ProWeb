@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\AipSdk.dll</HintPath>
     </Reference>
+    <Reference Include="Common">
+      <HintPath>..\Common\bin\Debug\Common.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.3.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
       <Private>True</Private>
@@ -200,7 +203,6 @@
     <Compile Include="Controllers\SystemConfigurationController.cs" />
     <Compile Include="Controllers\SystemManagementController.cs" />
     <Compile Include="Controllers\ToolController.cs" />
-    <Compile Include="Controllers\UserMangerController.cs" />
     <Compile Include="Controllers\WealthManagementController.cs" />
     <Compile Include="Controllers\WeatherReportController.cs" />
     <Compile Include="Global.asax.cs">
@@ -209,6 +211,9 @@
     <Compile Include="HelperModel\AuthorizeFilterAttribute.cs" />
     <Compile Include="HelperModel\BaiduAipOcr.cs" />
     <Compile Include="HelperModel\EmailOperation.cs" />
+    <Compile Include="HelperModel\ErrorAttributecs.cs" />
+    <Compile Include="HelperModel\IsActionrAttribute.cs" />
+    <Compile Include="HelperModel\Result.cs" />
     <Compile Include="HelperModel\Thumbnail.cs" />
     <Compile Include="HelperModel\SystemInfo.cs" />
     <Compile Include="HelperModel\WeatherWeb.cs" />
@@ -222,6 +227,7 @@
     <Compile Include="Models\Picture.cs" />
     <Compile Include="Models\PictureType.cs" />
     <Compile Include="Models\Personage.cs" />
+    <Compile Include="Models\Tlog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -661,12 +667,16 @@
     <Content Include="Views\SystemManagement\Menus.cshtml" />
     <Content Include="Views\SystemManagement\AddMenus.cshtml" />
     <Content Include="Views\Tool\Mailbox.cshtml" />
+    <Content Include="Views\SystemManagement\UserList.cshtml" />
+    <Content Include="Views\SystemManagement\Logs.cshtml" />
+    <Content Include="Views\SystemManagement\RoleList.cshtml" />
+    <Content Include="Views\SystemManagement\AddRole.cshtml" />
+    <Content Include="Views\SystemManagement\EditRole.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Views\MovieAndMusic\Index.cshtml" />
-    <Content Include="Views\UserManger\Index.cshtml" />
     <Content Include="Views\Shared\_BackgroundMusic.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Report\CpuLoad.cshtml" />

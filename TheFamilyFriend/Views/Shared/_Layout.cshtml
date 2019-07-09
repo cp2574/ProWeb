@@ -71,7 +71,7 @@
             //pace - done body - small skin - 1
             $('.skin-name a').click(function () {
                 var skip = "pace-done body-small " + $(this).attr("class").substring(2, $(this).attr("class").length);
-                $.post("@Url.Action("UpdateUserSkip","UserManger")", { newskip: skip }, function (result) {
+                $.post("@Url.Action("UpdateUserSkip", "SystemManagement")", { newskip: skip }, function (result) {
                     if (!result.Issuccess) {
                         toastr.error(result.message);
                     } else {
@@ -81,9 +81,6 @@
                 })
             })
         })
-
-
-
     </script>
 </body>
 </html>

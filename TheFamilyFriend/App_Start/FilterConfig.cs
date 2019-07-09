@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using TheFamilyFriend.HelperModel;
 
 namespace TheFamilyFriend
 {
@@ -10,7 +11,11 @@ namespace TheFamilyFriend
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             //filters.Add(new AuthorizeAttribute());
-            filters.Add(new HandleErrorAttribute());           
+            filters.Add(new HandleErrorAttribute());
+
+
+            //错误处理
+            filters.Add(new ErrorAttributecs());
         }
     }
 

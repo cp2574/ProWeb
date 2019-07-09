@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using TheFamilyFriend.Models;
 
 [assembly: OwinStartupAttribute(typeof(TheFamilyFriend.Startup))]
 namespace TheFamilyFriend

@@ -40,7 +40,7 @@ namespace TheFamilyFriend
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // 配置用户名的验证逻辑
@@ -53,11 +53,12 @@ namespace TheFamilyFriend
             // 配置密码的验证逻辑
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = false,
-                RequireDigit = false,
-                RequireLowercase = false,
-                RequireUppercase = false,
+                RequiredLength = 6,//指定有效的密码最小长度
+
+                RequireNonLetterOrDigit = false,//当为True时，有效的密码必须包含一个字符，它既不是数字也不是字母
+                RequireDigit = false,//当为True时，有效密码必须包含数字
+                RequireLowercase = false,//当为True时，有效密码必须包含一个小写字符
+                RequireUppercase = false,//当为True时，有效密码必须包含一个大写字符
             };
 
             // 配置用户锁定默认值
@@ -81,7 +82,7 @@ namespace TheFamilyFriend
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
@@ -106,4 +107,17 @@ namespace TheFamilyFriend
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
+    // 配置此应用程序中使用的应用程序角色管理器。RoleManager 在 ASP.NET Identity 中定义，并由此应用程序使用。
+    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    {
+        public ApplicationRoleManager(IRoleStore<IdentityRole, string> roleStore)
+        : base(roleStore)
+        { }
+
+        public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
+        {
+            return new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
+        }
+    }
+
 }

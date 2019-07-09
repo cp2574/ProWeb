@@ -105,4 +105,16 @@ namespace TheFamilyFriend.Models
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
     }
+
+
+
+
+    public class RolesViewModel
+    {
+        public string Id { get; set; }
+        [Display(Name = "角色名")]
+        public string Name { get; set; }
+
+
+    }
 }
