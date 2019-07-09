@@ -92,7 +92,8 @@
                 <ul class="nav nav-second-level collapse @Html.IsSelected(controller:"SystemManagement",action :null, cssClass: "in")">
 
                     <li>
-                        <a href="#"><span class="nav-label">权限管理</span><span class="fa arrow"></span></a>
+                      
+                        <a href="#">  <font style="vertical-align: inherit;">权限管理 </font><span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level collapse ">
                             <li class="@Html.IsSelected("SystemManagement", "UserList", "")"><a href="@Url.Action("UserList",   "SystemManagement", new { area = "" })">用户管理</a></li>
                             <li class="@Html.IsSelected("SystemManagement", "UserList", "")"><a href="@Url.Action("RoleList",   "SystemManagement", new { area = "" })">角色管理</a></li>
@@ -101,7 +102,7 @@
                     </li>
 
                     <li>
-                        <a href="#"><span class="nav-label">日志管理</span><span class="fa arrow"></span></a>
+                        <a href="#"> <font style="vertical-align: inherit;">日志管理 </font><span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level collapse ">
                             <li class="@Html.IsSelected("SystemManagement", "UserList", "")"><a href="@Url.Action("Logs",   "SystemManagement", new { id=0, area = "" })">登录日志</a></li>
                             <li class="@Html.IsSelected("SystemManagement", "UserList", "")"><a href="@Url.Action("Logs",   "SystemManagement", new {id=1, area = "" })">报错日志</a></li>
