@@ -1,4 +1,4 @@
-﻿
+﻿@model TheFamilyFriend.Models.AddRoleViewModel
 @{
     ViewBag.Title = "新增角色";
 }
@@ -19,68 +19,44 @@
         </ol>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">角色</font></font></h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
+<div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h2>创建新角色</h2>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
 
+        <div class="ibox-content">
+            @using (Html.BeginForm("AddRole", "SystemManagement", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    </div>
                 </div>
-            </div>
-            <div class="ibox-content" style="">
-                <form method="get">
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">角色名称</font></label>
-                            <div class="col-sm-8"><input type="text" class="form-control" id="Name"></div>
-                        </div>
+                <div class="form-group row">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <a class="btn btn-white btn-sm" href="@Url.Action("RoleList","SystemManagement")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">取消</font></font></a>
+                        <button class="btn btn-primary btn-sm" type="submit" id="SaveBtn"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保存</font></font></button>
                     </div>
-                    @*<div class="form-group row">
-                        <div class="col-sm-12">
-                            <label class="col-sm-2 text-right col-form-label"><font style="vertical-align: inherit;">备注</font></label>
-                            <div class="col-sm-8"><input type="text" class="form-control" id="RoleMark"></div>
-                        </div>
-                    </div>*@
+                </div>
 
-                    <div class="form-group row">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <a class="btn btn-white btn-sm" href="@Url.Action("RoleList","SystemManagement")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">取消</font></font></a>
-                            <button class="btn btn-primary btn-sm" type="button" id="SaveBtn"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保存</font></font></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            }
+
+
         </div>
     </div>
 </div>
-
-@section scripts{
-<script>
-    $(function () {
-        $("#SaveBtn").bind("click", function () {
-            if ($("#Name").val() != "" /*&& $("#RoleMark").val() != ""*/) {
-                $.post("@Url.Action("AddRole","SystemManagement")", { Name: $("#Name").val()/*, RoleMark: $("#RoleMark").val() */}, function (reslut) {
-                    if (!reslut.issucess) {
-                        toastr.error(reslut.message);
-                    } else {
-                        window.location.href = "@Url.Action("RoleList", "SystemManagement")";
-                    }
-                }
-               )
-            } else {
-                toastr.warning("信息不能为空！");
-            }
-           
-        })
-    })
-
-</script>   
- }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 

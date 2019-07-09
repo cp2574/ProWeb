@@ -55,8 +55,8 @@
         }
 
         window.operateEvents = {
-            'click .RoleOfEidt': function (e, value, row, index) {
-                alert("A");
+            'click .RoleOfEidt': function (e, value, row, index) {              
+                location.href = "/SystemManagement/EditRole/"+row.Id;
             },
             'click .RoleOfDelete': function (e, value, row, index) {
                 alert("B");

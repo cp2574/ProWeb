@@ -9,7 +9,7 @@ using System.Timers;
 
 namespace TheFamilyFriend.Controllers
 {
-    [AuthorizeFilter]
+    [Authorize]
     public class ReportController : Controller
     {
         // GET: Report

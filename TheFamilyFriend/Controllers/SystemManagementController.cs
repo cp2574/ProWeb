@@ -17,6 +17,7 @@ using TheFamilyFriend.Models;
 
 namespace TheFamilyFriend.Controllers
 {
+    [Authorize(Roles="admin")]
     public class SystemManagementController : Controller
     {
         // GET: SystemManagement
@@ -244,24 +245,34 @@ namespace TheFamilyFriend.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 添加角色
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
-        public JsonResult AddRole(string Name /*string RoleMark*/)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddRole(AddRoleViewModel model)
         {
-
-            var oneRole = RoleManager.FindByName(Name);
-            if (oneRole != null)
+            if (ModelState.IsValid)
             {
-                return Json(new Result { issucess = false, message = "该角色已存在！" });
-            }
-            else
-            {
+                var oneRole = await RoleManager.FindByNameAsync(model.Name);
+                if (oneRole == null)
+                {
+                    var result1 = await RoleManager.CreateAsync(new IdentityRole(model.Name));
 
-                RoleManager.Create(new IdentityRole(Name));
-
-                return Json(new Result { issucess = true, message = "" });
+                    if (result1.Succeeded)
+                    {
+                        return RedirectToAction("RoleList");
+                    }
+                    AddErrors(result1);
+                }
+                return Content("<script>alert('角色已存在');location.href='/SystemManagement/AddRole';</script>");
             }
+
+            // 如果我们进行到这一步时某个地方出错，则重新显示表单
+            return View(model);
         }
-        
         public ActionResult EditRole()
         {
 
@@ -308,7 +319,7 @@ namespace TheFamilyFriend.Controllers
                 var result = await RoleManager.UpdateAsync(role);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("ListRoles");
+                    return RedirectToAction("RoleList");
                 }
               
             }
@@ -384,5 +395,14 @@ namespace TheFamilyFriend.Controllers
         }
         #endregion
 
+
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
     }
 }

@@ -59,6 +59,8 @@ namespace TheFamilyFriend.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+
+            //returnUrl = HttpContext.Request.QueryString["ReturnUrl"];
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

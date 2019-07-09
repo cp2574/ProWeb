@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace TheFamilyFriend.HelperModel
 {
-    public class AuthorizeFilterAttribute:AuthorizeAttribute
+    public class AuthorizeFilterAttribute : AuthorizeAttribute
     {
    
         /// <summary>

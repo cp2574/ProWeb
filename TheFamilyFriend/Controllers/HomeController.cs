@@ -9,7 +9,7 @@ using TheFamilyFriend.Models;
 namespace TheFamilyFriend.Controllers
 {
 
-    [AuthorizeFilter]
+    [Authorize]
     public class HomeController : Controller
     {        
         [AllowAnonymous]

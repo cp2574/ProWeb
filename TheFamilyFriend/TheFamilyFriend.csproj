@@ -227,6 +227,7 @@
     <Compile Include="Models\Picture.cs" />
     <Compile Include="Models\PictureType.cs" />
     <Compile Include="Models\Personage.cs" />
+    <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\Tlog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -270,12 +271,6 @@
     <Content Include="Content\Gallery-master\img\video-play.png" />
     <Content Include="Content\Images\defult.png" />
     <Content Include="Content\Images\IMG_20150921_205348.jpg" />
-    <Content Include="Content\Images\level2\1530796844657.jpeg" />
-    <Content Include="Content\Images\level2\1530796862033.jpeg" />
-    <Content Include="Content\Images\level1\1530796771315.jpeg" />
-    <Content Include="Content\Images\level1\1530796796734.jpeg" />
-    <Content Include="Content\Images\level1\1530806420183.jpeg" />
-    <Content Include="Content\Images\level2\1530806863936.jpeg" />
     <Content Include="Content\Images\LOG.png" />
     <Content Include="Content\Images\ParticleSmoke.png" />
     <Content Include="Content\patterns\1.png" />
@@ -721,7 +716,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Images\HeadPortrait\" />
     <Folder Include="Scripts\fileinput\plugins\" />
   </ItemGroup>
   <ItemGroup>
