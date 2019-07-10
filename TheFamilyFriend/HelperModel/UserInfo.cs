@@ -11,7 +11,7 @@ namespace TheFamilyFriend.HelperModel
 
         public static string [] GetUser(string id) {
 
-            string skip =""; string Avatar = "~/Content/Images/Avatar/defult.png";
+            string skip =""; string Avatar = "/Content/Images/Avatar/defult.png";
             
             var manage = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser= manage.FindById(id);

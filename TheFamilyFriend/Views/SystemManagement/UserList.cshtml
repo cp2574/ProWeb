@@ -41,7 +41,7 @@
         $.post("@Url.Action("GetuserList", "SystemManagement")", function (result) {
             for (var i = 0; i < result.length; i++) {
                 //alert(result[i].CreateTime)
-            result[i].CreateTime=new Date(parseInt(result[i].CreateTime.replace("/Date(", "").replace(")/", ""), 10)).toLocaleDateString()
+                result[i].CreateTime = new Date(parseInt(result[i].CreateTime.replace("/Date(", "").replace(")/", ""), 10)).toLocaleDateString()
                // result[i].CreateTime = timestamp2date(result[i].CreateTime);
             }
             console.warn(result);
@@ -55,6 +55,28 @@
                 ' <img src="' + value+'" alt="头像" class="img-circle" height="42">',
             ].join('');
         }
+
+
+        function operateFormatter(value, row, index) {
+            return [             
+                ' <a class="btn btn-info" href="UserDetailsList/' + row.Id + '" > 详情 </a>',
+                ' <a class="btn btn-success" href="UserEdit/' + row.Id + '"> 编辑 </a>',
+                ' <a class="btn btn-warning" href="UserDel/' + row.Id + '" onclick="return confirm("你确认删除吗？")"> 删除 </a>',
+                ' <a class="btn btn-success" href="UserResetPassword/' + row.Id + '" > 重置 </a>',
+                ' <a class="btn btn-warning" href="UserUploadHeaderPic/' + row.Id + '"> 头像 </a>',
+            ].join('');
+        }
+        window.operateEvents = {
+            'click .RoleOfEidt': function (e, value, row, index) {
+                location.href = "/SystemManagement/EditRole/" + row.Id;
+            },
+            //'click .RoleOfDelete': function (e, value, row, index) {
+            //    if (confirm("您确定删除吗！")) {
+            //        alert("B");
+            //    }
+
+            //},
+        };
     $('#tab').bootstrapTable({
         //请求方法
         method: 'get',
@@ -90,13 +112,15 @@
         columns: [
             { title: 'Id', field: 'Id', align: 'center', valign: 'middle', sortable: true, visible: false },
             {
-                title: 'No', field: 'Avatar', align: 'center', valign: 'middle', align: 'center', width: '20%', 
+                title: 'No', field: 'Avatar', align: 'center', valign: 'middle', align: 'center', 
                 formatter: operateFormatterImg
             },
             { title: '用户名', field: 'UserName', align: 'center', valign: 'middle', sortable: true },
-            { title: '身份', field: 'Mark', align: 'center', valign: 'middle', sortable: true },
+            { title: 'Tel', field: 'PhoneNumber', align: 'center', valign: 'middle', sortable: true },
             { title: '创建时间', field: 'CreateTime', align: 'center', valign: 'middle', sortable: true },
-            //{ title: '用户身份', field: 'PWidth', align: 'center', valign: 'middle', sortable: true },
+            {
+                title: '操作', field: 'operate', align: 'center', valign: 'middle', events: operateEvents,
+                formatter: operateFormatter },
         ],
         });
 

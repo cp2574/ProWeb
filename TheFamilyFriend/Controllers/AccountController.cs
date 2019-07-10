@@ -187,7 +187,7 @@ namespace TheFamilyFriend.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName,CreateTime=DateTime.Now};
+                var user = new ApplicationUser { UserName = model.UserName,CreateTime=DateTime.Now,Avatar= "/Content/Images/Avatar/defult.png" };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
