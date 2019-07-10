@@ -65,7 +65,7 @@ namespace TheFamilyFriend.Controllers
                 var personage = kingbd.Personage.Find(PersonId);
                 if(string.IsNullOrEmpty(personage.HeadPortrait)||!System.IO.File.Exists(personage.HeadPortrait))
                 {
-                    imgpath = Server.MapPath("/Content/Images/defult.png");
+                    imgpath = Server.MapPath("/Content/Images/Avatar/defult.png");
                 }
                 else
                 {

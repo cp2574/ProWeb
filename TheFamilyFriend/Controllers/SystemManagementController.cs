@@ -21,7 +21,6 @@ namespace TheFamilyFriend.Controllers
     public class SystemManagementController : Controller
     {
         // GET: SystemManagement
-
        /// <summary>
        /// 
        /// </summary>
@@ -30,7 +29,6 @@ namespace TheFamilyFriend.Controllers
         {
             return View();
         }
-        
         /// <summary>
         /// 菜单模块
         /// </summary>
@@ -102,11 +100,6 @@ namespace TheFamilyFriend.Controllers
                 return Json(fenye, JsonRequestBehavior.AllowGet);
             }
         }
-
-
-
-
-
 
 
         #region 用户模块
@@ -233,12 +226,16 @@ namespace TheFamilyFriend.Controllers
                         select new RolesViewModel
                         {
                             Id = m.Id,
-                            Name = m.Name
+                            Name = m.Name,
+                            Description= m.Description
                         };
             return Json(roles);
         }
 
-
+        /// <summary>
+        /// 添加角色
+        /// </summary>
+        /// <returns></returns>
         public ActionResult AddRole()
         {
 
@@ -259,7 +256,7 @@ namespace TheFamilyFriend.Controllers
                 var oneRole = await RoleManager.FindByNameAsync(model.Name);
                 if (oneRole == null)
                 {
-                    var result1 = await RoleManager.CreateAsync(new IdentityRole(model.Name));
+                    var result1 = await RoleManager.CreateAsync(new ApplicationRole() { Name= model.Name,Description= model.Description});
 
                     if (result1.Succeeded)
                     {
@@ -290,14 +287,15 @@ namespace TheFamilyFriend.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            IdentityRole role = RoleManager.FindById(id);
+            ApplicationRole role = RoleManager.FindById(id);
             if (role == null)
             {
                 return HttpNotFound();
             }
             var editModel = new RolesViewModel()
             {
-                Name = role.Name
+                Name = role.Name,
+                Description =role.Description
             };
             return View(editModel);
         }
@@ -316,6 +314,7 @@ namespace TheFamilyFriend.Controllers
             {
                 var role = RoleManager.FindById(id);
                 role.Name = model.Name;
+                role.Description = model.Description;
                 var result = await RoleManager.UpdateAsync(role);
                 if (result.Succeeded)
                 {
@@ -325,39 +324,37 @@ namespace TheFamilyFriend.Controllers
             }
             return View(model);
         }
-     
 
 
 
-        //public async Task SetRole(string userName, string role)
-        //{
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="disposing"></param>
+        // POST: Menus/Delete/5
+        [HttpGet]
 
-        //    var oneRole = await RoleManager.FindByNameAsync(role);
-        //    if (oneRole == null)
-        //    {
-        //        var result = await RoleManager.CreateAsync(new IdentityRole(role));
-        //        if (!result.Succeeded)
-        //        {
-        //            //..
-        //        }
-        //    }
-        //    var user = await UserManager.FindByNameAsync(userName);
-        //    if (user != null)
-        //    {
-        //        var userRoles = UserManager.GetRoles(user.Id);
-        //        if (!userRoles.Contains(role))
-        //        {
-        //            var result = await UserManager.AddToRoleAsync(user.Id, role);
-        //            if (!result.Succeeded)
-        //            {
-        //                //..
-        //            }
-        //        }
-        //    }
-        //}
+        //[Authorize(Roles = "Super")]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveRole(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var role = RoleManager.FindById(id);
+            if (role == null)
+            {
+                return HttpNotFound();
+            }
+            var result = await RoleManager.DeleteAsync(role);
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+            }
+            return RedirectToAction("RoleList");
 
-
-
+        }
         #endregion
 
 
@@ -376,7 +373,7 @@ namespace TheFamilyFriend.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                var model = db.Logs.Where(t => (int)t.Type == id).ToList();
+                var model = db.Logs.Where(t => (int)t.Type == id).OrderByDescending(x=>x.date).ToList();
                 switch (id)
                 {
                     case 0:
@@ -394,8 +391,6 @@ namespace TheFamilyFriend.Controllers
 
         }
         #endregion
-
-
 
         private void AddErrors(IdentityResult result)
         {

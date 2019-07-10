@@ -13,8 +13,8 @@ namespace TheFamilyFriend.Models
         [StringLength(50)]
         [Display(Name = "角色名")]
         public string Name { get; set; }
-
-
+        [Display(Name = "描述")]
+        public string Description { get; set; }
     }
     public class AddRoleViewModel
     {
@@ -22,5 +22,7 @@ namespace TheFamilyFriend.Models
         [StringLength(50)]
         [Display(Name = "角色名称")]
         public string Name { get; set; }
+         [Display(Name = "描述")]
+        public string Description { get; set; }
     }
 }

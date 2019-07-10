@@ -24,7 +24,7 @@ namespace TheFamilyFriend
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             ////当model发生更改，执行以下
-            Database.SetInitializer<KinshipDb>(null);
+            Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
 
             System.Timers.Timer objTimer = new System.Timers.Timer();
             objTimer.Interval = 10800000;
@@ -40,37 +40,37 @@ namespace TheFamilyFriend
         /// <param name="o"></param>
         /// <param name="e"></param>
         public void TimerEvent(object o,ElapsedEventArgs e) {
-            string Weatherfilesave = Path.Combine(Server.MapPath("/Models"), "WeatherReport.xml");
+            string Weatherfilesave = Path.Combine(Server.MapPath("/"), "WeatherReport.xml");
             WeatherWeb.CreateXML(Weatherfilesave);
         }
         /// <summary>
         /// 程序异常，执行该代码
         /// </summary>
-        protected void Application_Error()
-        {
-            try
-            {
+    //    protected void Application_Error()
+    //    {
+    //        try
+    //        {
 
-                HttpException lastErrorWrapper = Server.GetLastError() as HttpException;
-                int HttpCode = lastErrorWrapper.GetHttpCode();
-                switch (HttpCode)
-                {
-                    case 404://（未找到） 服务器找不到请求的网页
-                    case 405:
-                        Response.Redirect("~/404.html", true);
-                        break;
-                    default:
-                        break;
-                }
+    //            HttpException lastErrorWrapper = Server.GetLastError() as HttpException;
+    //            int HttpCode = lastErrorWrapper.GetHttpCode();
+    //            switch (HttpCode)
+    //            {
+    //                case 404://（未找到） 服务器找不到请求的网页
+    //                case 405:
+    //                    Response.Redirect("~/404.html", true);
+    //                    break;
+    //                default:
+    //                    break;
+    //            }
 
-            }
-            catch (Exception ex)
-            {
+    //        }
+    //        catch (Exception ex)
+    //        {
 
-                Console.WriteLine(ex.Message);
-                Response.Redirect("~/500.html", true);
-            }
-        }
+    //            Console.WriteLine(ex.Message);
+    //            Response.Redirect("~/500.html", true);
+    //        }
+    //    }
     }
 
 }

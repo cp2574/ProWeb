@@ -108,16 +108,43 @@ namespace TheFamilyFriend
         }
     }
     // 配置此应用程序中使用的应用程序角色管理器。RoleManager 在 ASP.NET Identity 中定义，并由此应用程序使用。
-    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    public class ApplicationRoleManager : RoleManager<ApplicationRole>
     {
-        public ApplicationRoleManager(IRoleStore<IdentityRole, string> roleStore)
+        public ApplicationRoleManager(IRoleStore<ApplicationRole, string> roleStore)
         : base(roleStore)
         { }
 
         public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
         {
-            return new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
+            return new ApplicationRoleManager(new RoleStore<ApplicationRole>(context.Get<ApplicationDbContext>()));
         }
     }
+
+
+    public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext> //如果模型改变就删除原有数据库，重新创建一个数据库，同时，已有的数据将会丢失。
+    {
+        protected override void Seed(ApplicationDbContext context)   //建立种子方法，当模型改变需要重新建一个数据库的时候，用默认的数据填充数据库。
+        {
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>(); //取得userManager ,或者使用new ApplicationUserManager(new UserStore<ApplicationUser>(context));
+            var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
+            //创建角色列表
+            var roles = new List<ApplicationRole>
+                  {
+                  new ApplicationRole { Name="admin",Description="系统超级管理员"},
+                  new ApplicationRole { Name="user",Description="一般用户"},
+                  };
+            foreach (var role in roles)  //遍历列表，如果数据库中不存在列表中某个角色，就添加角色
+            {
+                var _role = roleManager.FindByName(role.Name);
+                if (_role == null)
+                {
+                    var roleResult = roleManager.Create(role); //创建角色。
+                }
+            }
+            base.Seed(context);   //运行父类的方法。
+        }
+
+    }
+
 
 }

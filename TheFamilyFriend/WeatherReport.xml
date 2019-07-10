@@ -3,30 +3,30 @@
   <Province>湖北</Province>
   <City>武汉</City>
   <Code>57494</Code>
-  <Scene>今日天气实况：气温：26℃；风向/风力：东北风 2级；湿度：65%；紫外线强度：最弱。空气质量：良。</Scene>
-  <Ultraviolet>紫外线指数：最弱，辐射弱，涂擦SPF8-12防晒护肤品。
-健臻·血糖指数：易波动，血糖易波动，注意监测。
-穿衣指数：炎热，建议穿短衫、短裤等清凉夏季服装。
+  <Scene>今日天气实况：气温：29℃；风向/风力：西北风 1级；湿度：58%；紫外线强度：很强。空气质量：中。</Scene>
+  <Ultraviolet>紫外线指数：很强，涂擦SPF20以上，PA++护肤品，避强光。
+健臻·血糖指数：不易波动，天气条件好，血糖不易波动，可适时进行户外锻炼。
+穿衣指数：热，适合穿T恤、短薄外套等夏季服装。
 洗车指数：不宜，有雨，雨水和泥水会弄脏爱车。
-空气污染指数：良，气象条件有利于空气污染物扩散。
+空气污染指数：中，易感人群应适当减少室外活动。
 </Ultraviolet>
   <Geographic>武汉市位于江汉平原东部，长江中游与长江、汉水交汇处。东经113°41′-115°05′，北纬29°58′-31°22′。武汉市地理位置优越，长江及其最大支流汉江交汇于此，将武汉市区天然分成汉口、汉阳和武昌三镇，武汉是我国水陆交通枢纽，控长江中游之咽喉，扼南北交通之要冲，素有“九省通衢”之称，现全市货运吞吐量达亿吨以上。优越的地理位置，成为历代兵家争夺的战略要地。三国时，武汉东湖附近曾是刘备、孙权、曹操进行军事、政治活动的场所，现在留下的有刘备郊天台、吴王庙、曹操庙、洪山宝塔等古建筑。武汉现已发展为中国中部地区工业、金融、商业、科学、文化教育中心。武汉市属亚热带湿润季风气候，雨量充沛、日照充足，四季分明。总体气候环境良好，近几年30年来，年均降雨量1269毫米，且多集中在6-8月。年均气温15.8℃-17.5℃，年无霜期一般为211天-272天，年日照总时数1810小时-2100小时。景观：武当山、长江三峡、神农架等。</Geographic>
   <Baseweather>
-    <Temperature>22℃/33℃</Temperature>
-    <TimeAndweather>7月7日 阴转大雨</TimeAndweather>
-    <Wind>东风小于3级转4-5级</Wind>
+    <Temperature>22℃/30℃</Temperature>
+    <TimeAndweather>7月10日 晴</TimeAndweather>
+    <Wind>东北风转东南风小于3级</Wind>
+    <Gif>0.gif</Gif>
+  </Baseweather>
+  <Baseweather>
+    <Temperature>24℃/31℃</Temperature>
+    <TimeAndweather>7月11日 阴转小雨</TimeAndweather>
+    <Wind>东南风转东风小于3级</Wind>
     <Gif>2.gif</Gif>
   </Baseweather>
   <Baseweather>
-    <Temperature>21℃/28℃</Temperature>
-    <TimeAndweather>7月8日 暴雨转中雨</TimeAndweather>
-    <Wind>无持续风向转北风4-5级</Wind>
-    <Gif>10.gif</Gif>
-  </Baseweather>
-  <Baseweather>
-    <Temperature>20℃/27℃</Temperature>
-    <TimeAndweather>7月9日 小雨转晴</TimeAndweather>
-    <Wind>北风4-5级转小于3级</Wind>
-    <Gif>7.gif</Gif>
+    <Temperature>22℃/27℃</Temperature>
+    <TimeAndweather>7月12日 中雨转小雨</TimeAndweather>
+    <Wind>东风转北风3-4级</Wind>
+    <Gif>8.gif</Gif>
   </Baseweather>
 </Weather>

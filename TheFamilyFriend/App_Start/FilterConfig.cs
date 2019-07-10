@@ -15,7 +15,7 @@ namespace TheFamilyFriend
 
 
             //错误处理
-            filters.Add(new ErrorAttributecs());
+            //filters.Add(new ErrorAttributecs());
         }
     }
 

@@ -48,7 +48,13 @@
             //加载事件
             $("#tab").bootstrapTable('load', result);
         })
-    })
+        })
+
+        function operateFormatterImg(value, row, index) {
+            return [
+                ' <img src="' + value+'" alt="头像" class="img-circle" height="42">',
+            ].join('');
+        }
     $('#tab').bootstrapTable({
         //请求方法
         method: 'get',
@@ -79,16 +85,23 @@
         showHeader: true,
         showRefresh: false,
         paginationShowPageGo: true,
-        showToggle: false,//切换
+        showToggle: true,//切换
         showColumns: true,//显示列
         columns: [
             { title: 'Id', field: 'Id', align: 'center', valign: 'middle', sortable: true, visible: false },
+            {
+                title: 'No', field: 'Avatar', align: 'center', valign: 'middle', align: 'center', width: '20%', 
+                formatter: operateFormatterImg
+            },
             { title: '用户名', field: 'UserName', align: 'center', valign: 'middle', sortable: true },
             { title: '身份', field: 'Mark', align: 'center', valign: 'middle', sortable: true },
             { title: '创建时间', field: 'CreateTime', align: 'center', valign: 'middle', sortable: true },
             //{ title: '用户身份', field: 'PWidth', align: 'center', valign: 'middle', sortable: true },
         ],
         });
+
+
+
 
 
         /**

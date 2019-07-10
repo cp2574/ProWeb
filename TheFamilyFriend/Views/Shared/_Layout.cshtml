@@ -13,20 +13,10 @@
 
 
 </head>
-@using Microsoft.AspNet.Identity.Owin;
+
 @using Microsoft.AspNet.Identity;
-@using TheFamilyFriend.Models;
-@using Microsoft.AspNet.Identity.EntityFramework;
-@{
-    string skip = "";
-    var manage = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-    var currentUser = manage.FindById(User.Identity.GetUserId());
-    if (currentUser!= null&& !string.IsNullOrEmpty( currentUser.Skip))
-    {
-        skip =currentUser.Skip;
-    }
-}
-<body class="@skip">
+@using TheFamilyFriend.HelperModel;
+<body class="@UserInfo.GetUser(User.Identity.GetUserId())[0]">
     <!-- Wrapper-->
     <div id="wrapper">
         <!-- Navigation -->

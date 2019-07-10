@@ -17,7 +17,7 @@ namespace TheFamilyFriend.Controllers
         public ActionResult Index()
         {
             
-            string Weatherfilesave = Path.Combine(Server.MapPath("/Models"), "WeatherReport.xml");
+            string Weatherfilesave = Path.Combine(Server.MapPath("/"), "WeatherReport.xml");
 
             WeatherWeb weath = new WeatherWeb();
 

@@ -46,23 +46,26 @@
             $("#tab").bootstrapTable('load', result);
         })
         })
-
         function operateFormatter(value, row, index) {
             return [
                 '<button type="button" class="RoleOfEidt btn btn-info"  style="margin-right:15px;"><i class="fa fa-paste"></i>编辑</button>',
-                '<button type="button" class="RoleOfDelete btn btn-info" ><i class="fa fa-times"></i>删除</button>',         
+                //'<button type="button" class="RoleOfDelete btn btn-info" ><i class="fa fa-times"></i>删除</button>',
+                ' <a class="btn btn-info" href="RemoveRole/' + row.Id+'" onclick="return confirm("你确认删除吗？")"><i class="fa fa-bank"></i> 删除 </a>'
             ].join('');
         }
 
-        window.operateEvents = {
-            'click .RoleOfEidt': function (e, value, row, index) {              
+       window.operateEvents = {
+            'click .RoleOfEidt': function (e, value, row, index) {
                 location.href = "/SystemManagement/EditRole/"+row.Id;
             },
-            'click .RoleOfDelete': function (e, value, row, index) {
-                alert("B");
-            },           
+            //'click .RoleOfDelete': function (e, value, row, index) {
+            //    if (confirm("您确定删除吗！")) {
+            //        alert("B");
+            //    }
+
+            //},
         };
-    $('#tab').bootstrapTable({
+       $('#tab').bootstrapTable({
         //请求方法
         method: 'get',
         //是否显示行间隔色
@@ -92,12 +95,12 @@
         showHeader: true,
         showRefresh: false,
         paginationShowPageGo: true,
-        showToggle: false,//切换
+        showToggle: true,//切换
         showColumns: true,//显示列
         columns: [
             { title: 'Id', field: 'Id', align: 'center', valign: 'middle', sortable: true, visible: false, width: '10%' },
-            { title: '角色名称', field: 'Name', align: 'center', valign: 'middle', sortable: true, width: '70%'},
-            //{ title: '备注', field: 'RoleRemark', align: 'center', valign: 'middle', sortable: true },
+            { title: '角色名称', field: 'Name', align: 'center', valign: 'middle', sortable: true, width: '30%'},
+            { title: '描述', field: 'Description', align: 'center', valign: 'middle', sortable: true,width: '30%' },
             {
                 title: '操作', field: 'operate', align: 'center', width: '20%', events: operateEvents,
                 formatter: operateFormatter
@@ -105,29 +108,5 @@
             },
             ],
         });
-
-    
-
-
-         //将unix时间戳转化成日期格式
-        //function timestamp2date(timestamp) {
-        //    console.log(timestamp);
-        //    var date = new Date(timestamp);
-        //    var strLen = timestamp.toString().length;
-        //    //判断时间戳是否不足13位，不足时低位补0，即乘以10的所差位数次方
-        //    if (strLen < 13) {
-        //        var sub = 13 - strLen;
-        //        sub = Math.pow(10, sub);//计算10的n次方
-        //        date = new Date(timestamp * sub);
-        //    }
-        //    var y = date.getFullYear() + '-';
-        //    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        //    var d = date.getDate() + ' ';
-        //    var h = date.getHours() + ':';
-        //    var m = date.getMinutes() + ':';
-        //    var s = date.getSeconds();
-
-        //    return y + M + d + h + m + s;
-        //}
     </script>}
 

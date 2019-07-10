@@ -216,6 +216,7 @@
     <Compile Include="HelperModel\Result.cs" />
     <Compile Include="HelperModel\Thumbnail.cs" />
     <Compile Include="HelperModel\SystemInfo.cs" />
+    <Compile Include="HelperModel\UserInfo.cs" />
     <Compile Include="HelperModel\WeatherWeb.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Menus.cs" />
@@ -269,10 +270,9 @@
     <Content Include="Content\Gallery-master\img\loading.gif" />
     <Content Include="Content\Gallery-master\img\play-pause.png" />
     <Content Include="Content\Gallery-master\img\video-play.png" />
-    <Content Include="Content\Images\defult.png" />
-    <Content Include="Content\Images\IMG_20150921_205348.jpg" />
-    <Content Include="Content\Images\LOG.png" />
-    <Content Include="Content\Images\ParticleSmoke.png" />
+    <Content Include="Content\Images\Avatar\defult.png" />
+    <Content Include="Content\Images\Avatar\LOG.png" />
+    <Content Include="Content\Images\Avatar\ParticleSmoke.png" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
     <Content Include="Content\patterns\3.png" />
@@ -412,7 +412,6 @@
     <Content Include="fonts\weather\Img\tem4.gif" />
     <Content Include="fonts\weather\Img\tem5.gif" />
     <Content Include="Global.asax" />
-    <Content Include="Models\WeatherReport.xml" />
     <Content Include="Music\乌兰托娅 - 花桥流水.mp3" />
     <Content Include="Music\张杰 - 三生三世.mp3" />
     <Content Include="Music\文武贝 - 夜的钢琴曲5.mp3" />
