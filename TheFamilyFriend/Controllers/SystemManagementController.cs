@@ -14,6 +14,8 @@ using System.Web.Mvc;
 using System.Web.Security;
 using TheFamilyFriend.HelperModel;
 using TheFamilyFriend.Models;
+using TheFamilyFriend.HelperModel.SystemManger;
+using System.IO;
 
 namespace TheFamilyFriend.Controllers
 {
@@ -29,8 +31,10 @@ namespace TheFamilyFriend.Controllers
         {
             return View();
         }
+
+        #region 模块
         /// <summary>
-        /// 菜单模块
+        /// 菜单
         /// </summary>
         /// <returns></returns>
         public ActionResult Menus()
@@ -100,7 +104,7 @@ namespace TheFamilyFriend.Controllers
                 return Json(fenye, JsonRequestBehavior.AllowGet);
             }
         }
-
+        #endregion
 
         #region 用户模块
         private ApplicationUserManager _userManager;
@@ -153,6 +157,186 @@ namespace TheFamilyFriend.Controllers
                 return Json(new { Issuccess = false, message = ex.Message });
             }
         }
+
+        // <summary>
+        /// 自己写的密码重置
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize(Roles = "Super")]
+        [AllowAnonymous]
+        public ActionResult PasswordReset(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = UserManager.FindById(id);
+            string code = UserManager.GeneratePasswordResetToken(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            var resetPasswordViewModel = new PasswordRrestModel()
+            {
+
+                RealName = user.RealName,
+                Password = user.PasswordHash,
+                Code = code
+
+            };
+            return View(resetPasswordViewModel);
+        }
+
+        /// 重置密码
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        //[Authorize(Roles = "Super")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PasswordReset(string id, PasswordRrestModel resetPasswordViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(resetPasswordViewModel);
+            }
+
+            //User user = UserManager.FindById(id);
+            string code = await UserManager.GeneratePasswordResetTokenAsync(id);
+            //if (user == null)
+            //{
+            //  return View("Error");
+            //}
+            resetPasswordViewModel.Code = code;
+            //resetPasswordViewModel.Password = "111111";
+
+            var result = await UserManager.ResetPasswordAsync(id, resetPasswordViewModel.Code, resetPasswordViewModel.Password);
+            if (result.Succeeded)
+            {
+                ViewBag.RPWMessagess = "重置成功";
+                return RedirectToAction("UserList", "SystemManagement");
+            }
+            AddErrors(result);
+            ViewBag.RPWMessagess = "失败";
+            return View(resetPasswordViewModel);
+        }
+
+        /// <summary>
+        /// 删除用户
+        /// </summary>       
+        public async Task<ActionResult> RemoveUser(string id) {
+            ApplicationUser user = UserManager.FindById(id);
+            await UserManager.DeleteAsync(user);
+            return RedirectToAction("UserList", "SystemManagement");
+        }
+
+        /// <summary>
+        /// 新增用户
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AddUser() {
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddUser(HelperModel.SystemManger.RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var _creatTime = DateTime.Now;
+                var _headerPic = "/Content/Images/Avatar/defult.png";
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber, CreateTime = _creatTime, Avatar = _headerPic };
+                var result = UserManager.FindByName(user.UserName);
+                if (result == null)
+                {
+                    var results = await UserManager.CreateAsync(user, model.Password);
+                    if (results.Succeeded)
+                    {
+
+                        return RedirectToAction("UserList");
+                    }
+                    AddErrors(results);
+                }
+                return Content("<script>alert('用户已存在');location.href='/SystemManagement/AddUser';</script>");                                        
+            }
+            // 如果我们进行到这一步时某个地方出错，则重新显示表单
+            return View(model);
+        }
+
+
+        /////// <summary>
+        /////// 上传头像
+        /////// </summary>
+        //// GET: Upload
+        [HttpGet]        
+        public ActionResult UploadHeaderPic(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = UserManager.FindById(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            var uploadHeader = new UploadHeader()
+            {
+                Id = user.Id,
+                Avatar = user.Avatar,
+                RealName = user.RealName
+            };
+
+            return View(uploadHeader);
+        }
+        /////// <summary>
+        /////// 上传头像
+        /////// </summary>
+        ////POST: Upload
+        [HttpPost]
+        //[Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UploadHeaderPic(string id, UploadHeader uploadHeader)
+
+        {
+            //int saveCount = 0; //定义变量
+
+            if (ModelState.IsValid && !string.IsNullOrEmpty(id))
+            {
+                ApplicationUser user = UserManager.FindById(id);
+                var files = Request.Files;
+                if (files.Count > 0)
+                {
+                    var file = files[0];
+                    string strFileSavePath = Request.MapPath("~/Content/Images/Avatar");  //定义上传地址
+                    string strFileExtention = Path.GetExtension(file.FileName);
+                    if (!Directory.Exists(strFileSavePath))
+                    {
+                        Directory.CreateDirectory(strFileSavePath);
+                    }
+                    ///这种方式，上传的为username+扩展名，相当于覆盖以前的图片
+                    file.SaveAs(strFileSavePath + "/" + user.RealName + strFileExtention);   //保存文件
+                    user.Avatar = "/Content/Images/Avatar/" + user.RealName + strFileExtention;   //给模型赋值
+                }
+                var result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("UploadHeaderPic/" + id);
+                }
+                AddErrors(result);
+            }
+            return View(uploadHeader);
+
+
+        }
+
+
+
+
 
         //[HttpPost]
         //public async Task<ActionResult> Edit(string id, AppUserViewModel appUserViewModel)
@@ -328,7 +512,7 @@ namespace TheFamilyFriend.Controllers
 
 
         /// <summary>
-        /// 删除用户
+        /// 删除角色
         /// </summary>
         /// <param name="disposing"></param>
         // POST: Menus/Delete/5
@@ -353,8 +537,7 @@ namespace TheFamilyFriend.Controllers
                 AddErrors(result);
             }
             return RedirectToAction("RoleList");
-
-        }
+        }      
         #endregion
 
 

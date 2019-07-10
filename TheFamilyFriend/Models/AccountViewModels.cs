@@ -76,7 +76,9 @@ namespace TheFamilyFriend.Models
         [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
     }
-
+    /// <summary>
+    /// 重置密码
+    /// </summary>
     public class ResetPasswordViewModel
     {
         [Required]
@@ -97,6 +99,7 @@ namespace TheFamilyFriend.Models
 
         public string Code { get; set; }
     }
+
 
     public class ForgotPasswordViewModel
     {

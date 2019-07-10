@@ -16,7 +16,15 @@
 
 @using Microsoft.AspNet.Identity;
 @using TheFamilyFriend.HelperModel;
-<body class="@UserInfo.GetUser(User.Identity.GetUserId())[0]">
+@{
+    string skip = "";
+    if (User.Identity.GetUserId()!=null)
+    {
+        skip = @UserInfo.GetUser(User.Identity.GetUserId())[0];
+    }
+
+}
+<body class="@skip">
     <!-- Wrapper-->
     <div id="wrapper">
         <!-- Navigation -->
@@ -69,7 +77,7 @@
                         location.reload();
                     }
                 })
-            })
+            })    
         })
     </script>
 </body>

@@ -22,19 +22,27 @@ namespace TheFamilyFriend.Models
             // 在此处添加自定义用户声明
             return userIdentity;
         }
+        //[Required]
+        //[StringLength(20, ErrorMessage = "{0}少于{2}个字符", MinimumLength = 2)]
+        [Display(Name = "姓名")]
+        public string RealName { get; set; }
+
         /// <summary>
         /// 创建时间
         /// </summary>
+        [Display(Name = "创建时间")]
         public virtual Nullable<DateTime> CreateTime { get; set; }
         /// <summary>
         /// 头像
         /// </summary>     
          [StringLength(200)]
+        [Display(Name = "头像")]
         public virtual  string Avatar { get; set; }
         /// <summary>
         /// 主页皮肤
         /// </summary>     
         [StringLength(10)]
+        [Display(Name = "主题")]
         public virtual string  Skip { get; set; }
         [StringLength(50)]
         [Display(Name = "微信")]
@@ -45,8 +53,12 @@ namespace TheFamilyFriend.Models
         public virtual int? Gender { get; set; }
         [StringLength(200)]
         public virtual string Address { get; set; }
-
-
+        
+        [Display(Name = "出生日期")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public virtual Nullable<DateTime> Birthday { get; set; }
+        
 
 
     }
@@ -72,22 +84,21 @@ namespace TheFamilyFriend.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-        //public new IDbSet<ApplicationRole> Roles { get; set; }//一定要重写这个方法，不然能用，网页中也能获取数据，就是代码里点不出来~~
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
-   
-
-        //静态构造函数。MSDN：静态构造函数用于初始化任何静态数据，或用于执行仅需执行一次的特定操作。在创建第一个实例或引用任何静态成员之前，将自动调用静态构造函数。   当程序部署在服务器上时，当第一次登陆的时候，就执行这个初始化器，并填充数据库。
-        //static ApplicationDbContext()  //静态构造函数不需要有public 或private  修饰符。
-        //{
-        //    //设置数据库初始化器，它就在应用程序运行的时候加载。
-        //    //在初始化器中需要建立一个管理员角色和一个具有管理员角色的账户。
-        //    Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());  //在System.Data.Entity 命名空间下面。
-
-        //}
 
 
-    }
+       // 静态构造函数。MSDN：静态构造函数用于初始化任何静态数据，或用于执行仅需执行一次的特定操作。在创建第一个实例或引用任何静态成员之前，将自动调用静态构造函数。   当程序部署在服务器上时，当第一次登陆的时候，就执行这个初始化器，并填充数据库。
+        static ApplicationDbContext()  //静态构造函数不需要有public 或private  修饰符。
+        {
+            //设置数据库初始化器，它就在应用程序运行的时候加载。
+            //在初始化器中需要建立一个管理员角色和一个具有管理员角色的账户。
+            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());  //在System.Data.Entity 命名空间下面。
+
+          }
+
+
+        }
 }

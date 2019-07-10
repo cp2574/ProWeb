@@ -126,12 +126,13 @@ namespace TheFamilyFriend
         protected override void Seed(ApplicationDbContext context)   //建立种子方法，当模型改变需要重新建一个数据库的时候，用默认的数据填充数据库。
         {
             var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>(); //取得userManager ,或者使用new ApplicationUserManager(new UserStore<ApplicationUser>(context));
+            //var userManager= new ApplicationUserManager(new UserStore<ApplicationUser>(context));
             var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
             //创建角色列表
             var roles = new List<ApplicationRole>
                   {
-                  new ApplicationRole { Name="admin",Description="系统超级管理员"},
-                  new ApplicationRole { Name="user",Description="一般用户"},
+                  new ApplicationRole { Name="Super",Description="系统超级管理员"},
+                  new ApplicationRole { Name="admin",Description="管理员"},
                   };
             foreach (var role in roles)  //遍历列表，如果数据库中不存在列表中某个角色，就添加角色
             {
@@ -141,10 +142,28 @@ namespace TheFamilyFriend
                     var roleResult = roleManager.Create(role); //创建角色。
                 }
             }
+            var user = new ApplicationUser { UserName = "administrator", CreateTime = DateTime.Now, Avatar = "/Content/Images/Avatar/defult.png"};
+            
+
+            var result = userManager.FindByName(user.UserName);           
+            if (result == null)
+            {
+                userManager.Create(user, "123456"); //创建用户和密码，
+                userManager.SetLockoutEnabled(user.Id, false);//不锁定此用户。
+
+              
+            }
+            var _user = userManager.FindByName(user.UserName);  //通过用户名在数据库中找到这个用户。
+            var rolesForUser = userManager.GetRoles(_user.Id);      //通过用户ID 找到此用户所拥有的角色。
+
+            foreach (var role in roles)//便利所有的角色
+            {
+                if (!rolesForUser.Contains(role.Name))  //如果用户没有拥有此角色。通过用户名。
+                {
+                  userManager.AddToRoles(_user.Id, role.Name);  //将该用户加入此角色。
+                }
+            }
             base.Seed(context);   //运行父类的方法。
         }
-
     }
-
-
 }

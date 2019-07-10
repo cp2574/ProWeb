@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace TheFamilyFriend.Models
+namespace TheFamilyFriend.HelperModel.SystemManger
 {
     public class RolesViewModel
     {

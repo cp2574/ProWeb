@@ -214,6 +214,7 @@
     <Compile Include="HelperModel\ErrorAttributecs.cs" />
     <Compile Include="HelperModel\IsActionrAttribute.cs" />
     <Compile Include="HelperModel\Result.cs" />
+    <Compile Include="HelperModel\SystemManger\UsersViewModel.cs" />
     <Compile Include="HelperModel\Thumbnail.cs" />
     <Compile Include="HelperModel\SystemInfo.cs" />
     <Compile Include="HelperModel\UserInfo.cs" />
@@ -228,7 +229,7 @@
     <Compile Include="Models\Picture.cs" />
     <Compile Include="Models\PictureType.cs" />
     <Compile Include="Models\Personage.cs" />
-    <Compile Include="Models\RolesViewModel.cs" />
+    <Compile Include="HelperModel\SystemManger\RolesViewModel.cs" />
     <Compile Include="Models\Tlog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -271,8 +272,8 @@
     <Content Include="Content\Gallery-master\img\play-pause.png" />
     <Content Include="Content\Gallery-master\img\video-play.png" />
     <Content Include="Content\Images\Avatar\defult.png" />
-    <Content Include="Content\Images\Avatar\LOG.png" />
     <Content Include="Content\Images\Avatar\ParticleSmoke.png" />
+    <Content Include="Content\Images\ParticleSmoke.png" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
     <Content Include="Content\patterns\3.png" />
@@ -288,6 +289,7 @@
     <Content Include="Content\patterns\otis_redding.png" />
     <Content Include="Content\patterns\shattered.png" />
     <Content Include="Content\patterns\triangular.png" />
+    <Content Include="Content\plugins\jasny\jasny-bootstrap.min.css" />
     <Content Include="Content\plugins\summernote\summernote-bs4.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\table\bootstrap-table-pagejump.css" />
@@ -468,6 +470,7 @@
     <Content Include="Scripts\FireWorks\Stats.min.js" />
     <Content Include="Scripts\FireWorks\three.min.js" />
     <Content Include="Scripts\Bildschirmtext\Bildschirmtext.js" />
+    <Content Include="Scripts\plugins\jasny\jasny-bootstrap.min.js" />
     <Content Include="Scripts\plugins\summernote\summernote-bs4.js" />
     <Content Include="Scripts\snow.min.js" />
     <Content Include="Scripts\table\dist\bootstrap-table-export.js" />
@@ -666,6 +669,9 @@
     <Content Include="Views\SystemManagement\RoleList.cshtml" />
     <Content Include="Views\SystemManagement\AddRole.cshtml" />
     <Content Include="Views\SystemManagement\EditRole.cshtml" />
+    <Content Include="Views\SystemManagement\PasswordReset.cshtml" />
+    <Content Include="Views\SystemManagement\AddUser.cshtml" />
+    <Content Include="Views\SystemManagement\UploadHeaderPic.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
