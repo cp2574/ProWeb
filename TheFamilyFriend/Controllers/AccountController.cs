@@ -11,7 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TheFamilyFriend.HelperModel;
 using TheFamilyFriend.Models;
-
+using TheFamilyFriend.HelperModel.SystemManger;
 namespace TheFamilyFriend.Controllers
 {
     [Authorize]
@@ -20,6 +20,8 @@ namespace TheFamilyFriend.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        private ApplicationRoleManager _roleManager;
+       
         public AccountController()
         {
         }
@@ -29,6 +31,7 @@ namespace TheFamilyFriend.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+
 
         public ApplicationSignInManager SignInManager
         {
@@ -40,6 +43,11 @@ namespace TheFamilyFriend.Controllers
             { 
                 _signInManager = value; 
             }
+        }
+        public ApplicationRoleManager RoleManager
+        {
+            get { return _roleManager ?? Request.GetOwinContext().Get<ApplicationRoleManager>(); }
+            set { _roleManager = value; }
         }
 
         public ApplicationUserManager UserManager
@@ -53,6 +61,80 @@ namespace TheFamilyFriend.Controllers
                 _userManager = value;
             }
         }
+
+        ///
+        /// <summary>
+        /// ADD用户,GET方法
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Install()
+        {
+
+            ///不读取任务参数
+            return View();
+        }
+        /// <summary>
+        /// ADD用户的POST方法
+        /// </summary>
+        /// <param name="addUserModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Install(RegisterViewModelInstall model)
+        {
+
+            ///创建用户
+            if (ModelState.IsValid)
+            {
+                var _creatTime = DateTime.Now;
+                var _headerPic = "/Content/Images/Avatar/defult.png";
+                var _BirthDate = DateTime.Now;
+                var _Gender = 1;
+                var user = new ApplicationUser { UserName = model.UserName, RealName = model.RealName, Email = model.Email, QQ = model.QQ,  PhoneNumber = model.PhoneNumber, CreateTime = _creatTime, Avatar = _headerPic, Birthday = _BirthDate, Gender = _Gender };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    //    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+                    //    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    //    // 发送包含此链接的电子邮件
+                    //    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //    // await UserManager.SendEmailAsync(user.Id, "确认你的帐户", "请通过单击 <a href=\"" + callbackUrl + "\">這裏</a>来确认你的帐户");
+
+                    ///创建admin部门
+                    //Department derpartment = new Department();
+                    //derpartment.Id = "one";
+                    //derpartment.DepartmentName = "Admin";
+                    //derpartment.Sort = 0;
+                    //db.Departments.Add(derpartment);
+                    //await db.SaveChangesAsync();
+
+                    ///创建角色Super
+                    AddRoleViewModel addRoleViewModel = new AddRoleViewModel();
+
+                    addRoleViewModel.Name = "Super";
+                    var result1 = await RoleManager.CreateAsync(new ApplicationRole() {Name= addRoleViewModel.Name ,Description= addRoleViewModel.Description});
+
+                    ///将用户添加Super的权限
+                    UserManager.AddToRole(user.Id, "Super");
+                    return RedirectToAction("UserList", "SystemManagement");
+                }
+                AddErrors(result);
+
+            }
+
+            return View(model);
+        }
+
+
+
+
+
+
 
         //
         // GET: /Account/Login
@@ -183,7 +265,7 @@ namespace TheFamilyFriend.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(Models.RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -207,7 +289,6 @@ namespace TheFamilyFriend.Controllers
             // 如果我们进行到这一步时某个地方出错，则重新显示表单
             return View(model);
         }
-
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]

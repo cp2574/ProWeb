@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNet.Identity;
+@using TheFamilyFriend.HelperModel;
+
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="clear">
+                            <span class="block m-t-xs">
+                                <strong class="font-bold">Example user</strong>
+                            </span> <span class="text-muted text-xs block">Example menu @ViewBag.testname<b class="caret"></b></span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    IN+
+                </div>
+            </li>
+            <li class="@Html.IsSelected(controller:"xxxxx", action: "Index")">
+                <a href="@Url.Action("Index", "Admin")"><i class="fa fa-laptop"></i> <span class="nav-label">管理首页</span> </a>
+            </li>
+            @foreach (var user in Model)
+            {
+                if (user.Popedomfatherid == 0)
+                {
+                    if (!string.IsNullOrEmpty(@user.MenuIcon))
+                    {
+                        <li class="@Html.IsSelected(controller:@user.ControllerName)">
+
+                            <a href="#"><i class=" @user.MenuIcon "></i> <span class="nav-label" data-i18n="nav.dashboard">@user.MenuName</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse @Html.IsSelected(controller:@user.ControllerName, cssClass: "in")">
+                                @foreach (var chilemenu in Model)
+                                {
+                                    if (chilemenu.Popedomfatherid == user.Id)
+                                    {
+                                        <li class="@Html.IsSelected(action: @chilemenu.MethodName)"><a href="@Url.Action(@chilemenu.MethodName, @chilemenu.ControllerName)">@chilemenu.MenuName</a></li>
+                                    }
+
+                                }
+
+                            </ul>
+                        </li>
+
+                    }
+                    else
+                    {
+
+                        <li class="@Html.IsSelected(action:@user.ControllerName)">
+                            <a href="@Url.Action(@user.MethodName,@user.ControllerName)"> <span class="nav-label">@user.MenuName</span></a>
+                        </li>
+
+                    }
+                }
+            }
+            <li class="@Html.IsSelected(controller: "UIElements")">
+                <a href="@Url.Action("ListRoles", "Account")"><i class="fa fa-flask"></i> <span class="nav-label" data-i18n="nav.uielements">角色管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "UIElements", cssClass: "in")">
+                    <li class="@Html.IsSelected(action: "ListRoles")"><a href="@Url.Action("ListRoles", "Account")">角色列表</a></li>
+                    <li class="@Html.IsSelected(action: "AddRoles")"><a href="@Url.Action("AddRoles", "Account")">新建角色</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</nav>

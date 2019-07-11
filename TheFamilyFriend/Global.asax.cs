@@ -23,8 +23,8 @@ namespace TheFamilyFriend
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            ////当model发生更改，执行以下
-            Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
+            //模型更改时重新创建数据库
+            Database.SetInitializer<ApplicationDbContext>(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
 
             System.Timers.Timer objTimer = new System.Timers.Timer();
             objTimer.Interval = 10800000;

@@ -51,8 +51,8 @@
                 ' <a class="RoleOfEidt btn btn-success" href="/SystemManagement/EditRole/' + row.Id +'" ><i class="fa fa-edit"></i> 编辑 </a>',
                 ' <a class="RemoveRole btn btn-warning" href="javascript:void(0);" ><i class="fa fa-bank"></i> 删除 </a>',
                 ' <a class="UserToRole btn btn-info" href="/SystemManagement/UserToRole/' + row.Id +'" ><i class="fa fa-user-circle"></i> 添加用户 </a>',
-                 ' <a class="ViewRoleUser btn btn-success" href="javascript:void(0);" ><i class="fa fa-eercast"></i> 查看用户 </a>',
-
+                ' <a class="ViewRoleUser btn btn-success" href="/SystemManagement/ViewRoleUser/' + row.Id +'" ><i class="fa fa-eercast"></i> 查看用户 </a>',
+                ' <a class="ViewRoleUser btn btn-success" href="/SystemManagement/ViewRoleUser/' + row.Id + '" ><i class="fa fa-eercast"></i> 授权菜单 </a>',
             ].join('');
         }
 
@@ -101,11 +101,11 @@
         showToggle: true,//切换
         showColumns: true,//显示列
         columns: [
-            { title: 'Id', field: 'Id', align: 'center', valign: 'middle', sortable: true, visible: false, width: '10%' },
-            { title: '角色名称', field: 'Name', align: 'center', valign: 'middle', sortable: true, width: '30%'},
-            { title: '描述', field: 'Description', align: 'center', valign: 'middle', sortable: true,width: '30%' },
+            { title: 'Id', field: 'Id', align: 'center', valign: 'middle', sortable: true, visible: false,  },
+            { title: '角色名称', field: 'Name', align: 'center', valign: 'middle', sortable: true, },
+            { title: '描述', field: 'Description', align: 'center', valign: 'middle', sortable: true, },
             {
-                title: '操作', field: 'operate', align: 'center', width: '20%', events: operateEvents,
+                title: '操作', field: 'operate', align: 'center',  events: operateEvents,
                 formatter: operateFormatter
             },
             ],

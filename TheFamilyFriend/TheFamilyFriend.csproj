@@ -192,6 +192,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Center\CpuHub.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BosomFriendController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -220,7 +221,7 @@
     <Compile Include="HelperModel\UserInfo.cs" />
     <Compile Include="HelperModel\WeatherWeb.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Menus.cs" />
+    <Compile Include="Models\MenuInfo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\KinshipDb.cs" />
     <Compile Include="Models\Lblhelpmessage.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Models\PictureType.cs" />
     <Compile Include="Models\Personage.cs" />
     <Compile Include="HelperModel\SystemManger\RolesViewModel.cs" />
+    <Compile Include="Models\RoleMenu.cs" />
     <Compile Include="Models\Tlog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -660,7 +662,6 @@
     <Content Include="Views\Tool\Map.cshtml" />
     <Content Include="Views\WealthManagement\ConsumerEntry.cshtml" />
     <Content Include="Views\WealthManagement\Index.cshtml" />
-    <Content Include="Views\SystemManagement\Menus.cshtml" />
     <Content Include="Views\SystemManagement\AddMenus.cshtml" />
     <Content Include="Views\Tool\Mailbox.cshtml" />
     <Content Include="Views\SystemManagement\UserList.cshtml" />
@@ -673,6 +674,11 @@
     <Content Include="Views\SystemManagement\UploadHeaderPic.cshtml" />
     <Content Include="Views\SystemManagement\EditUser.cshtml" />
     <Content Include="Views\SystemManagement\UserToRole.cshtml" />
+    <Content Include="Views\SystemManagement\ViewRoleUser.cshtml" />
+    <Content Include="Views\Account\Install.cshtml" />
+    <Content Include="Views\SystemManagement\MenuList.cshtml" />
+    <Content Include="Views\SystemManagement\AuthorityMenu.cshtml" />
+    <Content Include="Views\Shared\_NavigationNew.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -723,6 +729,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\fileinput\plugins\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

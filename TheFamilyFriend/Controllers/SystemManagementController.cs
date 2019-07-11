@@ -19,7 +19,7 @@ using System.IO;
 
 namespace TheFamilyFriend.Controllers
 {
-    [Authorize(Roles="admin")]
+    [Authorize(Roles="Super")]
     public class SystemManagementController : Controller
     {
         // GET: SystemManagement
@@ -32,79 +32,7 @@ namespace TheFamilyFriend.Controllers
             return View();
         }
 
-        #region 模块
-        /// <summary>
-        /// 菜单
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Menus()
-        {
-            return View();
-        }
-        public ActionResult AddMenus()
-        {
-            using (KinshipDb db = new KinshipDb())
-            {
-                if (ModelState.IsValid)
-                {
-               
-                    List<Menus> MenuList = db.Menus.Where(T => T.Level < 3).OrderBy(t => t.Level).ToList();
-                    List<SelectListItem> selectList = new List<SelectListItem>();
-                    selectList.Add(new SelectListItem() { Value = "9999", Text = "无", Selected = false });
-                    foreach (var item in MenuList)
-                    {
-                        SelectListItem sli = new SelectListItem() { Value = item.Id.ToString() };
-                        switch (item.Level)
-                        {
-                            case 1:
-                                sli.Text = "  " + item.Name;
-                                break;
-                            case 2:
-                                sli.Text = item.Name;
-                                break;
-                            default:
-                                break;
-                        }
-                        selectList.Add(sli);
-                    }
-
-                    SelectList sl = new SelectList(selectList, "Value", "Text");
-                    ViewBag.ddmenu = sl;
-
-                }
-            }
-
-
-
-            return View();
-        }
-        public JsonResult GetMenusList(int pageNumber, int pageSize)
-        {
-
-            using (var bd = new KinshipDb())
-            {
-                IQueryable<Menus> list = bd.Menus;
-                //if (!string.IsNullOrEmpty(Request["StartTime"]))
-                //{
-                //    DateTime StartTime = Convert.ToDateTime(Request["StartTime"]);
-                //    list = list.Where(x => x.RegisterTime >= StartTime);
-                //}
-                //if (!string.IsNullOrEmpty(Request["EndTime"]))
-                //{
-                //    DateTime StartTime = Convert.ToDateTime(Request["EndTime"]);
-                //    list = list.Where(x => x.RegisterTime <= StartTime);
-                //}
-
-                var fenyelist = list.OrderByDescending(x => x.Id).Take(pageSize * pageNumber).Skip(pageSize * (pageNumber - 1)).ToList();
-                var fenye = new
-                {
-                    total = list.Count(),//数据的总量
-                    rows = fenyelist///分页返回的行数
-                };
-                return Json(fenye, JsonRequestBehavior.AllowGet);
-            }
-        }
-        #endregion
+     
 
         #region 用户模块
         private ApplicationUserManager _userManager;
@@ -164,7 +92,7 @@ namespace TheFamilyFriend.Controllers
         /// <param name="code"></param>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize(Roles = "Super")]
+        [Authorize(Roles = "Super")]
         [AllowAnonymous]
         public ActionResult PasswordReset(string id)
         {
@@ -424,60 +352,7 @@ namespace TheFamilyFriend.Controllers
             //});
             return View(editUserViewModel);
         }
-
-
-
-
-
-
-
-
-
-        //[HttpPost]
-        //public async Task<ActionResult> Edit(string id, AppUserViewModel appUserViewModel)
-        //{
-        //    ApplicationUser user = await UserManager.FindByIdAsync(id);
-        //    if (user != null)
-        //    {
-        //        user.Email = appUserViewModel.Email;
-        //        IdentityResult validEmail = await UserManager.UserValidator.ValidateAsync(user);
-        //        if (!validEmail.Succeeded)
-        //        {
-        //            AddErrorsFromResult(validEmail);
-        //        }
-        //        else
-        //        {
-
-        //            user.Id = appUserViewModel.Id;
-        //            user.Email = appUserViewModel.Email;
-        //            user.EmailConfirmed = appUserViewModel.EmailConfirmed;
-        //            user.PhoneNumber = appUserViewModel.PhoneNumber;
-        //            user.PhoneNumberConfirmed = appUserViewModel.PhoneNumberConfirmed;
-        //            user.TwoFactorEnabled = appUserViewModel.TwoFactorEnabled;
-        //            user.LockoutEndDateUtc = appUserViewModel.LockoutEndDateUtc;
-        //            user.LockoutEnabled = appUserViewModel.LockoutEnabled;
-        //            user.AccessFailedCount = appUserViewModel.AccessFailedCount;
-        //            user.UserName = appUserViewModel.UserName;
-        //            user.QQ = appUserViewModel.QQ;
-        //            user.QQLoginEnable = appUserViewModel.QQLoginEnable;
-        //            user.WeChat = appUserViewModel.WeChat;
-        //            user.WeChatLoginEnable = appUserViewModel.WeChatLoginEnable;
-        //            user.EmpNo = appUserViewModel.EmpNo;
-        //            user.IDCardNo = appUserViewModel.IDCardNo;
-
-        //            IdentityResult result = await UserManager.UpdateAsync(user);
-
-        //        }
-        //    }
-        //    else
-        //    {
-        //        ModelState.AddModelError("", "用户木有发现");
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
         #endregion
-
 
         #region 角色模块
 
@@ -635,8 +510,6 @@ namespace TheFamilyFriend.Controllers
         }
         #endregion
 
-
-
         #region 角色与用户
         /// <summary>
         /// 用户到角色列表
@@ -663,9 +536,314 @@ namespace TheFamilyFriend.Controllers
             var membersNo = UserManager.Users.Except(members);
             return View(membersNo);
         }
+
+
+        /// <summary>
+        /// 添加用户到角色
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roleName"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Super")]
+        public ActionResult AddToRole(string userId, string roleName, string roleId)
+        {
+            if (!string.IsNullOrWhiteSpace(userId) && !string.IsNullOrWhiteSpace(roleName))
+            {
+                UserManager.AddToRole(userId, roleName);
+            }
+            return RedirectToAction("UserToRole/" + roleId);
+        }
+        /// <summary>
+        /// 查看角色中的用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ///
+        [Authorize(Roles = "Super")]
+        public ActionResult ViewRoleUser(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var role = RoleManager.FindById(id);
+            ViewBag.RoleName = role.Name;
+            var memberIDs = role.Users.Select(x => x.UserId).ToArray();
+            var members = UserManager.Users.Where(x => memberIDs.Any(y => y == x.Id));
+            return View(members);
+        }
+
+        [Authorize(Roles = "Super")]
+        /// <summary>
+        ///  解除用户与角色的关系
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public ActionResult RemoveRoleUser(string roleName, string userId)
+        {
+            if (string.IsNullOrWhiteSpace(roleName) && string.IsNullOrWhiteSpace(userId))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var result = UserManager.RemoveFromRole(userId, roleName);
+            var role = RoleManager.FindByName(roleName);
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+                return Content("<script>alert('移除失败，请联系相关人员');location.href='/SystemManagement/ViewRoleUser?id ='"+ role.Id + ";</script>");
+            }
+            return RedirectToAction("ViewRoleUser", new { id = role.Id });
+        }
+
+
         #endregion
 
+        #region 菜单模块
+        KinshipDb db = new KinshipDb();
 
+
+        /// <summary>
+        /// 菜单列表
+        /// </summary>
+        [HttpGet]
+        public ActionResult ListMenu(string SeachColumnString)
+        {
+            ///读出所有的一级菜单
+            ViewBag.drolistmenu = db.MenuInfo.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort);
+            ///读出所有的现有的菜单名称，以下拉框的形式写入。
+
+            var menus = db.MenuInfo.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort).Select(g => new SelectListItem
+            {
+                Text = g.MenuName,
+                Value = g.Id.ToString(),
+                Selected = false
+            }).ToList();
+            menus.Insert(0, new SelectListItem { Value = "0", Text = "请选择", Selected = true });
+            ViewBag.menuInfo = menus;
+
+            ///下面是开始显示菜单的列表了
+            ///读出所有的菜单列表
+            var data = db.MenuInfo.ToList();
+            ///定义一个变量result的MenuInfo列表变量
+            var result = new List<MenuInfo>();
+            ///读出所有的一级菜单
+            var level0 = data.Where(m => m.Popedomfatherid == 0).ToList();
+            ///当一级菜单索引选择有的时候，一级菜单就仅为我们选择的这个
+
+            if (!string.IsNullOrEmpty(SeachColumnString))
+            {
+                var xxx = int.Parse(SeachColumnString);
+                level0 = level0.Where(m => m.Id == xxx).ToList();
+            }
+
+            ///对所有一级菜单进行一次循环。 foreah (var xx in level0) 这种一样
+            level0.ForEach(item =>
+            {
+                ///定义一个children字菜单变量，当他的Popedomfatherid=当前循环的ID,取出当前的所有字菜单
+                var children = data.Where(m => m.Popedomfatherid == item.Id).ToList();
+                ///给子菜单名字前面加上几个---
+                children.ForEach(m => m.MenuName = "------------" + m.MenuName);
+                ///为新定义的result变量增加一个 一级菜单
+                result.Add(item);
+                ///为新定义的result变量增加一个 所有的字菜单
+                result.AddRange(children);
+            });
+            ///ViewBag.list传值
+            ViewBag.List = result;
+
+            return View();
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// 菜单列表
+        /// </summary>
+        /// <param name="disposing"></param>
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> MenuList([Bind(Include = "MenuName,MenuPath,MenuIcon,MethodName,ControllerName,Popedomfatherid,Sort")] MenuInfo model)
+        {
+        
+                if (ModelState.IsValid)
+                {
+
+                    db.MenuInfo.Add(model);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("MenuList");
+                }
+                ///读出所有的现有的菜单名称，以下拉框的形式写入。
+
+                var menus = db.MenuInfo.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort).Select(g => new SelectListItem
+                {
+                    Text = g.MenuName,
+                    Value = g.Id.ToString(),
+                    Selected = false
+                }).ToList();
+
+                menus.Insert(0, new SelectListItem { Value = "0", Text = "请选择", Selected = true });
+                ViewBag.menuInfo = menus;
+                ///读出所有的一级菜单
+                ViewBag.drolistmenu = db.MenuInfo.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort);
+                return View(model);
+           
+
+         
+
+        }
+
+
+
+
+        /// <summary>
+        /// 菜单授权
+        /// </summary>
+        /// <param name="disposing"></param>
+        [HttpGet]
+        public ActionResult AuthorityMenu(string Id)
+        {
+            ///读出所有的现有的菜单名称，以下拉框的形式写入。
+
+            //var menus = db.MenuInfos.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort);
+
+            ///下面是开始显示菜单的列表了
+            ///读出所有的菜单列表
+            var data = db.MenuInfo.ToList();
+            ///定义一个变量result的MenuInfo列表变量
+            var result = new List<MenuInfo>();
+            ///读出所有的一级菜单
+            var level0 = data.Where(m => m.Popedomfatherid == 0).ToList();
+            ///当一级菜单索引选择有的时候，一级菜单就仅为我们选择的这个
+
+
+            ///对所有一级菜单进行一次循环。 foreah (var xx in level0) 这种一样
+            level0.ForEach(item =>
+            {
+                ///定义一个children字菜单变量，当他的Popedomfatherid=当前循环的ID,取出当前的所有字菜单
+                var children = data.Where(m => m.Popedomfatherid == item.Id).ToList();
+                ///给子菜单名字前面加上几个---
+                children.ForEach(m => m.MenuName = "------------" + m.MenuName);
+                ///为新定义的result变量增加一个 一级菜单
+                result.Add(item);
+                ///为新定义的result变量增加一个 所有的字菜单
+                result.AddRange(children);
+            });
+            ///ViewBag.list传值
+            ViewBag.List = result;
+
+            return View();
+
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AuthorityMenu(string Id, List<string> c)
+        {
+            ///如Id为null，返回错误请求
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ////删除包含有该角色Id的所有记录
+            //删除所有的数据，就是清空表原有数据
+            List<RoleMenu> xx = db.RoleMenu.Where(m => m.RoleId == Id).ToList();
+            db.RoleMenu.RemoveRange(xx);
+            ///将所有List C中的菜单ID与ROLEID一起写入表中
+            if (c != null)
+            {
+                foreach (var id2 in c)
+                {
+                    RoleMenu roleMenu = new RoleMenu();
+                    roleMenu.RoleId = Id;
+                    roleMenu.MenuId = Convert.ToInt32(id2);
+                    roleMenu.IsAvailable = 1;
+                    db.RoleMenu.Add(roleMenu);
+                }
+            }
+            db.SaveChanges();
+            return View();
+        }
+
+
+
+        /// <summary>
+        /// 返回当前的角色所拥有的菜单
+        /// </summary>
+        /// <param name="disposing"></param>
+        [HttpGet]
+        public ActionResult ShowRoleMenu()
+        {
+            ///是否登录
+            if (!Request.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            ///获取当前用户的id
+            var userID = User.Identity.GetUserId();
+            ///先读出当前用户表对应的所有的ROLES表，但只有rolename.
+            var rolses = UserManager.GetRoles(userID);
+            ///先读出当前用户的完整表.
+            var alluser = UserManager.FindById(userID);
+            ///先读出当前所有的ROLES表.
+            var allrolses = RoleManager.Roles.ToList();
+            ///皮配出这个用户ID的角色列表ID出来
+            var user_roleid = allrolses.Where(x => rolses.Contains(x.Name)).Select(n => n.Id).ToList();
+            //var rolses = RoleManager.Roles.ToList();
+            //这里是所有角色，不是当前用户的角色
+            //var roleIds = rolses.Select(m => m.id).ToList();
+            var role_menus = db.RoleMenu.Where(m => user_roleid.Contains(m.RoleId)).ToList();//查询出角色关联表的所有数据
+            //var role_menus = db.RoleMenus.Where(m =>m.RoleId== rolses.Select(x=>x.id) rolses.Contains(m.RoleId)).ToList();//查询出角色关联表的所有数据
+            var menuIds = role_menus.Select(n => n.MenuId).ToArray();
+            var menus = db.MenuInfo.OrderBy(x => x.Sort).Where(m => menuIds.Contains(m.Id)).ToList();//查询出菜单数据
+            ///下面进行表的读成菜单样式
+            ///定义一个变量result的MenuInfo列表变量
+            var result = new List<MenuInfo>();
+            ///读出所有的一级菜单
+            var level0 = menus.Where(m => m.Popedomfatherid == 0).ToList();
+            ///对所有一级菜单进行一次循环。 foreah (var xx in level0) 这种一样
+            level0.ForEach(item =>
+            {
+                ///定义一个children字菜单变量，当他的Popedomfatherid=当前循环的ID,取出当前的所有字菜单
+                var children = menus.Where(m => m.Popedomfatherid == item.Id).ToList();
+                /////为新定义的result变量增加一个 一级菜单
+                result.Add(item);
+                ///为新定义的result变量增加一个 所有的字菜单
+                result.AddRange(children);
+            });
+            //ViewBag.List = result;
+
+            return View(result);
+
+        }
+
+        #endregion
 
 
         #region 日志显示
@@ -695,7 +873,6 @@ namespace TheFamilyFriend.Controllers
 
         }
         #endregion
-
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)

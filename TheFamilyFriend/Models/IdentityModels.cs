@@ -90,14 +90,14 @@ namespace TheFamilyFriend.Models
         }
 
 
-       // 静态构造函数。MSDN：静态构造函数用于初始化任何静态数据，或用于执行仅需执行一次的特定操作。在创建第一个实例或引用任何静态成员之前，将自动调用静态构造函数。   当程序部署在服务器上时，当第一次登陆的时候，就执行这个初始化器，并填充数据库。
-        static ApplicationDbContext()  //静态构造函数不需要有public 或private  修饰符。
-        {
-            //设置数据库初始化器，它就在应用程序运行的时候加载。
-            //在初始化器中需要建立一个管理员角色和一个具有管理员角色的账户。
-            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());  //在System.Data.Entity 命名空间下面。
+       //// 静态构造函数。MSDN：静态构造函数用于初始化任何静态数据，或用于执行仅需执行一次的特定操作。在创建第一个实例或引用任何静态成员之前，将自动调用静态构造函数。   当程序部署在服务器上时，当第一次登陆的时候，就执行这个初始化器，并填充数据库。
+       // static ApplicationDbContext()  //静态构造函数不需要有public 或private  修饰符。
+       // {
+       //     //设置数据库初始化器，它就在应用程序运行的时候加载。
+       //     //在初始化器中需要建立一个管理员角色和一个具有管理员角色的账户。
+       //     Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());  //在System.Data.Entity 命名空间下面。
 
-          }
+       //   }
 
 
         }

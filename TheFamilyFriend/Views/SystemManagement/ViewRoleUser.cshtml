@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<TheFamilyFriend.Models.ApplicationUser>
 @{
-    ViewBag.Title = "绑定角色";
+    ViewBag.Title = "角色下的用户";
 }
 
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -21,7 +21,7 @@
 </div>
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>增加用户到角色<strong class="text-navy"> @ViewBag.RoleName </strong></h2>
+        <h2>角色 <strong class="text-navy"> @ViewBag.RoleName </strong> 的用户列表</h2>
 
     </div>
     <div class="col-sm-8">
@@ -30,7 +30,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -49,6 +48,7 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         @foreach (var user in Model)
                         {
                             <tr>
@@ -57,10 +57,9 @@
                                 <td>@Html.DisplayFor(m => user.RealName)</td>
                                 <td>@Html.DisplayFor(m => user.PhoneNumber)</td>
                                 <td>
-                                    <a class="btn btn-primary" href="@Url.Action("AddToRole", "SystemManagement",new {userId=user.Id,roleId=@ViewBag.RoleId,roleName=@ViewBag.RoleName })" onclick="return confirm('你确认添加吗？')"><i class="fa fa-child"></i> 添加到角色 </a>
-                                  
+                                    <a class="btn btn-warning" href="@Url.Action("RemoveRoleUser", "SystemManagement",new { roleName = ViewBag.RoleName, userId = user.Id })" onclick="return confirm('你确认移除吗？')"><i class="fa fa-child"></i> 移除用户 </a>
                                 </td>
-                            </tr> 
+                            </tr>
                         }
                     </tbody>
                 </table>

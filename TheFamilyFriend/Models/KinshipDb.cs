@@ -17,10 +17,10 @@ namespace TheFamilyFriend.Models
         public virtual DbSet<Lblhelpmessage> Lblhelpmessage { get; set; }
         public virtual DbSet<Picture> Picture { get; set; }
         public virtual DbSet<PictureType> PictureType { get; set; }
-        public virtual DbSet<ConsumptionExpenditure> ConsumptionExpenditure { get; set; }
-
-        public virtual DbSet<Menus> Menus { get; set; }
+        public virtual DbSet<ConsumptionExpenditure> ConsumptionExpenditure { get; set; }      
         public DbSet<TLogs> Logs { get; set; }
+        public virtual DbSet<MenuInfo> MenuInfo { get; set; }
+        public virtual DbSet<RoleMenu> RoleMenu { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Personage>()
@@ -32,7 +32,7 @@ namespace TheFamilyFriend.Models
            .Property(e => e.PictureTypeName);
             modelBuilder.Entity<ConsumptionExpenditure>()
           .Property(e => e.Id);
-            modelBuilder.Entity<Menus>()
+            modelBuilder.Entity<MenuInfo>()
         .Property(e => e.Id);
         }
     }
