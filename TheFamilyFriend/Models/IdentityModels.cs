@@ -41,7 +41,7 @@ namespace TheFamilyFriend.Models
         /// <summary>
         /// 主页皮肤
         /// </summary>     
-        [StringLength(10)]
+        [StringLength(50)]
         [Display(Name = "主题")]
         public virtual string  Skip { get; set; }
         [StringLength(50)]

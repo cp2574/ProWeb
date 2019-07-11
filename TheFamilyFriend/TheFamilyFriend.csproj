@@ -272,7 +272,6 @@
     <Content Include="Content\Gallery-master\img\play-pause.png" />
     <Content Include="Content\Gallery-master\img\video-play.png" />
     <Content Include="Content\Images\Avatar\defult.png" />
-    <Content Include="Content\Images\Avatar\ParticleSmoke.png" />
     <Content Include="Content\Images\ParticleSmoke.png" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
@@ -672,6 +671,8 @@
     <Content Include="Views\SystemManagement\PasswordReset.cshtml" />
     <Content Include="Views\SystemManagement\AddUser.cshtml" />
     <Content Include="Views\SystemManagement\UploadHeaderPic.cshtml" />
+    <Content Include="Views\SystemManagement\EditUser.cshtml" />
+    <Content Include="Views\SystemManagement\UserToRole.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

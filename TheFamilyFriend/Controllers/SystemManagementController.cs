@@ -335,6 +335,101 @@ namespace TheFamilyFriend.Controllers
         }
 
 
+        /// <summary>
+        /// 下面是编辑用户资料的代码
+        /// </summary>
+        /// <param name="disposing"></param>
+        [HttpGet]
+        [Authorize(Roles = "Super")]
+        public ActionResult EditUser(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            ///读出所有的部门名称分类，以下拉框的形式写入。
+            //ViewBag.drolistDepart = (db.Departments).Select(g => new SelectListItem
+            //{
+            //    Text = g.DepartmentName,
+            //    Value = g.Id,
+            //    Selected = false
+            //});
+
+
+            ApplicationUser user = UserManager.FindById(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            ///定义一个EditUserViewModel模型
+            var editUserViewModel = new EditUsers()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                WX = user.WX,
+                QQ = user.QQ,
+                Address = user.Address,
+                UserName = user.UserName,
+                RealName = user.RealName,
+                Avatar = user.Avatar,
+                Gender = user.Gender ?? 0,
+                Birthday = user.Birthday ?? DateTime.Now
+            };
+            return View(editUserViewModel);
+        }
+
+
+
+
+        /// <summary>
+        ///Edit 的POST方法
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="editUserViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "Super")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditUser(EditUsers editUserViewModel)
+        {
+
+            if (ModelState.IsValid && !string.IsNullOrEmpty(editUserViewModel.Id))
+            {
+                ///用模型传入的数据，赋值给User 模型
+                ApplicationUser user = UserManager.FindById(editUserViewModel.Id);
+
+                user.Email = editUserViewModel.Email;
+                user.PhoneNumber = editUserViewModel.PhoneNumber;
+                user.WX = editUserViewModel.WX;
+                user.QQ = editUserViewModel.QQ;
+                user.Address = editUserViewModel.Address;
+                user.RealName = editUserViewModel.RealName;
+                user.Gender = editUserViewModel.Gender;
+                user.Birthday = editUserViewModel.Birthday;
+                var result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("UserList", "SystemManagement");
+                }
+                AddErrors(result);
+            }
+            /////读出所有的部门名称分类，以下拉框的形式写入。
+            //ViewBag.drolistDepart = (db.Departments).Select(g => new SelectListItem
+            //{
+            //    Text = g.DepartmentName,
+            //    Value = g.Id,
+            //    Selected = false
+            //});
+            return View(editUserViewModel);
+        }
+
+
+
+
+
+
 
 
 
@@ -537,12 +632,38 @@ namespace TheFamilyFriend.Controllers
                 AddErrors(result);
             }
             return RedirectToAction("RoleList");
-        }      
+        }
         #endregion
 
 
 
-
+        #region 角色与用户
+        /// <summary>
+        /// 用户到角色列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize(Roles = "Super")]
+        public ActionResult UserToRole(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var role = RoleManager.FindById(id);
+            ViewBag.RoleName = role.Name;
+            ViewBag.RoleId = id;
+            if (role == null)
+            {
+                return HttpNotFound();
+            }
+            var memberIDs = role.Users.Select(x => x.UserId).ToArray();
+            var members = UserManager.Users.Where(x => memberIDs.Any(y => y == x.Id));
+            var membersNo = UserManager.Users.Except(members);
+            return View(membersNo);
+        }
+        #endregion
 
 
 

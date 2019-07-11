@@ -48,16 +48,15 @@
         })
         function operateFormatter(value, row, index) {
             return [
-                '<button type="button" class="RoleOfEidt btn btn-info"  style="margin-right:15px;"><i class="fa fa-paste"></i>编辑</button>',
-                //'<button type="button" class="RoleOfDelete btn btn-info" ><i class="fa fa-times"></i>删除</button>',
-                ' <a class="RemoveRole btn btn-warning" href="javascript:void(0);" ><i class="fa fa-bank"></i> 删除 </a>'
+                ' <a class="RoleOfEidt btn btn-success" href="/SystemManagement/EditRole/' + row.Id +'" ><i class="fa fa-edit"></i> 编辑 </a>',
+                ' <a class="RemoveRole btn btn-warning" href="javascript:void(0);" ><i class="fa fa-bank"></i> 删除 </a>',
+                ' <a class="UserToRole btn btn-info" href="/SystemManagement/UserToRole/' + row.Id +'" ><i class="fa fa-user-circle"></i> 添加用户 </a>',
+                 ' <a class="ViewRoleUser btn btn-success" href="javascript:void(0);" ><i class="fa fa-eercast"></i> 查看用户 </a>',
+
             ].join('');
         }
 
        window.operateEvents = {
-            'click .RoleOfEidt': function (e, value, row, index) {
-                location.href = "/SystemManagement/EditRole/"+row.Id;
-            },
             'click .RemoveRole': function (e, value, row, index) {
                 if (confirm("您确定删除吗！")) {
                     $(this).attr("href", "RemoveRole/" + row.Id)
@@ -66,7 +65,8 @@
                     return false;
                 }
 
-            },
+           },
+         
         };
        $('#tab').bootstrapTable({
         //请求方法
@@ -107,7 +107,6 @@
             {
                 title: '操作', field: 'operate', align: 'center', width: '20%', events: operateEvents,
                 formatter: operateFormatter
-
             },
             ],
         });

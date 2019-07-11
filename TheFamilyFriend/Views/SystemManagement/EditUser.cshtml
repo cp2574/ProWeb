@@ -1,0 +1,141 @@
+﻿@model TheFamilyFriend.HelperModel.SystemManger.EditUsers
+@{
+    ViewBag.Title = "编辑用户";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("UserList", "SystemManagement")">用户管理</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+
+    <div class="ibox-title">
+
+        <img src=@Html.DisplayFor(m => m.Avatar) alt="头像" class="img-circle" height="72">
+
+    </div>
+    <div class="ibox-content m-b-sm border-bottom">
+        @using (Html.BeginForm("EditUser", "SystemManagement", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row">
+                @*<div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="order_id">部门</label>
+                            @Html.DropDownList("DepartmentId", new SelectList(ViewBag.drolistDepart, "Value", "Text"), "请选择", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.DepartmentId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="status">真名</label>
+                        @Html.TextBoxFor(m => m.RealName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RealName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="customer">Email(唯一）</label>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="order_id">性别</label>
+                        <select class="form-control" id="Gender" name="Gender">
+                            <option value="">请选择</option>
+                            <option selected="selected" value="1">男</option>
+                            <option value="0">女</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="customer">电话</label>
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="date_modified">生日</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" class="form_datetime form-control" id="Birthday" name="Birthday" value=@Html.DisplayFor(m => m.Birthday) size="16">
+                            @Html.ValidationMessageFor(m => m.Birthday, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="amount">    QQ</label>
+                        @Html.TextBoxFor(m => m.QQ, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.QQ, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="status">地址</label>
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="customer">微信</label>
+                        @Html.TextBoxFor(m => m.WX, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <input class="btn btn-primary" type="submit" value="确认修改" /> @Html.ActionLink("返回", "UserList", "", new { @class = "btn btn-warning btn-sm" })
+            </div>
+
+
+        }
+    </div>
+
+
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/time/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/time/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(function () {
+            $(".form_datetime").datetimepicker({
+                locale: 'zh-cn',
+                format: 'L',
+                showTodayButton: true
+            });
+
+        })
+    </script>
+}
