@@ -602,13 +602,11 @@ namespace TheFamilyFriend.Controllers
 
         #region 菜单模块
         KinshipDb db = new KinshipDb();
-
-
         /// <summary>
         /// 菜单列表
         /// </summary>
         [HttpGet]
-        public ActionResult ListMenu(string SeachColumnString)
+        public ActionResult MenuList(string SeachColumnString)
         {
             ///读出所有的一级菜单
             ViewBag.drolistmenu = db.MenuInfo.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort);
@@ -657,30 +655,6 @@ namespace TheFamilyFriend.Controllers
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// 菜单列表
         /// </summary>
@@ -718,9 +692,6 @@ namespace TheFamilyFriend.Controllers
 
         }
 
-
-
-
         /// <summary>
         /// 菜单授权
         /// </summary>
@@ -728,6 +699,20 @@ namespace TheFamilyFriend.Controllers
         [HttpGet]
         public ActionResult AuthorityMenu(string Id)
         {
+
+            if (string.IsNullOrWhiteSpace(Id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var role = RoleManager.FindById(Id);
+            ViewBag.RoleName = role.Name;
+            ViewBag.RoleId = Id;
+            if (role == null)
+            {
+                return HttpNotFound();
+            }
+
+
             ///读出所有的现有的菜单名称，以下拉框的形式写入。
 
             //var menus = db.MenuInfos.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort);
@@ -798,27 +783,27 @@ namespace TheFamilyFriend.Controllers
         /// </summary>
         /// <param name="disposing"></param>
         [HttpGet]
-        public ActionResult ShowRoleMenu()
+        public ActionResult ShowRoleMenu(string Id)
         {
             ///是否登录
             if (!Request.IsAuthenticated)
             {
                 return RedirectToAction("Login", "Account");
             }
-            ///获取当前用户的id
-            var userID = User.Identity.GetUserId();
-            ///先读出当前用户表对应的所有的ROLES表，但只有rolename.
-            var rolses = UserManager.GetRoles(userID);
-            ///先读出当前用户的完整表.
-            var alluser = UserManager.FindById(userID);
-            ///先读出当前所有的ROLES表.
-            var allrolses = RoleManager.Roles.ToList();
-            ///皮配出这个用户ID的角色列表ID出来
-            var user_roleid = allrolses.Where(x => rolses.Contains(x.Name)).Select(n => n.Id).ToList();
-            //var rolses = RoleManager.Roles.ToList();
-            //这里是所有角色，不是当前用户的角色
-            //var roleIds = rolses.Select(m => m.id).ToList();
-            var role_menus = db.RoleMenu.Where(m => user_roleid.Contains(m.RoleId)).ToList();//查询出角色关联表的所有数据
+
+
+            if (string.IsNullOrWhiteSpace(Id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var role = RoleManager.FindById(Id);
+            ViewBag.RoleName = role.Name;
+            ViewBag.RoleId = Id;
+            if (role == null)
+            {
+                return HttpNotFound();
+            }
+            var role_menus = db.RoleMenu.Where(m =>m.RoleId== role.Id).ToList();//查询出角色关联表的所有数据
             //var role_menus = db.RoleMenus.Where(m =>m.RoleId== rolses.Select(x=>x.id) rolses.Contains(m.RoleId)).ToList();//查询出角色关联表的所有数据
             var menuIds = role_menus.Select(n => n.MenuId).ToArray();
             var menus = db.MenuInfo.OrderBy(x => x.Sort).Where(m => menuIds.Contains(m.Id)).ToList();//查询出菜单数据
@@ -837,11 +822,98 @@ namespace TheFamilyFriend.Controllers
                 ///为新定义的result变量增加一个 所有的字菜单
                 result.AddRange(children);
             });
-            //ViewBag.List = result;
-
             return View(result);
-
         }
+
+
+
+        [Authorize(Roles = "Super")]
+        /// <summary>
+        ///  解除菜单与角色的关系
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public ActionResult RemoveRoleMenu(string RoleId, string MenuId)
+        {
+            if (string.IsNullOrWhiteSpace(RoleId) && string.IsNullOrWhiteSpace(MenuId))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            using (var dbs=new KinshipDb())
+            {
+                int MenuIds = Convert.ToInt32(MenuId);
+                var rolemenu= dbs.RoleMenu.FirstOrDefault(x => x.RoleId ==RoleId && x.MenuId == MenuIds);
+                dbs.RoleMenu.Remove(rolemenu);
+              
+                if (dbs.SaveChanges()>0)
+                {
+                    return RedirectToAction("ShowRoleMenu", new { Id = RoleId });
+                }
+                else
+                {
+                    return Content("<script>alert('移除失败，请联系相关人员');location.href='/SystemManagement/ShowRoleMenu?id ='" + RoleId + ";</script>");
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// 返回当前用户所属的角色所拥有的菜单
+        /// </summary>
+        /// <param name="disposing"></param>
+        [HttpGet]
+        //public ActionResult ShowRoleMenu()
+        //{
+        //    ///是否登录
+        //    if (!Request.IsAuthenticated)
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+        //    ///获取当前用户的id
+        //    var userID = User.Identity.GetUserId();
+        //    ///先读出当前用户表对应的所有的ROLES表，但只有rolename.
+        //    var rolses = UserManager.GetRoles(userID);
+        //    ///先读出当前用户的完整表.
+        //    var alluser = UserManager.FindById(userID);
+        //    ///先读出当前所有的ROLES表.
+        //    var allrolses = RoleManager.Roles.ToList();
+        //    ///皮配出这个用户ID的角色列表ID出来
+        //    var user_roleid = allrolses.Where(x => rolses.Contains(x.Name)).Select(n => n.Id).ToList();
+        //    //var rolses = RoleManager.Roles.ToList();
+        //    //这里是所有角色，不是当前用户的角色
+        //    //var roleIds = rolses.Select(m => m.id).ToList();
+        //    var role_menus = db.RoleMenu.Where(m => user_roleid.Contains(m.RoleId)).ToList();//查询出角色关联表的所有数据
+        //    //var role_menus = db.RoleMenus.Where(m =>m.RoleId== rolses.Select(x=>x.id) rolses.Contains(m.RoleId)).ToList();//查询出角色关联表的所有数据
+        //    var menuIds = role_menus.Select(n => n.MenuId).ToArray();
+        //    var menus = db.MenuInfo.OrderBy(x => x.Sort).Where(m => menuIds.Contains(m.Id)).ToList();//查询出菜单数据
+        //    ///下面进行表的读成菜单样式
+        //    ///定义一个变量result的MenuInfo列表变量
+        //    var result = new List<MenuInfo>();
+        //    ///读出所有的一级菜单
+        //    var level0 = menus.Where(m => m.Popedomfatherid == 0).ToList();
+        //    ///对所有一级菜单进行一次循环。 foreah (var xx in level0) 这种一样
+        //    level0.ForEach(item =>
+        //    {
+        //        ///定义一个children字菜单变量，当他的Popedomfatherid=当前循环的ID,取出当前的所有字菜单
+        //        var children = menus.Where(m => m.Popedomfatherid == item.Id).ToList();
+        //        /////为新定义的result变量增加一个 一级菜单
+        //        result.Add(item);
+        //        ///为新定义的result变量增加一个 所有的字菜单
+        //        result.AddRange(children);
+        //    });
+        //    //ViewBag.List = result;
+
+        //    return View(result);
+
+        //}
 
         #endregion
 

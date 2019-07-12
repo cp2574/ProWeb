@@ -679,6 +679,7 @@
     <Content Include="Views\SystemManagement\MenuList.cshtml" />
     <Content Include="Views\SystemManagement\AuthorityMenu.cshtml" />
     <Content Include="Views\Shared\_NavigationNew.cshtml" />
+    <Content Include="Views\SystemManagement\ShowRoleMenu.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

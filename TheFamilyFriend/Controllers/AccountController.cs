@@ -115,7 +115,7 @@ namespace TheFamilyFriend.Controllers
 
                     ///创建角色Super
                     AddRoleViewModel addRoleViewModel = new AddRoleViewModel();
-
+                    addRoleViewModel.Description = "超级管理员";
                     addRoleViewModel.Name = "Super";
                     var result1 = await RoleManager.CreateAsync(new ApplicationRole() {Name= addRoleViewModel.Name ,Description= addRoleViewModel.Description});
 

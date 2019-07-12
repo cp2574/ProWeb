@@ -50,9 +50,10 @@
             return [
                 ' <a class="RoleOfEidt btn btn-success" href="/SystemManagement/EditRole/' + row.Id +'" ><i class="fa fa-edit"></i> 编辑 </a>',
                 ' <a class="RemoveRole btn btn-warning" href="javascript:void(0);" ><i class="fa fa-bank"></i> 删除 </a>',
-                ' <a class="UserToRole btn btn-info" href="/SystemManagement/UserToRole/' + row.Id +'" ><i class="fa fa-user-circle"></i> 添加用户 </a>',
+                ' <a class="UserToRole btn btn-info" href="/SystemManagement/UserToRole/' + row.Id +'" ><i class="fa fa-user-circle"></i> 授权用户 </a>',
                 ' <a class="ViewRoleUser btn btn-success" href="/SystemManagement/ViewRoleUser/' + row.Id +'" ><i class="fa fa-eercast"></i> 查看用户 </a>',
-                ' <a class="ViewRoleUser btn btn-success" href="/SystemManagement/ViewRoleUser/' + row.Id + '" ><i class="fa fa-eercast"></i> 授权菜单 </a>',
+                ' <a class="ViewRoleUser btn btn-success" href="/SystemManagement/AuthorityMenu/' + row.Id + '" ><i class="fa fa-eercast"></i> 授权菜单 </a>',
+                ' <a class="ViewRoleUser btn btn-success" href="/SystemManagement/ShowRoleMenu/' + row.Id + '" ><i class="fa fa-eercast"></i> 查看菜单 </a>',
             ].join('');
         }
 
