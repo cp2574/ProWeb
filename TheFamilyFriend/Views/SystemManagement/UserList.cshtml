@@ -38,16 +38,34 @@
     <script src="~/Scripts/table/bootstrap-table-pagejump.js"></script>
 
     <script>
-    $(function () {
+
+        function check() {
+            let browser = navigator.userAgent;//用户访问的类型
+            let phone = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];//移动端类型
+            let type = true;
+            for (let i = 0; i < phone.length; i++) {
+                if (browser.indexOf(phone[i]) > 0) {//判断是否包含手机类型
+                    type = false;
+                    break;
+                }
+            }
+            return type;
+        }
+
+        $(function () {
         $.post("@Url.Action("GetuserList", "SystemManagement")", function (result) {
             for (var i = 0; i < result.length; i++) {
                 //alert(result[i].CreateTime)
                 result[i].CreateTime = new Date(parseInt(result[i].CreateTime.replace("/Date(", "").replace(")/", ""), 10)).toLocaleDateString()
                // result[i].CreateTime = timestamp2date(result[i].CreateTime);
-            }
+            } 
             console.warn(result);
             //加载事件
-            $("#tab").bootstrapTable('load', result);
+            $("#tab").bootstrapTable('destroy');
+            initTable(!check());
+            //$('#tab').bootstrapTable({ cardView: true })
+            $('#table').bootstrapTable('refreshOptions', { cardView: true });
+            $("#tab").bootstrapTable('load', result);        
         })
         })
 
@@ -78,55 +96,66 @@
 
             },
         };
-    $('#tab').bootstrapTable({
-        //请求方法
-        method: 'get',
-        //是否显示行间隔色
-        striped: true,
-        //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-        cache: false,
-        //是否显示分页（*）
-        pagination: true,
-        //是否启用排序
-        sortable: true,
-        //排序方式
-        sortOrder: "asc",
-        //初始化加载第一页，默认第一页
-        //我设置了这一项，但是貌似没起作用，而且我这默认是0,- -
-        //pageNumber:1,
-        //每页的记录行数（*）
-        pageSize: 10,
-        //可供选择的每页的行数（*）
-        pageList: [10, 20, 25],
-        //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
-        data: [],
-        //是否显示搜索
-        search: false,
-        strictSearch: true,
-        idField: "Id",
-        pagination: true,
-        showHeader: true,
-        showRefresh: false,
-        paginationShowPageGo: true,
-        showToggle: true,//切换
-        showColumns: true,//显示列
-        columns: [
-            { title: 'Id', field: 'Id', align: 'center', valign: 'middle', sortable: true, visible: false },
-            {
-                title: 'No', field: 'Avatar', align: 'center', valign: 'middle', align: 'center', 
-                formatter: operateFormatterImg
-            },
-            { title: '用户名', field: 'UserName', align: 'center', valign: 'middle',  },
-            { title: 'Tel', field: 'PhoneNumber', align: 'center', valign: 'middle', },
-            { title: '创建时间', field: 'CreateTime', align: 'center', valign: 'middle', sortable: true },
-            {
-                title: '操作', field: 'operate', align: 'center', valign: 'middle', events: operateEvents,
-                formatter: operateFormatter },
-        ],
-        });
 
+        function initTable(flge) {        
+            $('#tab').bootstrapTable({
+                //请求方法
+                method: 'get',
+                //是否显示行间隔色
+                striped: true,
+                //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                cache: false,
+                //是否显示分页（*）
+                pagination: true,
+                //是否启用排序
+                sortable: true,
+                //排序方式
+                sortOrder: "asc",
+                //初始化加载第一页，默认第一页
+                //我设置了这一项，但是貌似没起作用，而且我这默认是0,- -
+                //pageNumber:1,
+                //每页的记录行数（*）
+                pageSize: 10,
+                //可供选择的每页的行数（*）
+                pageList: [10, 20, 25],
+                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
+                data: [],
+                //是否显示搜索
+                search: false,
+                strictSearch: true,
+                idField: "Id",
+                pagination: true,
+                showHeader: true,
+                showRefresh: false,
+                pginationShowPageGo: true,
+                //detailView: false,
+                cardView: flge,
+                showToggle: true,//切换
+                showColumns: true,//显示列
+                columns: [
+                    { title: 'Id', field: 'Id', align: 'center', valign: 'middle', sortable: true, visible: false },
+                    {
+                        title: 'No', field: 'Avatar', align: 'center', valign: 'middle', align: 'center',
+                        formatter: operateFormatterImg
+                    },
+                    { title: '账号', field: 'UserName', align: 'center', valign: 'middle', },
+                    { title: '姓名', field: 'RealName', align: 'center', valign: 'middle', },
+                    { title: 'Tel', field: 'PhoneNumber', align: 'center', valign: 'middle', },
+                    { title: '创建时间', field: 'CreateTime', align: 'center', valign: 'middle', sortable: true },
+                    {
+                        title: '操作', field: 'operate', align: 'center', valign: 'middle', events: operateEvents,
+                        formatter: operateFormatter
+                    },
+                ],
+            });
+        }
+  
+       
+       
 
+     
 
+      
 
 
         /**

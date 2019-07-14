@@ -34,18 +34,33 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    @using (Html.BeginForm("AuthorityMenu", "SystemManagement", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+ 
+        <input  type="hidden" value="@ViewBag.RoleId" id="RoleId" name="RoleId"/>
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h3>
                             操作：
-                            <input type="checkbox" value="" id="check-all" /><label for="check-all">全选</label> | <input class="btn btn-primary" type="submit" value="确认授权" />
+                            <input type="checkbox" value="" id="check-all" /><label for="check-all">全选</label> | <input class="btn btn-primary" type="submit" value="确认授权" id="btnsave" />
                         </h3>
+                        <div class="ibox-title">
+                            <h3>一级菜单列表</h3>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <ul class="nav nav-pills nav-stacked" style="float:left;">
+                                        @foreach (TheFamilyFriend.Models.MenuInfo data1 in (ViewBag.drolistmenu as IEnumerable<TheFamilyFriend.Models.MenuInfo>))
+                                        {
+
+                                            <li class="titlesize" style="float:left;">
+                                                <a href="~/SystemManagement/AuthorityMenu?Id=@ViewBag.RoleId&SeachColumnString=@data1.Id"><span class="glyphicon glyphicon glyphicon-th-large" aria-hidden="true"></span> @data1.MenuName</a>
+
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="ibox-content p-md">
                         @{
@@ -82,7 +97,7 @@
                 </div>
             </div>
         </div>
-    }
+
 </div>
 
 @section Scripts {
@@ -91,8 +106,6 @@
     <script>
 
         $(function () {
-
-
             $("#check-all").click(function () {
                 var checkedAll = $(this).prop("checked")
                 if (checkedAll) {
@@ -102,6 +115,22 @@
                 }
 
             })
+            var meunid = [];
+           
+            $("#btnsave").click(function () {
+                $("[name='c']").each(function () {
+                    if ($(this).attr("checked")) {
+                        meunid.push($(this).val());
+                    }
+                })
+                if (meunid.length > 0) {
+                    $.post("@Url.Action("AuthorityMenu", "SystemManagement")", { RoleId: $("#RoleId").val(), meunid }) 
+                } else {
+                    toastr.warning("请勾选授权菜单");
+                }
+            })
+            console.log(meunid);
+          
         })
     </script>
 

@@ -198,6 +198,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MovieAndMusicController.cs" />
     <Compile Include="Controllers\MysteryManController.cs" />
+    <Compile Include="Controllers\OtherApplictionController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SpecialEffectsController.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="HelperModel\EmailOperation.cs" />
     <Compile Include="HelperModel\ErrorAttributecs.cs" />
     <Compile Include="HelperModel\IsActionrAttribute.cs" />
+    <Compile Include="HelperModel\PictureViewModel.cs" />
     <Compile Include="HelperModel\Result.cs" />
     <Compile Include="HelperModel\SystemManger\UsersViewModel.cs" />
     <Compile Include="HelperModel\Thumbnail.cs" />
@@ -680,6 +682,8 @@
     <Content Include="Views\SystemManagement\AuthorityMenu.cshtml" />
     <Content Include="Views\Shared\_NavigationNew.cshtml" />
     <Content Include="Views\SystemManagement\ShowRoleMenu.cshtml" />
+    <Content Include="Views\Home\UploadHeaderPic.cshtml" />
+    <Content Include="Views\OtherAppliction\Index.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -786,7 +790,6 @@
     <Content Include="Views\BosomFriend\Senior.cshtml" />
     <Content Include="Views\BosomFriend\Middle.cshtml" />
     <Content Include="Views\Home\PersonInfo.cshtml" />
-    <Content Include="Views\Home\SetPersonInfo.cshtml" />
     <Content Include="Views\Shared\_AppSetPartial.cshtml" />
     <Content Include="Views\SystemConfiguration\Index.cshtml" />
     <Content Include="Views\BosomFriend\University.cshtml" />

@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace TheFamilyFriend.Controllers
 {
-    public class MysteryManController : BaseController
+    public class OtherApplictionController : BaseController
     {
-        // GET: MysteryMan
+        // GET: OtherAppliction
         public ActionResult Index()
         {
             return View();

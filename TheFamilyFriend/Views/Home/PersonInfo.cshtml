@@ -1,7 +1,6 @@
-﻿@model TheFamilyFriend.Models.Personage
-
+﻿@model TheFamilyFriend.HelperModel.SystemManger.EditUsers
 @{
-    ViewBag.Title = "个人信息";
+    ViewBag.Title = "用户信息";
 }
 
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -11,146 +10,118 @@
             <li>
                 <a href="@Url.Action("Index", "Home")">主页</a>
             </li>
-            <li>
-                <strong>用户</strong>
-            </li>
             <li class="active">
                 <strong>@ViewBag.Title</strong>
             </li>
         </ol>
-    </div>   
-</div>
-
-<div class="wrapper wrapper-content ">
-    <div class="row">        
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>个人资料</h5>                 
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-down"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                     
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div>
-                        <div class="feed-activity-list">
-                            <div class="feed-element">                             
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                 <label class="control-label col-lg-3">姓名：</label>
-                                 <label class="control-label col-lg-3">@Model.Name</label>
-                                 <label class="control-label col-lg-3">昵称：</label>
-                                    <label class="control-label col-lg-3">@Model.Nickname</label>                                
-                                </div>
-                            </div>
-                            <div class="feed-element">
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                    <label class="control-label col-lg-3">性别：</label>
-                                    <label class="control-label col-lg-3">@Model.Gender</label>
-                                </div>
-                            </div>
-                            <div class="feed-element">
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                    <label class="control-label col-lg-3">出生年月：</label>
-                                    <label class="control-label col-lg-3">@Model.Birthday.Value.ToString("yyyy-MM-dd")</label>
-                                </div>
-                            </div>
-                            <div class="feed-element">
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                    <label class="control-label col-lg-3">邮箱：</label>
-                                    <label class="control-label col-lg-3">@Model.Email</label>
-                                </div>
-                            </div>
-                            <div class="feed-element">
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                    <label class="control-label col-lg-3">身高：</label>
-                                    <label class="control-label col-lg-3">@Model.Height cm</label>
-                                    <label class="control-label col-lg-3">体重：</label>
-                                    <label class="control-label col-lg-3">@Model.Weight kg</label>
-                                </div>
-                            </div>
-                            <div class="feed-element">
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                    <label class="control-label col-lg-3">所在地：</label>
-                                    <label class="control-label col-lg-3">@Model.Premise</label>
-                                    <label class="control-label col-lg-3">家乡：</label>
-                                    <label class="control-label col-lg-3">@Model.Hometown</label>
-                                </div>
-                            </div>
-                            <div class="feed-element">
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                    <label class="control-label col-lg-3">职业：</label>
-                                    <label class="control-label col-lg-3">@Model.Profession</label>
-                                    <label class="control-label col-lg-3">婚否：</label>
-                                    <label class="control-label col-lg-3">@Model.Ismarried</label>
-                                </div>
-                            </div>
-                            <div class="feed-element">
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                    <label class="control-label col-lg-3">血型：</label>
-                                    <label class="control-label col-lg-3">@Model.Blood</label>
-                                    <label class="control-label col-lg-3">星座：</label>
-                                    <label class="control-label col-lg-3">@Model.Constellation</label>
-                                </div>
-                            </div>
-                            <div class="feed-element">
-                                <div class="infont col-md-3 col-sm-4"><i class="fa fa-unlink"></i><span class="text-muted"></span></div>
-                                <div class="media-body ">
-                                    <label class="control-label col-lg-3">联系方式：</label>
-                                    <label class="control-label col-lg-3">@Model.Phone</label>
-                                </div>
-                            </div>
-                        </div>                       
-                        <button class="btn btn-primary btn-block m-t"><i class="fa fa-arrow-down"></i> <lable>更 多</lable></button>
-                    </div>
-
-                </div>
-            </div>
-        </div>        
     </div>
 </div>
-@section scripts{
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+
+    <div class="ibox-title">
+
+        <img src=@Html.DisplayFor(m => m.Avatar) alt="头像" class="img-circle" height="72" width="72">
+
+    </div>
+    <div class="ibox-content m-b-sm border-bottom">
+        @using (Html.BeginForm("PersonInfo", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="status">真名</label>
+                        @Html.TextBoxFor(m => m.RealName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RealName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="customer">Email(唯一）</label>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="order_id">性别</label>
+                        <select class="form-control" id="Gender" name="Gender">
+                            <option value="">请选择</option>
+                            <option selected="selected" value="1">男</option>
+                            <option value="0">女</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="customer">电话</label>
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="date_modified">生日</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" class="form_datetime form-control" id="Birthday" name="Birthday" value=@Html.DisplayFor(m => m.Birthday) size="16">
+                            @Html.ValidationMessageFor(m => m.Birthday, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="amount">    QQ</label>
+                        @Html.TextBoxFor(m => m.QQ, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.QQ, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="status">地址</label>
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="customer">微信</label>
+                        @Html.TextBoxFor(m => m.WX, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <input class="btn btn-primary" type="submit" value="确认修改" /> @Html.ActionLink("返回", "Index", "", new { @class = "btn btn-warning btn-sm" })
+            </div>
+        }
+    </div>
+
+
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/time/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/time/bootstrap-datetimepicker.min.js"></script>
     <script>
-        $(".feed-activity-list>.feed-element:gt(3)").hide();
         $(function () {
-            $(".media-body label").each(function () {          
-                if ($(this).text()== "") {
-                    $(this).text("暂无")
-                }
-            })
-
-
-            var flag = false;
-            $(".btn-block").click(function () {
-                if (!flag) {
-                    $(".feed-activity-list>.feed-element:gt(3)").show();
-                    $(".btn-block lable").text("收起")
-                    $(".btn-block i").attr("class", "fa fa-arrow-up")
-                    flag = true;
-                } else {
-                    $(".feed-activity-list>.feed-element:gt(3)").hide();
-                    $(".btn-block i").attr("class", "fa fa-arrow-down")
-                    $(".btn-block lable").text("更多")
-                    flag = false;
-                }
-              
-            })
-
+            $(".form_datetime").datetimepicker({
+                locale: 'zh-cn',
+                format: 'L',
+                showTodayButton: true
+            });
 
         })
-    </script>    
-    }
-
+    </script>
+}

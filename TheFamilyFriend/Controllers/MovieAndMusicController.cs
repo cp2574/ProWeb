@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace TheFamilyFriend.Controllers
 {
-    public class MovieAndMusicController : Controller
+    public class MovieAndMusicController : BaseController
     {
         // GET: MovieAndMusic
        public static  List<Music> Musiclist = new List<Music>();

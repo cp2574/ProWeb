@@ -7,7 +7,9 @@
 
         <ul class="nav navbar-top-links navbar-right">
             <li>
-                @Html.ActionLink("你好 " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+                @*@Html.ActionLink("你好 " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })*@
+               
+                <strong>你好 @User.Identity.GetUserName() !</strong>
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">登出</a></li>
         </ul>

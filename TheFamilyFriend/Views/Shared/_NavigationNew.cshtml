@@ -1,29 +1,69 @@
-﻿@using Microsoft.AspNet.Identity;
+﻿@model IEnumerable<TheFamilyFriend.Models.MenuInfo>
+@using Microsoft.AspNet.Identity;
 @using TheFamilyFriend.HelperModel;
-
-
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav" id="side-menu">
-            <li class="nav-header">
-                <div class="dropdown profile-element">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="clear">
-                            <span class="block m-t-xs">
-                                <strong class="font-bold">Example user</strong>
-                            </span> <span class="text-muted text-xs block">Example menu @ViewBag.testname<b class="caret"></b></span>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="#">Logout</a></li>
-                    </ul>
-                </div>
-                <div class="logo-element">
-                    IN+
-                </div>
-            </li>
-            <li class="@Html.IsSelected(controller:"xxxxx", action: "Index")">
-                <a href="@Url.Action("Index", "Admin")"><i class="fa fa-laptop"></i> <span class="nav-label">管理首页</span> </a>
+            @{
+                if (User.Identity.GetUserId() != null)
+                {
+                    string[] head = UserInfo.GetUser(User.Identity.GetUserId());
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span>
+                                <img alt="image" class="img-circle" src="@head[1]" width="75" height="75">
+                            </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+
+                                        <strong class="font-bold">@User.Identity.Name</strong>
+
+                                    </span>
+                                    @*<span class="text-muted text-xs block">
+                                            管理员
+                                            <b class="caret"></b>
+                                    </span>*@
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="dropdown-item" href="@Url.Action("PersonInfo", "Home",new { id=User.Identity.GetUserId()})">个人信息</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("UploadHeaderPic", "Home",new { id=User.Identity.GetUserId()})">修改头像</a></li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="@Url.Action("Login", "Account")">登出</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            <img alt="image" class="rounded-circle img-circle" src="@head[1]" width="40" height="40">
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span>
+                                <img alt="image" class="img-circle" src="/Content/Images/Avatar/defult.png" width="75" height="75">
+                            </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                        @*<strong class="font-bold">@User.Identity.Name</strong>*@
+                                    </span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="logo-element">
+                            <img alt="image" class="rounded-circle" src="/Content/Images/Avatar/defult.png" width="40" height="40">
+                        </div>
+                    </li>
+                }
+            }
+            @*菜单导航*@
+            <li class="@Html.IsSelected(controller:"Home", action: "Index")">
+                <a href="@Url.Action("Index", "Home")"><i class="fa fa-laptop"></i> <span class="nav-label">主页</span> </a>
             </li>
             @foreach (var user in Model)
             {
@@ -46,25 +86,22 @@
 
                             </ul>
                         </li>
-
                     }
                     else
                     {
-
                         <li class="@Html.IsSelected(action:@user.ControllerName)">
                             <a href="@Url.Action(@user.MethodName,@user.ControllerName)"> <span class="nav-label">@user.MenuName</span></a>
                         </li>
-
                     }
                 }
             }
-            <li class="@Html.IsSelected(controller: "UIElements")">
-                <a href="@Url.Action("ListRoles", "Account")"><i class="fa fa-flask"></i> <span class="nav-label" data-i18n="nav.uielements">角色管理</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "UIElements", cssClass: "in")">
-                    <li class="@Html.IsSelected(action: "ListRoles")"><a href="@Url.Action("ListRoles", "Account")">角色列表</a></li>
-                    <li class="@Html.IsSelected(action: "AddRoles")"><a href="@Url.Action("AddRoles", "Account")">新建角色</a></li>
-                </ul>
-            </li>
+            @*<li class="@Html.IsSelected(controller: "UIElements")">
+                    <a href="@Url.Action("ListRoles", "Account")"><i class="fa fa-flask"></i> <span class="nav-label" data-i18n="nav.uielements">角色管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "UIElements", cssClass: "in")">
+                        <li class="@Html.IsSelected(action: "ListRoles")"><a href="@Url.Action("ListRoles", "Account")">角色列表</a></li>
+                        <li class="@Html.IsSelected(action: "AddRoles")"><a href="@Url.Action("AddRoles", "Account")">新建角色</a></li>
+                    </ul>
+                </li>*@
 
         </ul>
     </div>

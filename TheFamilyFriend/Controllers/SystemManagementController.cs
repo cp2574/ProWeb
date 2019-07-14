@@ -20,7 +20,7 @@ using System.IO;
 namespace TheFamilyFriend.Controllers
 {
     [Authorize(Roles="Super")]
-    public class SystemManagementController : Controller
+    public class SystemManagementController : BaseController
     {
         // GET: SystemManagement
        /// <summary>
@@ -247,8 +247,17 @@ namespace TheFamilyFriend.Controllers
                         Directory.CreateDirectory(strFileSavePath);
                     }
                     ///这种方式，上传的为username+扩展名，相当于覆盖以前的图片
-                    file.SaveAs(strFileSavePath + "/" + user.RealName + strFileExtention);   //保存文件
-                    user.Avatar = "/Content/Images/Avatar/" + user.RealName + strFileExtention;   //给模型赋值
+                    string filename = "";
+                    if (!string.IsNullOrEmpty(user.RealName))
+                    {
+                        filename = user.RealName;
+                    }
+                    else
+                    {
+                        filename = user.UserName;
+                    }
+                    file.SaveAs(strFileSavePath + "/" + filename + strFileExtention);   //保存文件
+                    user.Avatar = "/Content/Images/Avatar/" + filename + strFileExtention;   //给模型赋值
                 }
                 var result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
@@ -697,7 +706,7 @@ namespace TheFamilyFriend.Controllers
         /// </summary>
         /// <param name="disposing"></param>
         [HttpGet]
-        public ActionResult AuthorityMenu(string Id)
+        public ActionResult AuthorityMenu(string Id,string SeachColumnString)
         {
 
             if (string.IsNullOrWhiteSpace(Id))
@@ -711,11 +720,8 @@ namespace TheFamilyFriend.Controllers
             {
                 return HttpNotFound();
             }
-
-
-            ///读出所有的现有的菜单名称，以下拉框的形式写入。
-
-            //var menus = db.MenuInfos.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort);
+            ///读出所有的一级菜单
+            ViewBag.drolistmenu = db.MenuInfo.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort);
 
             ///下面是开始显示菜单的列表了
             ///读出所有的菜单列表
@@ -725,7 +731,11 @@ namespace TheFamilyFriend.Controllers
             ///读出所有的一级菜单
             var level0 = data.Where(m => m.Popedomfatherid == 0).ToList();
             ///当一级菜单索引选择有的时候，一级菜单就仅为我们选择的这个
-
+            if (!string.IsNullOrEmpty(SeachColumnString))
+            {
+                var xxx = int.Parse(SeachColumnString);
+                level0 = level0.Where(m => m.Id == xxx).ToList();
+            }
 
             ///对所有一级菜单进行一次循环。 foreah (var xx in level0) 这种一样
             level0.ForEach(item =>
@@ -748,32 +758,32 @@ namespace TheFamilyFriend.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AuthorityMenu(string Id, List<string> c)
+        public ActionResult AuthorityMenu(string RoleId, string [] meunid)
         {
             ///如Id为null，返回错误请求
-            if (Id == null)
+            if (RoleId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ////删除包含有该角色Id的所有记录
             //删除所有的数据，就是清空表原有数据
-            List<RoleMenu> xx = db.RoleMenu.Where(m => m.RoleId == Id).ToList();
+            List<RoleMenu> xx = db.RoleMenu.Where(m => m.RoleId == RoleId).ToList();
             db.RoleMenu.RemoveRange(xx);
             ///将所有List C中的菜单ID与ROLEID一起写入表中
-            if (c != null)
+            if (meunid != null)
             {
-                foreach (var id2 in c)
+                foreach (var id2 in meunid)
                 {
                     RoleMenu roleMenu = new RoleMenu();
-                    roleMenu.RoleId = Id;
+                    roleMenu.RoleId = RoleId;
                     roleMenu.MenuId = Convert.ToInt32(id2);
                     roleMenu.IsAvailable = 1;
                     db.RoleMenu.Add(roleMenu);
                 }
             }
             db.SaveChanges();
-            return View();
+            return RedirectToAction("AuthorityMenu", new { Id = RoleId });
+         
         }
 
 
@@ -783,7 +793,7 @@ namespace TheFamilyFriend.Controllers
         /// </summary>
         /// <param name="disposing"></param>
         [HttpGet]
-        public ActionResult ShowRoleMenu(string Id)
+        public ActionResult ShowRoleMenu(string Id, string SeachColumnString)
         {
             ///是否登录
             if (!Request.IsAuthenticated)
@@ -812,12 +822,22 @@ namespace TheFamilyFriend.Controllers
             var result = new List<MenuInfo>();
             ///读出所有的一级菜单
             var level0 = menus.Where(m => m.Popedomfatherid == 0).ToList();
+            ViewBag.drolistmenu = level0;
+
+
+            if (!string.IsNullOrEmpty(SeachColumnString))
+            {
+                var xxx = int.Parse(SeachColumnString);
+                level0 = level0.Where(m => m.Id == xxx).ToList();
+            }
+           
             ///对所有一级菜单进行一次循环。 foreah (var xx in level0) 这种一样
             level0.ForEach(item =>
             {
                 ///定义一个children字菜单变量，当他的Popedomfatherid=当前循环的ID,取出当前的所有字菜单
                 var children = menus.Where(m => m.Popedomfatherid == item.Id).ToList();
                 /////为新定义的result变量增加一个 一级菜单
+                children.ForEach(m => m.MenuName = "------------" + m.MenuName);
                 result.Add(item);
                 ///为新定义的result变量增加一个 所有的字菜单
                 result.AddRange(children);

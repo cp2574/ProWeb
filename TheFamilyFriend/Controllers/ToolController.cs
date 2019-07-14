@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace TheFamilyFriend.Controllers
 {
     [AuthorizeAttribute]
-    public class ToolController : Controller
+    public class ToolController : BaseController
     {
         // GET: Tool
         public ActionResult Index()

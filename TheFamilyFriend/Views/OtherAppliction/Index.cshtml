@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "百度一下";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+        <!--
+    iframe：内嵌框架
+     -->
+        <iframe scrolling="yes" id="main" name="topFrame" frameborder="0" src="http://www.baidu.com" style="min-height:600px;width:100%;height:100%;">
+            如果你看到该文字，说明该浏览器不支持iframe
+        </iframe>
+    </div>
+    <p>
+        <a href="http://www.sina.com" target="topFrame">新浪</a>&nbsp;&nbsp;&nbsp;
+        <a href="http://www.baidu.com" target="topFrame">百度</a>
+    </p>
+</div>
+@section scripts{
+    <script>
+        // 计算页面的实际高度，iframe自适应会用到
+        function calcPageHeight(doc) {
+            var cHeight = Math.max(doc.body.clientHeight, doc.documentElement.clientHeight)
+            var sHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight)
+            var height = Math.max(cHeight, sHeight)
+            return height
+        }
+        //根据ID获取iframe对象
+        var ifr = document.getElementById('main')
+        ifr.onload = function () {
+            //解决打开高度太高的页面后再打开高度较小页面滚动条不收缩
+            ifr.style.height = '0px';
+            var iDoc = ifr.contentDocument || ifr.document
+            var height = calcPageHeight(iDoc)
+            if (height < 850) {
+                height = 850;
+            }
+            ifr.style.height = height + 'px'
+        }
+    </script>
+}
+

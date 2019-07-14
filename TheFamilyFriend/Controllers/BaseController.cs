@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TheFamilyFriend.HelperModel;
 using TheFamilyFriend.Models;
 
 namespace TheFamilyFriend.Controllers
@@ -17,6 +18,7 @@ namespace TheFamilyFriend.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
 
+     
         protected ApplicationRoleManager RoleManager
         {
             get { return _roleManager ?? Request.GetOwinContext().Get<ApplicationRoleManager>(); }
@@ -46,25 +48,29 @@ namespace TheFamilyFriend.Controllers
             }
         }
 
+        
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             if (Request.IsAuthenticated)
             {
 
-                List<MenuInfo> UserMenus = Session["menus"] as List<MenuInfo>;
-                if (UserMenus == null)
-                {
+                //List<MenuInfo> UserMenus = Session["menus"] as List<MenuInfo>;
+                List<MenuInfo> UserMenus = new List<MenuInfo>();
+                //if (UserMenus == null)
+                //{
 
                     ///获取当前用户的id
                     var userID = User.Identity.GetUserId();
                     ///先读出当前用户表对应的所有的ROLES表，但只有rolename.
                     var rolses = UserManager.GetRoles(userID);
                     ///先读出当前用户的完整表.
-                    var alluser = UserManager.FindById(userID);
+                    var alluser = UserManager.FindById(userID);                  
                     ///先读出当前所有的ROLES表.
                     var allrolses = RoleManager.Roles.ToList();
-                    ///皮配出这个用户ID的角色列表ID出来
+
+
+                    ///匹配这个用户ID的角色列表ID出来
                     var user_roleid = allrolses.Where(x => rolses.Contains(x.Name)).Select(n => n.Id).ToList();
                     //var rolses = RoleManager.Roles.ToList();
                     //这里是所有角色，不是当前用户的角色
@@ -90,10 +96,9 @@ namespace TheFamilyFriend.Controllers
                         ///为新定义的result变量增加一个 所有的字菜单
                         result333.AddRange(children);
                     });
-                    Session["menus"] = result333;
+                    //Session["menus"] = result333;
                     UserMenus = result333;
-                }
-
+               // }
                 ViewBag.Menu = UserMenus;
                 base.OnActionExecuted(filterContext);
 

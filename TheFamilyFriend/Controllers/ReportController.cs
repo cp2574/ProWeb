@@ -10,7 +10,7 @@ using System.Timers;
 namespace TheFamilyFriend.Controllers
 {
     [Authorize]
-    public class ReportController : Controller
+    public class ReportController : BaseController
     {
         // GET: Report
         public ActionResult Index()

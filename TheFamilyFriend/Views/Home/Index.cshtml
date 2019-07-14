@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<TheFamilyFriend.Models.MenuInfo>
+@{
     ViewBag.Title = "主页";
 }
 
@@ -6,129 +7,58 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
         <h2>@ViewBag.Title</h2>
-        <ol class="breadcrumb">          
+        <ol class="breadcrumb">
             @*<li class="active">
-                <strong>@ViewBag.Title</strong>
-            </li>*@
+                    <strong>@ViewBag.Title</strong>
+                </li>*@
         </ol>
     </div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row"> 
-        <div class="col-lg-3">
-            <div class="widget lazur-bg p-lg text-center">
-                <div class="m-b-md">
-                    <a href="@Url.Action("PersonInfo","Home")">
-                        <i class="fa fa-user fa-5x"></i>
-                        <h1 class="m-xs">用户</h1>
-                        <h3 class="font-bold no-margins">
-                            User
-                        </h3>
-                        <small>开心每一天 </small></a>
-                 </div>
-            </div>
-        </div>   
-        <div class="col-lg-3">
-            <div class="widget lazur-bg p-lg text-center">
-                <div class="m-b-md">
-                    <a href="@Url.Action("Index","People")">
-                        <i class="fa fa-address-card fa-5x"></i>
-                        <h1 class="m-xs">家人 </h1>
-                        <h3 class="font-bold no-margins">
-                            Family
-                        </h3>
-                        <small>家是心灵的港湾</small>
-                    </a>
-                  
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="widget lazur-bg p-lg text-center">
-                <div class="m-b-md">                 
-                    <a href="@Url.Action("Primary","BosomFriend")">
-                        <i class="fa fa-user-plus fa-5x"></i>
-                        <h1 class="m-xs">挚友</h1>
-                        <h3 class="font-bold no-margins">
-                            bosom friend
-                        </h3>
-                        <small>有过美好的时光</small>
-                    </a>
-                </div>
-            </div>
-        </div>
-     
-        <div class="col-lg-3">
-            <div class="widget lazur-bg p-lg text-center">
-                <div class="m-b-md">
-                    <a href="@Url.Action("Index","Report")">
-                        <i class="fa fa-pie-chart fa-5x"></i>
-                        <h1 class="m-xs">报表总览</h1>
-                        <h3 class="font-bold no-margins">
-                            Report
-                        </h3>
-                        <small>数据信息化</small></a>
-             </div>
-            </div>
-        </div>
-    </div>
-  
     <div class="row">
-        <div class="col-lg-3">
-            <div class="widget lazur-bg p-lg text-center">
-                <div class="m-b-md">
-                    <a href="@Url.Action("Index","MovieAndMusic")">
-                        <i class="fa  fa-film fa-5x"></i>
-                        <h1 class="m-xs">影音视听</h1>
-                        <h3 class="font-bold no-margins">
-                            MovieAndMusic
-                        </h3>
-                        <small>让我们投入影音世界吧.</small></a>
-                   </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="widget lazur-bg p-lg text-center">
-                <div class="m-b-md">
-                    <a href="@Url.Action("Index","WeatherReport")">
-                        <i class="fa fa-cloud fa-5x"></i>
-                        <h1 class="m-xs">天气实况</h1>
-                        <h3 class="font-bold no-margins">
-                            Weather
-                        </h3>
-                        <small>为关心的人了解天气状况吧.</small></a>
-                   </div>
-            </div>
-        </div>    
-        <div class="col-lg-3">
-            <div class="widget lazur-bg p-lg text-center">
-                <div class="m-b-md">
-                    <a href="@Url.Action("Index","UserManger")">
-                        <i class="fa fa-bell fa-5x"></i>
-                        <h1 class="m-xs">用户管理</h1>
-                        <h3 class="font-bold no-margins">
-                            UserManger
-                        </h3>
-                        <small>每个人都有属于自己的空间.</small>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="widget lazur-bg p-lg text-center">
-                <div class="m-b-md">
-                    <a href="@Url.Action("Index","SystemConfiguration")">
-                        <i class="fa  fa-wrench fa-5x"></i>
-                        <h1 class="m-xs">系统配置</h1>
-                        <h3 class="font-bold no-margins">
-                            SystemConfiguration
-                        </h3>
-                        <small>寻找一个属于自己的风格</small>
-                    </a>
-          </div>
-            </div>
-        </div>
-    </div>
+        @{
 
+
+            var menulist = ViewBag.Menu as List<TheFamilyFriend.Models.MenuInfo>;
+            foreach (var user in menulist)
+            {
+                if (user.Popedomfatherid == 0)
+                {
+                    if (!string.IsNullOrEmpty(@user.MenuIcon))
+                    {
+
+                        foreach (var chilemenu in menulist)
+                        {
+                            if (chilemenu.Popedomfatherid == user.Id)
+                            {
+
+                                <div class="col-lg-3">
+                                    <div class="widget lazur-bg p-lg text-center">
+                                        <div class="m-b-md">
+                                            <a href="@Url.Action(chilemenu.MethodName,chilemenu.ControllerName)">
+                                                <i class="@user.MenuIcon fa-5x"></i>
+                                                <h1 class="m-xs">@user.MenuName</h1>
+                                                @*<h3 class="font-bold no-margins">
+                                                    User
+                                                </h3>
+                                                <small>开心每一天 </small>*@
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                break;
+
+                            }
+
+                        }
+
+
+
+                    }
+
+                }
+            }
+        }
+    </div>
 </div>

@@ -162,29 +162,22 @@ namespace TheFamilyFriend.Controllers
            // 这不会计入到为执行帐户锁定而统计的登录失败次数中
             // 若要在多次输入错误密码的情况下触发帐户锁定，请更改为 shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
-            Result re = new Result();
             switch (result)
             {
-                case SignInStatus.Success:
-                    re.issucess = true;
-                    re.message = "登录成功!";
-                    LoginLogs(model, re);
+                case SignInStatus.Success:                 
+                    LoginLogs(model, new Result(true, "登录成功!"));
                     return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    re.issucess = false;
-                    re.message = "账号已锁住!";
+                case SignInStatus.LockedOut:               
+                    LoginLogs(model, new Result(false, "账号已锁住!"));
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    re.issucess = false;
-                    re.message = "账号需要验证!";
-                    LoginLogs(model, re);
+                  
+                    LoginLogs(model, new Result(false, "账号需要验证!"));
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "无效的登录尝试。");
-                    re.issucess = false;
-                    re.message = "无效的登录尝试!";
-                    LoginLogs(model, re);
+                    LoginLogs(model, new Result(false, "无效的登录尝试!"));
                     return View(model);
 
              

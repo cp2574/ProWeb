@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -12,7 +13,7 @@ using TheFamilyFriend.Models;
 namespace TheFamilyFriend.Controllers
 {
   
-    public class BosomFriendController : Controller
+    public class BosomFriendController : BaseController
     {
         /// <summary>
         /// 上传的位置信息
@@ -39,7 +40,7 @@ namespace TheFamilyFriend.Controllers
             
         }
       
-        [AuthorizeFilter(Users = "rd1,admin")]
+      
         /// <summary>
         /// 初中同学
         /// </summary>
@@ -76,7 +77,7 @@ namespace TheFamilyFriend.Controllers
             return File(buff, "image/jpeg");
         }
 
-        [AuthorizeFilter(Users = "admin")]
+      
         /// <summary>
         /// 高中同学
         /// </summary>
@@ -91,7 +92,7 @@ namespace TheFamilyFriend.Controllers
         }
 
 
-        [AuthorizeFilter(Users = "admin")]
+      
         /// <summary>
         /// 大学同学
         /// </summary>
@@ -105,7 +106,7 @@ namespace TheFamilyFriend.Controllers
             }
         }
 
-        [AuthorizeFilter(Users="admin")]
+      
         /// <summary>
         /// 特殊人
         /// </summary>
@@ -388,35 +389,91 @@ namespace TheFamilyFriend.Controllers
         }
 
         public JsonResult ShowPicture() {
-          
+
+            List<PictureViewModel> list = new List<PictureViewModel>();
             using (var bd = new KinshipDb())
-            {
-                var list = bd.Picture.Where(x => x.UserName == "admin").Select(x => new { x.PicturePath, x.PictureTypeId }).ToList();
-              return Json(list);
-            }           
+            {              
+                if (User.IsInRole("Super"))
+                {
+                    list = bd.Picture.Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                }
+                else
+                {
+                    list = bd.Picture.Where(x => x.UserName == User.Identity.Name).Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                }
+
+            }
+            return Json(list);
         }
 
         public JsonResult ShowSingerTypePicture(int PictureTypeId)
         {
-            using (var bd = new KinshipDb())
-            {
-                if (PictureTypeId==0)
-                {
-                    var list = bd.Picture.Where(x => x.UserName == "admin").Select(x => new { x.PicturePath, x.PictureTypeId }).ToList();
-                    return Json(list);
-                }
-                else
-                {
-                    var list = bd.Picture.Where(x => x.UserName == "admin" && x.PictureTypeId == PictureTypeId).Select(x => new { x.PicturePath, x.PictureTypeId }).ToList();
-                    return Json(list);
-                }
-          
-            }
+            
+                
+                return Json(GetlistPicture(PictureTypeId));            
         }
 
 
+        public List<PictureViewModel> GetlistPicture(int PictureTypeId) {
+        List<PictureViewModel> list = new List<PictureViewModel>();
+            try
+            {
+                using (var bd = new KinshipDb())
+                {
+                    if (PictureTypeId != 0)
+                    {
+                        var lists = bd.Picture.Where(x => x.PictureTypeId == PictureTypeId);
+                        if (User.IsInRole("Super"))
+                        {
+                            list = lists.Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                        }
+                        else
+                        {
+                            list = lists.Where(x => x.UserName == User.Identity.Name).Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                        }
+                    }
+                    else
+                    {
+                        if (User.IsInRole("Super"))
+                        {
+                            list = bd.Picture.Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                        }
+                        else
+                        {
+                            list = bd.Picture.Where(x => x.UserName == User.Identity.Name).Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogs(new Result(false, ex.Message));
+                list = new List<PictureViewModel>();
+            }
+           return list;
+    }
 
-        [AuthorizeFilter]
+
+
+        public void ErrorLogs(Result result)
+        {
+            using (var kbd = new KinshipDb())
+            {
+                //登录日志
+                kbd.Logs.Add(new TLogs()
+                {
+                    Account = User.Identity.Name,
+                    code = "CaoZuoLogs",
+                    IP = Host.IPAddress,
+                    Url = HttpContext.Request.Url.ToString(),
+                    Result = result.message,
+                    Type = logtype.报错日志,
+                    date = DateTime.Now
+                });
+                kbd.SaveChanges();
+            }
+        }
+
         public ActionResult UploadPicture()
         {
             using (var bd = new KinshipDb())

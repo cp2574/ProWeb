@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace TheFamilyFriend.Controllers
 {
-    public class SpecialEffectsController : Controller
+    public class SpecialEffectsController : BaseController
     {
         // GET: SpecialEffects
         public ActionResult Index()

@@ -11,7 +11,7 @@ namespace TheFamilyFriend.Controllers
     /// <summary>
     /// 账户管理
     /// </summary>
-    public class WealthManagementController : Controller
+    public class WealthManagementController : BaseController
     {
         // GET: WealthManagement
         public ActionResult Index()

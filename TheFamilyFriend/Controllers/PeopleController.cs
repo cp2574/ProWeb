@@ -8,8 +8,8 @@ using TheFamilyFriend.HelperModel;
 
 namespace TheFamilyFriend.Controllers
 {
-    [Authorize(Users = "admin,rd1")]
-    public class PeopleController :Controller
+    [Authorize(Roles ="Super,admin")]
+    public class PeopleController : BaseController
     {
         // GET: People
         public ActionResult Index()

@@ -11,7 +11,7 @@ using System.Configuration;
 
 namespace TheFamilyFriend.Controllers
 {
-    public class WeatherReportController : Controller
+    public class WeatherReportController : BaseController
     {
         // GET: WeatherReport
         public ActionResult Index()

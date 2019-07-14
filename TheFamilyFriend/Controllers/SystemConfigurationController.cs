@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace TheFamilyFriend.Controllers
 {
-    public class SystemConfigurationController : Controller
+    public class SystemConfigurationController : BaseController
     {
         // GET: SystemConfiguration
         public ActionResult Index()
