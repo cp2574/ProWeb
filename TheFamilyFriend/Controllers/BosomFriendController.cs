@@ -136,19 +136,6 @@ namespace TheFamilyFriend.Controllers
 
                 if (KpDb.Personage.Where(x=>x.Name== person.Name).FirstOrDefault()==null)
                 {
-
-                    //KpDb.Personage.Add(new Personage()
-                    //{
-                    //    Name = person.Name,
-                    //    Nickname = person.Nickname,
-                    //    Phone = person.Phone,
-                    //    Birthday = person.Birthday,
-                    //    Blood = person.Blood,
-                    //    Email = person.Email,
-                    //    Gender = person.Gender,
-                    //    Constellation = person.Constellation,
-                    //    Type = person.Type,
-                    //});
                     person.LikeGood = 1;
                     KpDb.Personage.Add(person);
                     if (KpDb.SaveChanges() > 0)
@@ -557,6 +544,33 @@ namespace TheFamilyFriend.Controllers
                 Count = count,
                 Message = msg
             });
+        }
+
+        public JsonResult DownPricture() {
+
+            try
+            {
+                string fileName = "aaa.jpg";//客户端保存的文件名
+                string filePath = @"G:\TheFamilyFriend\Images\UploadImg\administrator\administrator_c2dcf099-428f-43be-aa90-d24341398a75.jpg";//路径
+                                                                                                                                              //以字符流的形式下载文件
+                FileStream fs = new FileStream(filePath, FileMode.Open);
+                byte[] bytes = new byte[(int)fs.Length];
+                fs.Read(bytes, 0, bytes.Length);
+                fs.Close();
+                Response.ContentType = "application/octet-stream";
+                //通知浏览器下载文件而不是打开
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8));
+                Response.BinaryWrite(bytes);
+                Response.Flush();
+                Response.End();
+                return Json("");
+            }
+            catch (Exception ex)
+            {
+
+                return Json(ex.Message);
+            }
+        
         }
         #endregion
     }

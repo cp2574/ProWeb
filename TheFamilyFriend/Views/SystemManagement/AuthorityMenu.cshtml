@@ -118,9 +118,10 @@
             var meunid = [];
            
             $("#btnsave").click(function () {
-                $("[name='c']").each(function () {
-                    if ($(this).attr("checked")) {
-                        meunid.push($(this).val());
+                $("[name='c']").each(function (e) {              
+                    if ($("[name='c']").eq(e).is(':checked')) {
+                    
+                        meunid.push($("[name='c']").eq(e).val());
                     }
                 })
                 if (meunid.length > 0) {

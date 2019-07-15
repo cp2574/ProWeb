@@ -212,6 +212,7 @@
     </Compile>
     <Compile Include="HelperModel\AuthorizeFilterAttribute.cs" />
     <Compile Include="HelperModel\BaiduAipOcr.cs" />
+    <Compile Include="HelperModel\CustomerLogs.cs" />
     <Compile Include="HelperModel\EmailOperation.cs" />
     <Compile Include="HelperModel\ErrorAttributecs.cs" />
     <Compile Include="HelperModel\IsActionrAttribute.cs" />
@@ -684,6 +685,7 @@
     <Content Include="Views\SystemManagement\ShowRoleMenu.cshtml" />
     <Content Include="Views\Home\UploadHeaderPic.cshtml" />
     <Content Include="Views\OtherAppliction\Index.cshtml" />
+    <Content Include="Views\SystemManagement\EditMenuInfo.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

@@ -16,6 +16,8 @@ using TheFamilyFriend.HelperModel;
 using TheFamilyFriend.Models;
 using TheFamilyFriend.HelperModel.SystemManger;
 using System.IO;
+using Microsoft.Ajax.Utilities;
+using Common;
 
 namespace TheFamilyFriend.Controllers
 {
@@ -91,8 +93,7 @@ namespace TheFamilyFriend.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Authorize(Roles = "Super")]
+        [HttpGet]     
         [AllowAnonymous]
         public ActionResult PasswordReset(string id)
         {
@@ -276,8 +277,7 @@ namespace TheFamilyFriend.Controllers
         /// 下面是编辑用户资料的代码
         /// </summary>
         /// <param name="disposing"></param>
-        [HttpGet]
-        [Authorize(Roles = "Super")]
+        [HttpGet] 
         public ActionResult EditUser(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -292,7 +292,6 @@ namespace TheFamilyFriend.Controllers
             //    Value = g.Id,
             //    Selected = false
             //});
-
 
             ApplicationUser user = UserManager.FindById(id);
             if (user == null)
@@ -758,7 +757,7 @@ namespace TheFamilyFriend.Controllers
 
 
         [HttpPost]
-        public ActionResult AuthorityMenu(string RoleId, string [] meunid)
+        public ActionResult AuthorityMenu(string RoleId, int [] meunid)
         {
             ///如Id为null，返回错误请求
             if (RoleId == null)
@@ -767,22 +766,27 @@ namespace TheFamilyFriend.Controllers
             }
             ////删除包含有该角色Id的所有记录
             //删除所有的数据，就是清空表原有数据
-            List<RoleMenu> xx = db.RoleMenu.Where(m => m.RoleId == RoleId).ToList();
-            db.RoleMenu.RemoveRange(xx);
+            //List<RoleMenu> xx = db.RoleMenu.Where(m => m.RoleId == RoleId).ToList();
+            //db.RoleMenu.RemoveRange(xx);
             ///将所有List C中的菜单ID与ROLEID一起写入表中
             if (meunid != null)
             {
                 foreach (var id2 in meunid)
                 {
-                    RoleMenu roleMenu = new RoleMenu();
-                    roleMenu.RoleId = RoleId;
-                    roleMenu.MenuId = Convert.ToInt32(id2);
-                    roleMenu.IsAvailable = 1;
-                    db.RoleMenu.Add(roleMenu);
+                 
+                    ///对已授权的是否存在
+                    if (db.RoleMenu.FirstOrDefault(x => x.RoleId == RoleId && x.MenuId == id2) ==null)
+                    {
+                        RoleMenu roleMenu = new RoleMenu();
+                        roleMenu.RoleId = RoleId;
+                        roleMenu.MenuId = Convert.ToInt32(id2);
+                        roleMenu.IsAvailable = 1;
+                        db.RoleMenu.Add(roleMenu);
+                    }                   
                 }
             }
             db.SaveChanges();
-            return RedirectToAction("AuthorityMenu", new { Id = RoleId });
+            return RedirectToAction("RoleList");
          
         }
 
@@ -842,7 +846,7 @@ namespace TheFamilyFriend.Controllers
                 ///为新定义的result变量增加一个 所有的字菜单
                 result.AddRange(children);
             });
-            return View(result);
+            return View("ShowRoleMenu",result);
         }
 
 
@@ -878,9 +882,117 @@ namespace TheFamilyFriend.Controllers
         }
 
 
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Super")]
+        public ActionResult DelMenuInfo(int Id) {
+            try
+            {
+                using (var db = new KinshipDb())
+                {
+                    var rolemeun = db.RoleMenu.Where(x => x.MenuId == Id);
+                    if (rolemeun != null && rolemeun.Count() > 0)
+                    {
+                        db.RoleMenu.RemoveRange(rolemeun);
+                    }
+                    db.MenuInfo.Remove(db.MenuInfo.Find(Id));
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                CustomerLogs.ErrorLogs(User.Identity.Name, "操作方法：DelMenuInfo", new Result(false, ex.Message), HttpContext.Request.Url.ToString());
+            }
+            return RedirectToAction("MenuList");
+        }
 
+        /// <summary>
+        /// 编辑菜单
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult EditMenuInfo(int Id) {
+            using (var db=new KinshipDb())
+            {
+                MenuInfo menuInfo= db.MenuInfo.Find(Id);
+                if (menuInfo == null)
+                {
+                    return HttpNotFound();
+                }
+                ///读出所有的现有的菜单名称，以下拉框的形式写入。
+                var menus = db.MenuInfo.Where(m => m.Popedomfatherid == 0).OrderBy(x => x.Sort).Select(g => new SelectListItem
+                {
+                    Text = g.MenuName,
+                    Value = g.Id.ToString(),
+                    Selected = false
+                }).ToList();
 
+                menus.Insert(0, new SelectListItem { Value = "0", Text = "请选择" });
+           
+                foreach (var item in menus)
+                {
+                    if (menuInfo.Popedomfatherid!=0)
+                    {
+                        if (menuInfo.Popedomfatherid.ToString() == item.Value)
+                        {
+                            item.Selected = true;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (menuInfo.Id.ToString()== item.Value)
+                        {
+                            menus.Remove(item);
+                            break;
+                        }
+                     
+                    }
+                }
+              
+                ViewBag.menuInfo = menus;
+                return View(menuInfo);
+            }               
+        }
 
+        /// <summary>
+        /// 编辑菜单
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "Super")]
+        public async Task<ActionResult> EditMenuInfo(MenuInfo menu)
+        {
+            using (var db = new KinshipDb())
+            {
+                MenuInfo menuInfo = db.MenuInfo.Find(menu.Id);
+                if (menuInfo == null)
+                {
+                    return HttpNotFound();
+                }
+                menuInfo.MenuIcon = menu.MenuIcon;
+                menuInfo.MenuName= menu.MenuName;
+                menuInfo.ControllerName = menu.ControllerName;
+                menuInfo.MenuPath = menu.MenuPath;
+                menuInfo.MethodName = menu.MethodName;
+                menuInfo.Popedomfatherid = menu.Popedomfatherid;
+                menuInfo.Sort = menu.Sort;
+                int n= await db.SaveChangesAsync();
+                if (n>0)
+                {
+                    return RedirectToAction("MenuList");
+                }
+                else
+                {
+                    return Content("<script>alert('编辑失败，请联系相关人员');location.href='/SystemManagement/EditMenuInfo?Id ='" + menu.Id + ";</script>");
+                }
+            }
+        }
 
 
 
@@ -972,5 +1084,6 @@ namespace TheFamilyFriend.Controllers
                 ModelState.AddModelError("", error);
             }
         }
+
     }
 }

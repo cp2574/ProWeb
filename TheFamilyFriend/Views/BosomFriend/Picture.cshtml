@@ -18,22 +18,31 @@
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-lg-12">
-            <div class="ibox float-e-margins">
+            <div class="ibox float-e-margins">      
                 <div class="ibox-content">
-                    <select class="form-control m-b col-lg-3" name="account" id="PictureType">
-                        @{
-                            <option value="0">全部</option>
-                            foreach (var item in Model)
-                            {
-                                <option value="@item.PictureTypeId">@item.PictureTypeName</option>
-                            }
+                    <div class="row">
+                        <div class="form-group">
+                            <select class="form-control" name="account" id="PictureType">
+                                @{
+                                    <option value="0">全部</option>
+                                    foreach (var item in Model)
+                                    {
+                                        <option value="@item.PictureTypeId">@item.PictureTypeName</option>
+                                    }
 
-                        }
-                    </select>
+                                }
+
+                            </select>  <button class="btn btn-info " id="DownPricture">下载</button>
+                        </div>
+                    </div>
+                
+
+                 
+
+
                     <div class="row">
                         <div class="lightBoxGallery" id="links">
 
-             
                         </div>
                     </div>
                     <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
@@ -47,7 +56,7 @@
                         <ol class="indicator"></ol>
                     </div>
                 </div>
-            </div>
+             
         </div>
 
     </div>
@@ -88,7 +97,11 @@
                     }
                 })
             })
-
+            $("#DownPricture").click(function () {
+                $.post("@Url.Action("DownPricture")", function (result) {
+                    alert(result)
+                })
+            })
         })
     </script>
 

@@ -164,20 +164,20 @@ namespace TheFamilyFriend.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
-                case SignInStatus.Success:                 
-                    LoginLogs(model, new Result(true, "登录成功!"));
+                case SignInStatus.Success:
+                    CustomerLogs.LoginLogs(model, new Result(true, "登录成功!"), HttpContext.Request.Url.ToString());
                     return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:               
-                    LoginLogs(model, new Result(false, "账号已锁住!"));
+                case SignInStatus.LockedOut:
+                    CustomerLogs.LoginLogs(model, new Result(false, "账号已锁住!"), HttpContext.Request.Url.ToString());
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                  
-                    LoginLogs(model, new Result(false, "账号需要验证!"));
+
+                    CustomerLogs.LoginLogs(model, new Result(false, "账号需要验证!"),HttpContext.Request.Url.ToString());
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "无效的登录尝试。");
-                    LoginLogs(model, new Result(false, "无效的登录尝试!"));
+                    CustomerLogs.LoginLogs(model, new Result(false, "无效的登录尝试!"), HttpContext.Request.Url.ToString());
                     return View(model);
 
              
@@ -185,23 +185,7 @@ namespace TheFamilyFriend.Controllers
           
         }
 
-        public void LoginLogs(LoginViewModel model, Result result) {
-            using (var kbd = new KinshipDb())
-            {
-                //登录日志
-                kbd.Logs.Add(new TLogs()
-                {
-                    Account = model.UserName,
-                    code = model.UserName,
-                    IP = Host.IPAddress,
-                    Url = HttpContext.Request.Url.ToString(),
-                    Result = result.message,
-                    Type = logtype.登陆日志,
-                    date = DateTime.Now
-                });
-                kbd.SaveChanges();
-            }
-        }
+   
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
