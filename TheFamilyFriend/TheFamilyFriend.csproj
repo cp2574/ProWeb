@@ -686,6 +686,7 @@
     <Content Include="Views\Home\UploadHeaderPic.cshtml" />
     <Content Include="Views\OtherAppliction\Index.cshtml" />
     <Content Include="Views\SystemManagement\EditMenuInfo.cshtml" />
+    <Content Include="Views\SpecialEffects\MouseMovement.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

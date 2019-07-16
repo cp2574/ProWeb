@@ -44,5 +44,14 @@ namespace TheFamilyFriend.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        ///  鼠标移动特效
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MouseMovement()
+        {
+            return View();
+        }
     }
 }
