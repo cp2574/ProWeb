@@ -287,7 +287,14 @@ namespace TheFamilyFriend.Controllers
             var user = User.Identity.Name;
             using (var kindb = new KinshipDb())
             {
-                return kindb.Lblhelpmessage.Where(x => x.UserName == user).ToList();
+                List<Lblhelpmessage> list = kindb.Lblhelpmessage.Where(x => x.UserName == user).OrderByDescending(x=>x.SignTime).ToList();
+                if (User.Identity.Name!= "administrator")
+                {
+                    list.Insert(0,kindb.Lblhelpmessage.FirstOrDefault(x => x.UserName == "administrator"));
+                }
+                
+
+              return list;
             }
         }
         /// <summary>
@@ -295,19 +302,27 @@ namespace TheFamilyFriend.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public JsonResult DelectLbl(int Id)
+        public ActionResult DelectLbl(int Id)
         {
 
             using (var kinbd = new KinshipDb())
             {
-                kinbd.Lblhelpmessage.Remove(kinbd.Lblhelpmessage.Find(Id));
-                if (kinbd.SaveChanges() > 0)
+                Lblhelpmessage lbl = kinbd.Lblhelpmessage.Find(Id);
+                if (lbl.UserName== "administrator"&& User.Identity.Name != "administrator")
                 {
-                    return Json(true);
+                    return RedirectToAction("tag");
                 }
                 else
                 {
-                    return Json(false);
+                    kinbd.Lblhelpmessage.Remove(kinbd.Lblhelpmessage.Find(Id));
+                    if (kinbd.SaveChanges() > 0)
+                    {
+                        return Json(true);
+                    }
+                    else
+                    {
+                        return Json(false);
+                    }
                 }
             }
 
@@ -412,22 +427,22 @@ namespace TheFamilyFriend.Controllers
                         var lists = bd.Picture.Where(x => x.PictureTypeId == PictureTypeId);
                         if (User.IsInRole("Super"))
                         {
-                            list = lists.Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                            list = lists.Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId, PictureName = x.PictureName }).ToList();
                         }
                         else
                         {
-                            list = lists.Where(x => x.UserName == User.Identity.Name).Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                            list = lists.Where(x => x.UserName == User.Identity.Name).Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId ,PictureName=x.PictureName}).ToList();
                         }
                     }
                     else
                     {
                         if (User.IsInRole("Super"))
                         {
-                            list = bd.Picture.Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                            list = bd.Picture.Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId, PictureName = x.PictureName }).ToList();
                         }
                         else
                         {
-                            list = bd.Picture.Where(x => x.UserName == User.Identity.Name).Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId }).ToList();
+                            list = bd.Picture.Where(x => x.UserName == User.Identity.Name).Select(x => new PictureViewModel { PicturePath = x.PicturePath, PictureTypeId = x.PictureTypeId, PictureName = x.PictureName }).ToList();
                         }
                     }
                 }
@@ -545,31 +560,21 @@ namespace TheFamilyFriend.Controllers
                 Message = msg
             });
         }
+        /// <summary>
+        /// 图片下载
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public FileStreamResult DownPricture() {
 
-        public JsonResult DownPricture() {
 
-            try
-            {
+         
+
                 string fileName = "aaa.jpg";//客户端保存的文件名
-                string filePath = @"G:\TheFamilyFriend\Images\UploadImg\administrator\administrator_c2dcf099-428f-43be-aa90-d24341398a75.jpg";//路径
-                                                                                                                                              //以字符流的形式下载文件
-                FileStream fs = new FileStream(filePath, FileMode.Open);
-                byte[] bytes = new byte[(int)fs.Length];
-                fs.Read(bytes, 0, bytes.Length);
-                fs.Close();
-                Response.ContentType = "application/octet-stream";
-                //通知浏览器下载文件而不是打开
-                Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8));
-                Response.BinaryWrite(bytes);
-                Response.Flush();
-                Response.End();
-                return Json("");
-            }
-            catch (Exception ex)
-            {
-
-                return Json(ex.Message);
-            }
+                string filePath = @"http://1767g2n742.iok.la:34590/UploadImg/liuchong/liuchong_5f70dc49-6dc6-47be-a785-c1cd9025a0df.jpg";//路径
+                                                                                                                        //以字符流的形式下载文件
+                return File(new FileStream(filePath, FileMode.Open), "application/octet-stream", Server.UrlEncode(fileName));
+          
         
         }
         #endregion

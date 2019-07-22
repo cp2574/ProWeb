@@ -14,6 +14,8 @@ namespace TheFamilyFriend.HelperModel
 
         [Display(Name = "图片分类id")]
         public int PictureTypeId { get; set; }
+        [Display(Name = "图片名称")]
+        public string PictureName { get; set; }
 
     }
 }

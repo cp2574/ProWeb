@@ -149,7 +149,7 @@
                     $("#AddModal").modal('show');
                 })
                 $("#AddSave").on("click", function () {
-                    if ($("#Title").val() == "" || $("#Explains").val() == "") {
+                    if ($("#Explains").val() == "") {
                         toastr.warning("信息不能为空！");
                     } else {
 
@@ -175,10 +175,10 @@
             })
 
             function title() {
-                if ($("#title").val() == "" || $("#Explain").val() == "") {
+                if ($("#Explain").val() == "") {
                     return "";
                 } else {
-                    $("#title").val() == "" || $("#Explain").val() == ""
+                   
                     var Json = {
                         Title: $("#title").val(), Explain: $("#Explain").val(), LblId: $("#titleid").val()
                     }

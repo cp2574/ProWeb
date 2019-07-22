@@ -32,7 +32,7 @@
 
                                 }
 
-                            </select>  <button class="btn btn-info " id="DownPricture">下载</button>
+                            </select>
                         </div>
                     </div>
                 
@@ -77,7 +77,7 @@
                             //通过value获取文本
                             var type = $("#PictureType option[value=" + result[i].PictureTypeId + "]").text();
 
-                            var str = ' <a href="' + url + result[i].PicturePath + '" title="' + type + '" data-gallery=""><img src="' + url + result[i].PicturePath + '" class="img-thumbnail" width="150" height="150"></a>'
+                            var str = ' <a href="' + url + result[i].PicturePath + '" title="' + type + '" data-gallery=""><img src="' + url + result[i].PicturePath + '" class="img-thumbnail" width="150" height="150">  </a>'
                             $("#links").append(str);
 
                         }
@@ -97,12 +97,17 @@
                     }
                 })
             })
-            $("#DownPricture").click(function () {
-                $.post("@Url.Action("DownPricture")", function (result) {
-                    alert(result)
-                })
-            })
+          
+
+
+
         })
+        function downloadFile(e) {
+           
+            //alert($(this).val())
+            //  return
+              window.location.href = "@Url.Action("DownPricture")";
+           }
     </script>
 
 

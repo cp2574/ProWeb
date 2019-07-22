@@ -24,7 +24,7 @@ namespace TheFamilyFriend
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //模型更改时重新创建数据库
-            Database.SetInitializer<ApplicationDbContext>(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
+            //Database.SetInitializer<ApplicationDbContext>(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
 
             System.Timers.Timer objTimer = new System.Timers.Timer();
             objTimer.Interval = 10800000;

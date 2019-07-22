@@ -277,6 +277,11 @@
     <Content Include="Content\Gallery-master\img\play-pause.png" />
     <Content Include="Content\Gallery-master\img\video-play.png" />
     <Content Include="Content\Images\Avatar\defult.png" />
+    <Content Include="Content\Images\Avatar\dongxi.jpg" />
+    <Content Include="Content\Images\Avatar\jiangzhangxing.jpg" />
+    <Content Include="Content\Images\Avatar\liuchong.jpg" />
+    <Content Include="Content\Images\Avatar\刘冲.jpg" />
+    <Content Include="Content\Images\Avatar\陈朋.png" />
     <Content Include="Content\Images\ParticleSmoke.png" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
