@@ -37,7 +37,10 @@ namespace TheFamilyFriend.HelperModel.SystemManger
         [Required]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
-
+       
+        [Display(Name ="真名")]
+        [Required]
+        public string RealName { get; set; }
         [Required]
         [EmailAddress]
         [Display(Name = "电子邮件")]

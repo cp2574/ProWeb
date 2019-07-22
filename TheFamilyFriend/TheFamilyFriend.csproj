@@ -298,6 +298,11 @@
     <Content Include="Content\patterns\otis_redding.png" />
     <Content Include="Content\patterns\shattered.png" />
     <Content Include="Content\patterns\triangular.png" />
+    <Content Include="Content\plugins\fullcalendar\fullcalendar.css" />
+    <Content Include="Content\plugins\fullcalendar\fullcalendar.print.css" />
+    <Content Include="Content\plugins\iCheck\custom.css" />
+    <Content Include="Content\plugins\iCheck\green%402x.png" />
+    <Content Include="Content\plugins\iCheck\green.png" />
     <Content Include="Content\plugins\jasny\jasny-bootstrap.min.css" />
     <Content Include="Content\plugins\summernote\summernote-bs4.css" />
     <Content Include="Content\style.css" />
@@ -479,7 +484,20 @@
     <Content Include="Scripts\FireWorks\Stats.min.js" />
     <Content Include="Scripts\FireWorks\three.min.js" />
     <Content Include="Scripts\Bildschirmtext\Bildschirmtext.js" />
+    <Content Include="Scripts\plugins\fullcalendar\fullcalendar.min.js" />
+    <Content Include="Scripts\plugins\fullcalendar\moment.min.js" />
+    <Content Include="Scripts\plugins\fullcalendar\zh-cn.js" />
+    <Content Include="Scripts\plugins\iCheck\icheck.min.js" />
     <Content Include="Scripts\plugins\jasny\jasny-bootstrap.min.js" />
+    <Content Include="Scripts\plugins\jquery-ui\images\ui-icons_444444_256x240.png" />
+    <Content Include="Scripts\plugins\jquery-ui\images\ui-icons_555555_256x240.png" />
+    <Content Include="Scripts\plugins\jquery-ui\images\ui-icons_777620_256x240.png" />
+    <Content Include="Scripts\plugins\jquery-ui\images\ui-icons_777777_256x240.png" />
+    <Content Include="Scripts\plugins\jquery-ui\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Scripts\plugins\jquery-ui\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Scripts\plugins\jquery-ui\jquery-ui.min.css" />
+    <Content Include="Scripts\plugins\jquery-ui\jquery-ui.min.js" />
+    <Content Include="Scripts\plugins\jquery-ui\LICENSE.txt" />
     <Content Include="Scripts\plugins\summernote\summernote-bs4.js" />
     <Content Include="Scripts\snow.min.js" />
     <Content Include="Scripts\table\dist\bootstrap-table-export.js" />
@@ -692,6 +710,7 @@
     <Content Include="Views\OtherAppliction\Index.cshtml" />
     <Content Include="Views\SystemManagement\EditMenuInfo.cshtml" />
     <Content Include="Views\SpecialEffects\MouseMovement.cshtml" />
+    <Content Include="Views\Tool\Calendar.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

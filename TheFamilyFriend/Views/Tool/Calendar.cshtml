@@ -1,0 +1,227 @@
+﻿
+@{
+    ViewBag.Title = "日历";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Calendar", "Tool")">@ViewBag.Title</a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-3">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Draggable Events</h5>
+                </div>
+                <div class="ibox-content">
+                    <div id='external-events'>
+                        <p>一下可放在日历中</p>
+                        <div class='external-event navy-bg'>Go to shop and buy some products.</div>
+                        <div class='external-event navy-bg'>Check the new CI from Corporation.</div>
+                        <div class='external-event navy-bg'>Send documents to John.</div>
+                        <div class='external-event navy-bg'>Phone to Sandra.</div>
+                        <div class='external-event navy-bg'>Chat with Michael.</div>
+                        <p class="m-t">
+                            <input type='checkbox' id='drop-remove' class="i-checks" checked /> <label for='drop-remove'>是否移除</label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Striped Table </h5>
+                </div>
+                <div class="ibox-content">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section styles {
+    @Styles.Render("~/plugins/fullCalendarStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+@section scripts {
+    @Scripts.Render("~/plugins/fullCalendar")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/jqueryui")
+    <script type="text/javascript">
+        $(function () {
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+
+            /* initialize the external events
+             -----------------------------------------------------------------*/
+
+
+            $('#external-events div.external-event').each(function () {
+
+                // store data so the calendar knows to render an event upon drop
+                $(this).data('event', {
+                    title: $.trim($(this).text()), // use the element's text as the event title
+                    stick: true // maintain when user navigates (see docs on the renderEvent method)
+                });
+
+                // make the event draggable using jQuery UI
+                $(this).draggable({
+                    zIndex: 1111999,
+                    revert: true,      // will cause the event to go back to its
+                    revertDuration: 0  //  original position after the drag
+                });
+
+            });
+
+
+            /* initialize the calendar
+             -----------------------------------------------------------------*/
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+
+            //$('#calendar').fullCalendar({
+            //    header: {
+            //        left: 'prev,next today',
+            //        center: 'title',
+            //        right: 'month,agendaWeek,agendaDay'
+            //    },
+            //    lang: 'zh-cn',
+            //    //设置默认日期
+            //    defaultDate: '2015-10-28',
+            //    dragScroll: true,
+            //    //默认视图为天
+            //    defaultView: 'month',
+            //    //默认滚动到的时间
+            //    scrollTime: '08:00:00',
+            //    defaultTimedEventDuration: '00:00:00',
+            //    //日期显示
+            //    dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            //    buttonText: {
+            //        prev: '昨天',
+            //        next: '明天',
+            //        prevYear: '去年',
+            //        nextYear: '明年',
+            //        today: '今天',
+            //        month: '月',
+            //        week: '周',
+            //        day: '日'
+            //    },
+            //    //间隔时间
+            //    slotDuration: '00:15:00',
+            //    //头部日期格式化
+            //    titleFormat: 'YYYY-MM-DD',
+            //    //设置时间间隔中间的文字 如：15-10-19 ~ 25
+            //    titleRangeSeparator: ' ~ ',
+            //    //设置时间格式
+            //    timeFormat: 'HH:mm',
+            //    //设置左侧第一列时间格式
+            //    axisFormat: 'HH:mm',
+            //    //全天事件显示文字
+            //    allDayText: '全天事件',
+            //    //时间轴宽度
+            //    axisWidth: null,
+            //    //是否启用WindowResize
+            //    handleWindowResize: true,
+            //    //是否启用拖动改变位置和大小
+            //    editable: true,
+            //    droppable: true, // this allows things to be dropped onto the calendar
+            //    drop: function () {
+            //        // is the "remove after drop" checkbox checked?
+            //        if ($('#drop-remove').is(':checked')) {
+            //            // if so, remove the element from the "Draggable Events" list
+            //            $(this).remove();
+            //        }
+            //    },
+            //    //日期事件的json获取地址
+            //    //events: url,
+            //    //表格select事件是否可用
+            //    selectable: true,
+            //    //当用户拖动事件是否绘制一个“占位符”
+            //    selectHelper: true,
+            //    //table选择
+            //    select: function (start, end) {
+            //        var title = prompt('事件名称:');
+            //        // var content = prompt('事件内容:');
+            //        var eventData;
+            //        if (title) {
+            //            eventData = {
+            //                title: title,
+            //                start: start,
+            //                end: end
+            //            };
+            //            $('#' + calendarSet.id).fullCalendar('renderEvent', eventData, true);
+            //        }
+            //        $('#' + calendarSet.id).fullCalendar('unselect');
+            //    },
+            //    //事件点击
+            //    //eventClick: function (calEvent, jsEvent, view) {
+            //    //}
+            //});
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+
+                //titleFormat: {
+                //    month: 'yyyy MMMM ',                             // September 2009
+                //    week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}", // Sep 7 - 13 2009
+                //    day: 'dddd, MMM d, yyyy'                  // Tuesday, Sep 8, 2009
+                //},
+                //titleFormat: { day: 'dddd, MMM d, '       },  
+
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function () {
+                    // is the "remove after drop" checkbox checked?
+                    if ($('#drop-remove').is(':checked')) {
+                        // if so, remove the element from the "Draggable Events" list
+                        $(this).remove();
+                    }
+                },
+                defaultDate: moment(),//默认日期
+                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                dayNames: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+                dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+                today: ["今天"],
+                buttonText: {//设置日历头部各按钮的显示文本信息
+                    prev: '上翻',
+                    next: '下翻',
+                    today: '今天',
+                    month: '月',
+                    week: '周',
+                    day: '日'
+                },
+                axisFormat: 'H(:mm)',
+                defaultView: 'month',
+                allDaySlot: true,
+                allDayText: '全天',
+
+            });
+
+        
+        });
+    </script>
+}
+

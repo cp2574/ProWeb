@@ -47,12 +47,16 @@
 
                         <div class="col-md-12">
                             @*<div class="col-lg-2">服务器图片地址</div>
-                                <div class="col-lg-5">
-                                    <input type="text" class="form-control" />
-                                </div>*@
+        <div class="col-lg-5">
+            <input type="text" class="form-control" />
+        </div>*@
                             <div class="form-group  row">
                                 <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">服务器图片地址</font></label>
-                                <div class="col-sm-4" style="vertical-align: middle;"><input type="text" class="form-control" value="@ViewBag.ServerPicture" id="ServerPicture"></div>
+                                <div class="col-sm-8" style="vertical-align: middle;"><input type="text" class="form-control" value="@ViewBag.ServerPicture" id="ServerPicture"></div>
+                            </div>
+                            <div class="form-group  row">
+                                <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">数据库连接字符串</font></label>
+                                <div class="col-sm-8" style="vertical-align: middle;"><input type="text" class="form-control" value="@ViewBag.GetConnectionString" id="GetConnectionString" readonly="readonly"></div>
                             </div>
                         </div>
                     </div>

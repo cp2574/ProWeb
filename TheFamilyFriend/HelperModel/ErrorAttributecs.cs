@@ -1,4 +1,5 @@
 ﻿using Common;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,11 @@ namespace TheFamilyFriend.HelperModel
             //获取异常对象  
             Exception ex = filterContext.Exception;
 
-            string cookieName = FormsAuthentication.FormsCookieName;//读取登录授权Cookies的名称
-            HttpCookie authCookie = filterContext.HttpContext.Request.Cookies[cookieName];//接收这个Cookies
-            FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-            string UserName = authTicket.Name;
+            //string cookieName = FormsAuthentication.FormsCookieName;//读取登录授权Cookies的名称
+            //HttpCookie authCookie = filterContext.HttpContext.Request.Cookies[cookieName];//接收这个Cookies
+            //FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+            //string UserName = authTicket.Name;
+            string UserName = filterContext.HttpContext.User.Identity.Name;
             //记录错误日志
             using (KinshipDb db = new KinshipDb()) {
                 db.Logs.Add(new TLogs() {
