@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -14,7 +15,7 @@ namespace TheFamilyFriend.Controllers
         public ActionResult Index()
         {
             ViewBag.ServerPicture = ConfigurationManager.AppSettings.Get("ServerPicture");
-
+            GetConnectionString();
 
             return View();
         }
@@ -70,7 +71,6 @@ namespace TheFamilyFriend.Controllers
 
         }
 
-
         public void AppSettings(string name,string state) {
 
             System.Configuration.Configuration cfa = WebConfigurationManager.OpenWebConfiguration("~");
@@ -78,6 +78,18 @@ namespace TheFamilyFriend.Controllers
             cfa.Save();//保存
             ConfigurationManager.RefreshSection("appSettings"); //强制刷新配置文件
             
+        }
+
+
+        public void GetConnectionString() {
+
+            SqlConnectionStringBuilder scb =new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString());
+
+
+            ViewBag.GetConnectionString = scb.ConnectionString;
+            //string strDB = scb.InitialCatalog;
+            //string strUser = scb.UserID;
+            //string strPwd = scb.Password;
         }
     }
 }

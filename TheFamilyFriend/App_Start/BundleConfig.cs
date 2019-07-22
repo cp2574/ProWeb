@@ -43,6 +43,23 @@ namespace TheFamilyFriend
                       "~/Scripts/plugins/summernote/summernote-bs4.js"));
 
 
+
+            // jQueryUI 
+            bundles.Add(new ScriptBundle("~/plugins/jqueryui").Include(
+                        "~/Scripts/plugins/jquery-ui/jquery-ui.min.js"));
+
+
+            // iCheck
+            bundles.Add(new ScriptBundle("~/plugins/iCheck").Include(
+                      "~/Scripts/plugins/iCheck/icheck.min.js"));
+
+
+            // fullCalendar 
+            bundles.Add(new ScriptBundle("~/plugins/fullCalendar").Include(
+                      "~/Scripts/plugins/fullcalendar/moment.min.js",
+                      "~/Scripts/plugins/fullcalendar/fullcalendar.min.js"
+                      ));
+
             // css全局
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
@@ -63,6 +80,13 @@ namespace TheFamilyFriend
             // summernote styles
             bundles.Add(new StyleBundle("~/plugins/summernoteStyles").Include(
                       "~/Content/plugins/summernote/summernote-bs4.css"));
+
+            // fullCalendar styles
+            bundles.Add(new StyleBundle("~/plugins/fullCalendarStyles").Include(
+                      "~/Content/plugins/fullcalendar/fullcalendar.css"));
+            // iCheck css styles
+            bundles.Add(new StyleBundle("~/Content/plugins/iCheck/iCheckStyles").Include(
+                      "~/Content/plugins/iCheck/custom.css"));
         }
     }
 }

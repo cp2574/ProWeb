@@ -9,6 +9,7 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/font-awesome/css")
     @Styles.Render("~/Content/child/css")
+    <link href="@Url.Content("~/Scripts/plugins/jquery-ui/jquery-ui.min.css")" rel="stylesheet" type="text/css" />
     @RenderSection("styles", required: false)
     @using Microsoft.AspNet.Identity;
     @using TheFamilyFriend.HelperModel;
@@ -20,24 +21,19 @@
         }
 
     }
- <head>
+</head>
   <body class="@skip">
             <!-- Wrapper-->
             <div id="wrapper">
                 <!-- Navigation -->
-
-                @*@Html.Partial("_NavigationNew", ViewBag.Menu as List<TheFamilyFriend.Models.MenuInfo>)*@
-                @Html.Partial("_Navigation")
-
+                @Html.Partial("_NavigationNew", ViewBag.Menu as List<TheFamilyFriend.Models.MenuInfo>)
+                @*@Html.Partial("_Navigation")*@
                 <!-- Page wraper -->
                 <div id="page-wrapper" class="gray-bg">
-
                     <!-- Top Navbar -->
                     @Html.Partial("_TopNavbar")
-
                     <!-- Main view  -->
                     @RenderBody()
-
                     <!-- Footer -->
                     @Html.Partial("_Footer")
                     @{
@@ -52,7 +48,6 @@
                 @Html.Partial("_AppSetPartial")
             </div>
             <!-- End wrapper-->
-
             @Scripts.Render("~/bundles/jquery")
             @Scripts.Render("~/bundles/bootstrap")
             @Scripts.Render("~/plugins/metsiMenu")
@@ -79,5 +74,5 @@
             })
         })
             </script>
-        </body>
+  </body>
 </html>

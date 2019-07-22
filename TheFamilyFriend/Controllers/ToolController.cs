@@ -53,7 +53,7 @@ namespace TheFamilyFriend.Controllers
         }
 
         /// <summary>
-        /// 电子地图
+        /// 邮箱
         /// </summary>
         /// <returns></returns>
         public ActionResult Mailbox()
@@ -61,7 +61,15 @@ namespace TheFamilyFriend.Controllers
 
             return View();
         }
-        
+        /// <summary>
+        /// 日历
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Calendar()
+        {
+
+            return View();
+        }
 
     }
 }
