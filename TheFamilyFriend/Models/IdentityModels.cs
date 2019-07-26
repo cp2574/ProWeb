@@ -51,6 +51,9 @@ namespace TheFamilyFriend.Models
         public virtual string QQ { get; set; }
         [Display(Name = "性别")]
         public virtual int? Gender { get; set; }
+        /// <summary>
+        /// 所在地
+        /// </summary>
         [StringLength(200)]
         public virtual string Address { get; set; }
         
@@ -58,8 +61,16 @@ namespace TheFamilyFriend.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public virtual Nullable<DateTime> Birthday { get; set; }
-        
-
+        /// <summary>
+        /// 经度
+        /// </summary>
+        [Display(Name = "经度")]
+        public string Lng { get; set; }
+        /// <summary>
+        /// 纬度
+        /// </summary>
+        [Display(Name = "纬度")]
+        public string Lat { get; set; }
 
     }
 

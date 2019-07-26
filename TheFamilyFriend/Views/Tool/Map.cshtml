@@ -1,7 +1,6 @@
 ﻿@{
     ViewBag.Title = "电子地图";
 }
-
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
         <h2>@ViewBag.Title</h2>
@@ -17,47 +16,71 @@
 </div>
 <div class="wrapper wrapper-content animated fadeIn">
     <div id="gmap" class="gmap" style="width:100%;height:500px;"></div>
+
+    <input id="tipinput" type="text" class="form-control" placeholder="请输入关键字" />
     <input type="text" placeholder="经度" name="lng" class="form-control">
     <input type="text" placeholder="纬度" name="lat" class="form-control">
     <input type="text" placeholder="地址" name="address" class="form-control">
 
     @section scripts{
-        <script type="text/javascript" src='http://webapi.amap.com/maps?v=1.4.0&key=5dd5852573c81e02df3f9385c0318901&plugin=AMap.Geocoder'></script>
+        <script type="text/javascript" src='http://webapi.amap.com/maps?v=1.4.0&key=5dd5852573c81e02df3f9385c0318901&plugin=AMap.Geocoder,AMap.Autocomplete,AMap.PlaceSearch'></script>
         <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
         <script type="text/javascript">
             var map = new AMap.Map('gmap', {
                 mapStyle: 'amap://styles/blue',
-                zoom: 12,
-
-
-
+                zoom: 12,//设置地图显示的缩放级别
+                //center: [116.397428, 39.90923],//设置地图中心点坐标
+                //viewMode: '2D',  //设置地图模式
+                lang: 'zh_cn',  //设置地图语言类型
             });
+
+            var userlist = '@Html.Raw(ViewBag.userlist)';
+            var Jsonuserlist = JSON.parse(userlist)
             AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
                 var toolBar = new AMap.ToolBar();
                 var scale = new AMap.Scale();
                 map.addControl(toolBar);
                 map.addControl(scale);
             });
-            var arr = new Array();
-            arr[0] = new AMap.Marker({
-                position: [114.340865, 30.493187],
-                draggable: true,
-                cursor: 'move',
-                raiseOnDrag: true,
-                zIndex: 100
-            });
-            arr[1] = new AMap.Marker({
-                position: [114.347459, 30.491964],
-                draggable: true,
-                cursor: 'move',
-                raiseOnDrag: true,
-                zIndex: 101,
 
-            });
-            map.setCenter([114.347459, 30.491964]);
-            //arr[0].setMap(map);
-            //arr[1].setMap(map);
+
+            var arr = new Array();
+            for (var i = 0; i < Jsonuserlist.length; i++) {
+
+                if (Jsonuserlist[i].Lng == null || Jsonuserlist[i].Lng=="") {
+                    Jsonuserlist[i].Lng = map.getCenter().getLng();//获取当前的经度
+                    Jsonuserlist[i].Lat = map.getCenter().getLat();//获取当前的纬度
+                }
+                arr[i] = new AMap.Marker({
+                    position: new AMap.LngLat(Jsonuserlist[i].Lng, Jsonuserlist[i].Lat),
+                    draggable: true,    // 设置是否可拖拽
+                    raiseOnDrag: true,
+                    animation:"AMAP_ANIMATION_DROP",
+                    cursor: 'move',
+                    raiseOnDrag: true,
+                    //zIndex: 100,
+                    offset: new AMap.Pixel(-10, -10),//偏移量
+                    icon: myicon(Jsonuserlist[i].Avatar), // 添加 Icon 图标 URL
+                    title: Jsonuserlist[i].RealName,//标题
+                    visible: true,//不隐藏
+                    extData: Jsonuserlist[i].Id
+                });
+            }
+            function myicon(img) {
+                // 创建 AMap.Icon 实例：
+                var icon = new AMap.Icon({
+                    size: new AMap.Size(80, 80),    /// 图标尺寸
+                    image: img,  // Icon的图像
+                /*    imageOffset: new AMap.Pixel(0, -20),*/  // 图像相对展示区域的偏移量，适于雪碧图等
+                    imageSize: new AMap.Size(45, 45)   // 根据所设置的大小拉伸或压缩图片
+                });
+                return icon;
+            }
             map.add(arr)
+
+            //设置中心
+            map.setCenter(arr[0].getPosition());
+
             for (var i = 0; i < arr.length; i++) {
                 arr[i].on('dragend', function () {
                     var p = this.getPosition()
@@ -65,6 +88,7 @@
                         radius: 1000,
                         extensions: "all"
                     });
+                    var id = this.getExtData();
                     //引入高德地图自带的Geocoder
                     geocoder.getAddress(p, function (status, result) {
                         if (status == 'complete' && result.info == 'OK') {
@@ -72,12 +96,34 @@
                             $('input[name=lng]').val(p.getLng());
                             $('input[name=lat]').val(p.getLat());
                             $('input[name=address]').val(address);
-                            alert(address);
-                            alert(p);
+                            $.post("@Url.Action("SetUserPosition")", { Lng: p.getLng(), Lat: p.getLat(), Address: address, Id: id }, function (result) {
+                                console.log(result);
+                                if (!result.issucess) {
+                                    toastr.error(result.message);
+                                }
+                            })
                         }
                     });
                 });
             }
+
+            //输入提示
+            var autoOptions = {
+                input: "tipinput"
+            };
+            var auto = new AMap.Autocomplete(autoOptions);
+            var placeSearch = new AMap.PlaceSearch({
+                map: map
+            });  //构造地点查询类
+            AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+            function select(e) {
+                placeSearch.setCity(e.poi.adcode);
+                placeSearch.search(e.poi.name);  //关键字查询查询
+                $('input[name=lng]').val(map.getCenter().getLng()); //获取当前的经度
+                $('input[name=lat]').val(map.getCenter().getLat());//获取当前的纬度
+                $('input[name=address]').val(e.poi.name);
+            }
+
         </script>
     }
 </div>

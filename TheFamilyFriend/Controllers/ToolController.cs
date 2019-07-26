@@ -1,4 +1,5 @@
 ﻿using BaiDu_OCR;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TheFamilyFriend.HelperModel;
+using TheFamilyFriend.Models;
 
 namespace TheFamilyFriend.Controllers
 {
@@ -48,9 +51,38 @@ namespace TheFamilyFriend.Controllers
         /// <returns></returns>
         public ActionResult Map()
         {
-
+           
+            ViewBag.userlist = Newtonsoft.Json.JsonConvert.SerializeObject(UserManager.Users.Select(x => new { x.Id, x.RealName, x.Avatar, x.Lng, x.Lat }));
             return View();
         }
+        public ActionResult SetUserPosition(string Lng,string Lat,string Id,string Address)
+        {
+            try
+            {
+                ApplicationUser user = UserManager.FindById(Id);
+                if (user != null)
+                {
+                    user.Address = Address;
+                    user.Lng = Lng;
+                    user.Lat = Lat;
+                    IdentityResult result = UserManager.Update(user);
+                    return Json(new Result { issucess = true, message = "修改成功！" });
+                }
+                else
+                {
+                    return Json(new Result { issucess = false, message = "用户异常，请联系管理员！" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new Result { issucess = false, message = ex.Message });
+            }
+
+        }
+
+
+
+
 
         /// <summary>
         /// 邮箱

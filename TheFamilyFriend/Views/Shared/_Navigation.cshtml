@@ -16,8 +16,8 @@
 
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs" x-placement="bottom-start" style="position: absolute; top: 91px; left: 0px; will-change: top, left;">
-                                <li><a class="dropdown-item" href="@Url.Action("PersonInfo", "Home",new { Id=User.Identity.GetUserId()})">个人信息</a></li>
-                                <li><a class="dropdown-item" href="@Url.Action("SetPersonInfo", "Home")">修改信息</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("PersonInfo", "Home",new { id=User.Identity.GetUserId()})">个人信息</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("UploadHeaderPic", "Home",new { id=User.Identity.GetUserId()})">修改头像</a></li>
                                 <li class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="@Url.Action("Login", "Account")">登出</a></li>
                             </ul>
