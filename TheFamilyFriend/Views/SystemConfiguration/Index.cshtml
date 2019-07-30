@@ -58,6 +58,17 @@
                                 <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">数据库连接字符串</font></label>
                                 <div class="col-sm-8" style="vertical-align: middle;"><input type="text" class="form-control" value="@ViewBag.GetConnectionString" id="GetConnectionString" readonly="readonly"></div>
                             </div>
+                            <div class="form-group  row">
+                                <label class="col-sm-2 text-right  col-form-label"><font style="vertical-align: inherit;">网址</font></label>
+                                <div class="col-sm-8" style="vertical-align: middle;">
+                                    <input type="text" class="form-control" value="http://1767g2n742.iok.la:34590/" id="Posttionurl" readonly="readonly" >
+                                    <div id="qrcode" ></div>                            
+                                <p class="col-lg-6 col-md-6" style="text-align: left;">
+                                    <a id="download" download="qrcode.jpg"></a>
+                                    <a id="saveQrCode" style="cursor: pointer;">下载二维码</a>
+                                </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,6 +79,7 @@
 
 @section scripts{
     <script src="~/Scripts/bootstrap-switch-master/bootstrap-switch.min.js"></script>
+    <script src="~/Scripts/qrcode.logo.js"></script>
     <script>
         $(function () {
             $.post('@Url.Action("loadstate")', function (result) {
@@ -119,8 +131,35 @@
                     }
                 })
             })
-
+            init();
+            $('#saveQrCode').click(function () {
+                var canvas = $('#qrcode').find("canvas").get(0);
+                try {//解决IE转base64时缓存不足，canvas转blob下载
+                    var blob = canvas.msToBlob();
+                    navigator.msSaveBlob(blob, 'qrcode.jpg');
+                } catch (e) {//如果为其他浏览器，使用base64转码下载
+                    var url = canvas.toDataURL('image/jpeg');
+                    $("#download").attr('href', url).get(0).click();
+                }
+                return false;
+            });
         })
-
+        //创建二维码
+        function createQRCode(id, url, width, height, src) {
+            $('#' + id).empty();
+            jQuery('#' + id).qrcode({
+                render: 'canvas',
+                text: url,
+                width: width,              //二维码的宽度
+                height: height,            //二维码的高度
+                imgWidth: width / 5,         //图片宽
+                imgHeight: height / 5,       //图片高
+                src: src            //图片中央的二维码
+            });
+        }
+        function init() {
+            createQRCode("qrcode", $("#Posttionurl").val(), 220, 220, "/Content/Images/Avatar/defult.png");
+        }
+      
     </script>
 }
