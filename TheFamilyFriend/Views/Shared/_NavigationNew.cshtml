@@ -11,7 +11,16 @@
                     <li class="nav-header">
                         <div class="dropdown profile-element">
                             <span>
-                                <img alt="image" class="img-circle" src="@head[1]" width="75" height="75">
+                                @{
+                                    if (head[1] != null)
+                                    {
+                                        <img alt="image" class="img-circle" src="data:image/png;base64,@head[1]" width="75" height="75">
+                                    }
+                                    else
+                                    {
+                                        <img alt="image" class="img-circle" src="/Content/Images/Avatar/defult.png" width="75" height="75">
+                                    }
+                                }
                             </span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
                                 <span class="clear">
@@ -27,8 +36,8 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a class="dropdown-item" href="@Url.Action("PersonInfo", "Home",new { id=User.Identity.GetUserId()})">个人信息</a></li>
-                                <li><a class="dropdown-item" href="@Url.Action("UploadHeaderPic", "Home",new { id=User.Identity.GetUserId()})">修改头像</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("PersonInfo", "Home", new { id = User.Identity.GetUserId() })">个人信息</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("UploadHeaderPic", "Home", new { id = User.Identity.GetUserId() })">修改头像</a></li>
                                 <li class="divider"></li>
                                 <li>
                                     <a href="@Url.Action("Login", "Account")">登出</a>
@@ -36,7 +45,15 @@
                             </ul>
                         </div>
                         <div class="logo-element">
-                            <img alt="image" class="rounded-circle img-circle" src="@head[1]" width="40" height="40">
+                            @{ if (head[1] != null)
+                                {
+                            <img alt="image" class="rounded-circle img-circle" src="data:image/png;base64,@head[1]" width="40" height="40">
+                                }
+                                else
+                                {
+                            <img alt="image" class="rounded-circle img-circle" src="/Content/Images/Avatar/defult.png" width="40" height="40">
+                                }
+                                }
                         </div>
                     </li>
                 }

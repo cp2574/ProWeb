@@ -71,7 +71,7 @@
 
         function operateFormatterImg(value, row, index) {
             return [
-                ' <img src="' + value +'" alt="头像" class="img-circle" height="72" width="72">',
+                ' <img src="/SystemManagement/GetImgShow?Avatar=' + value+'" alt="头像" class="img-circle" height="72" width="72">',
             ].join('');
         }
 
@@ -138,7 +138,7 @@
                         title: 'No', field: 'Avatar', align: 'center', valign: 'middle', align: 'center',
                         formatter: operateFormatterImg
                     },
-                    { title: '账号', field: 'UserName', align: 'center', valign: 'middle', },
+                    { title: '登录名', field: 'UserName', align: 'center', valign: 'middle', },
                     { title: '姓名', field: 'RealName', align: 'center', valign: 'middle', },
                     { title: 'Tel', field: 'PhoneNumber', align: 'center', valign: 'middle', },
                     { title: '创建时间', field: 'CreateTime', align: 'center', valign: 'middle', sortable: true },

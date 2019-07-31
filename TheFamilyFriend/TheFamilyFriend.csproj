@@ -255,6 +255,11 @@
     <Content Include="500.html" />
     <Content Include="AipSdk.dll" />
     <Content Include="Content\animate.css" />
+    <Content Include="Content\Atar\css\img\in_top_bj.jpg" />
+    <Content Include="Content\Atar\css\img\nav_gv.png" />
+    <Content Include="Content\Atar\css\img\top_logo.png" />
+    <Content Include="Content\Atar\css\index_style.css" />
+    <Content Include="Content\Atar\css\Music.mp3" />
     <Content Include="Content\bootstrap-switch-master\css\bootstrap2\bootstrap-switch.css" />
     <Content Include="Content\bootstrap-switch-master\css\bootstrap2\bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap-switch-master\css\bootstrap3\bootstrap-switch.css" />
@@ -277,11 +282,6 @@
     <Content Include="Content\Gallery-master\img\play-pause.png" />
     <Content Include="Content\Gallery-master\img\video-play.png" />
     <Content Include="Content\Images\Avatar\defult.png" />
-    <Content Include="Content\Images\Avatar\dongxi.jpg" />
-    <Content Include="Content\Images\Avatar\jiangzhangxing.jpg" />
-    <Content Include="Content\Images\Avatar\liuchong.jpg" />
-    <Content Include="Content\Images\Avatar\刘冲.jpg" />
-    <Content Include="Content\Images\Avatar\陈朋.png" />
     <Content Include="Content\Images\login_background.jpg" />
     <Content Include="Content\Images\ParticleSmoke.png" />
     <Content Include="Content\patterns\1.png" />
@@ -718,6 +718,7 @@
     <Content Include="Views\SpecialEffects\MoveLine.cshtml" />
     <Content Include="Scripts\qrcode.logo.js" />
     <Content Include="Views\SpecialEffects\Flower.cshtml" />
+    <Content Include="Views\SpecialEffects\Atar.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

@@ -59,6 +59,12 @@ namespace TheFamilyFriend.Controllers
 
             return View();
         }
+        public ActionResult Atar()
+        {
+
+
+            return View();
+        }
 
 
         public ActionResult Flower()

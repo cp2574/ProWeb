@@ -18,6 +18,7 @@ using TheFamilyFriend.HelperModel.SystemManger;
 using System.IO;
 using Microsoft.Ajax.Utilities;
 using Common;
+using System.Configuration;
 
 namespace TheFamilyFriend.Controllers
 {
@@ -56,9 +57,30 @@ namespace TheFamilyFriend.Controllers
         }
         public JsonResult GetuserList()
         {
-            var userlistUser = UserManager.Users.OrderBy(x => x.CreateTime).ToList();
+            var userlistUser = UserManager.Users.OrderBy(x => x.CreateTime).ToList();         
+
             return Json(userlistUser);
         }
+
+
+        public ActionResult GetImgShow(string Avatar) {
+
+            string imgpath;
+
+            string fileimg = Path.Combine(UserInfo.strFileSavePath, Avatar);
+
+            if (!System.IO.File.Exists(fileimg))
+            {
+                imgpath = Server.MapPath("/Content/Images/Avatar/defult.png");
+            }
+            else
+            {
+                imgpath = fileimg;
+            }
+            byte[] buff = System.IO.File.ReadAllBytes(imgpath);
+            return File(buff, "image/jpeg");
+        }
+
 
         /// <summary>
         /// 修改皮肤
@@ -213,6 +235,16 @@ namespace TheFamilyFriend.Controllers
             {
                 return HttpNotFound();
             }
+            string url = UserInfo.ImgToBase64String(Path.Combine(UserInfo.strFileSavePath, user.Avatar));
+
+            if (url != null)
+            {
+                user.Avatar = url;
+            }
+            else
+            {
+                user.Avatar = UserInfo.ImgToBase64String(Server.MapPath("/Content/Images/Avatar/defult.png"));
+            }
             var uploadHeader = new UploadHeader()
             {
                 Id = user.Id,
@@ -241,7 +273,9 @@ namespace TheFamilyFriend.Controllers
                 if (files.Count > 0)
                 {
                     var file = files[0];
-                    string strFileSavePath = Request.MapPath("~/Content/Images/Avatar");  //定义上传地址
+
+                    /*  string strFileSavePath = Request.MapPath("~/Content/Images/Avatar"); */ //定义上传地址
+                    string strFileSavePath = ConfigurationManager.AppSettings.Get("HeadPortrait").ToString();
                     string strFileExtention = Path.GetExtension(file.FileName);
                     if (!Directory.Exists(strFileSavePath))
                     {
@@ -251,14 +285,19 @@ namespace TheFamilyFriend.Controllers
                     string filename = "";
                     if (!string.IsNullOrEmpty(user.RealName))
                     {
-                        filename = user.RealName;
+                        filename = DateTime.Now.ToString("yyyyMMddhhmmss") + user.RealName;
                     }
                     else
                     {
-                        filename = user.UserName;
+                        filename = DateTime.Now.ToString("yyyyMMddhhmmss") + user.UserName;
                     }
-                    file.SaveAs(strFileSavePath + "/" + filename + strFileExtention);   //保存文件
-                    user.Avatar = "/Content/Images/Avatar/" + filename + strFileExtention;   //给模型赋值
+                    string newfile = Path.Combine(strFileSavePath, filename + strFileExtention);
+                    //if (System.IO.File.Exists(newfile))
+                    //{
+                    //    System.IO.File.Delete(newfile);
+                    //}
+                    file.SaveAs(newfile);   //保存文件
+                    user.Avatar = filename + strFileExtention;   //给模型赋值
                 }
                 var result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)

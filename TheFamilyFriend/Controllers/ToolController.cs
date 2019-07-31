@@ -51,8 +51,19 @@ namespace TheFamilyFriend.Controllers
         /// <returns></returns>
         public ActionResult Map()
         {
-           
-            ViewBag.userlist = Newtonsoft.Json.JsonConvert.SerializeObject(UserManager.Users.Select(x => new { x.Id, x.RealName, x.Avatar, x.Lng, x.Lat }));
+
+            if (User.IsInRole("Super"))
+            {
+                ViewBag.userlist = Newtonsoft.Json.JsonConvert.SerializeObject(UserManager.Users.OrderBy(x => x.CreateTime).Select(x => new { x.Id, x.RealName, x.Avatar, x.Lng, x.Lat, x.Roles }));
+            }
+            else
+            {
+                var memberIDs = RoleManager.FindByName("Super").Users.Select(x => x.UserId).ToArray();
+                var members = UserManager.Users.Where(x => memberIDs.Any(y => y == x.Id)).ToList();
+                members.Insert(0, UserManager.FindById(User.Identity.GetUserId()));
+                ViewBag.userlist = Newtonsoft.Json.JsonConvert.SerializeObject(members);
+            }
+
             return View();
         }
         public ActionResult SetUserPosition(string Lng,string Lat,string Id,string Address)
