@@ -59,5 +59,27 @@ namespace TheFamilyFriend.Controllers
 
             return View();
         }
+
+
+        public ActionResult Flower()
+        {
+
+
+            return View();
+        }
+
+        public PartialViewResult Flowers(int n) {
+            string action = "";
+            switch (n)
+            {
+                case 1:
+                    action = "_PartialFlower1";
+                    break;
+                default:
+                    action = "_PartialFlower2";
+                    break;
+            }
+            return PartialView(action);
+        }
     }
 }

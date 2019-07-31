@@ -429,7 +429,9 @@
     <Content Include="fonts\weather\Img\tem4.gif" />
     <Content Include="fonts\weather\Img\tem5.gif" />
     <Content Include="Global.asax" />
-    <Content Include="HtmlPage1.html" />
+    <Content Include="Views\SpecialEffects\FlowerType\_PartialFlower3.html" />
+    <Content Include="Views\SpecialEffects\FlowerType\_PartialFlower2.html" />
+    <Content Include="Views\SpecialEffects\FlowerType\_PartialFlower1.html" />
     <Content Include="Music\乌兰托娅 - 花桥流水.mp3" />
     <Content Include="Music\张杰 - 三生三世.mp3" />
     <Content Include="Music\文武贝 - 夜的钢琴曲5.mp3" />
@@ -715,6 +717,7 @@
     <Content Include="Views\Tool\Calendar.cshtml" />
     <Content Include="Views\SpecialEffects\MoveLine.cshtml" />
     <Content Include="Scripts\qrcode.logo.js" />
+    <Content Include="Views\SpecialEffects\Flower.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
