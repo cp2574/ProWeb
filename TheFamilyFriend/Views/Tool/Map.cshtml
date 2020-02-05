@@ -28,8 +28,8 @@
         <script type="text/javascript">
             var map = new AMap.Map('gmap', {
                 mapStyle: 'amap://styles/blue',
-                zoom: 9,//设置地图显示的缩放级别
-                //center: [116.397428, 39.90923],//设置地图中心点坐标
+                zoom: 13,//设置地图显示的缩放级别
+                center: @Html.Raw(ViewBag.userposition),//设置地图中心点坐标
                 //viewMode: '2D',  //设置地图模式
                 lang: 'zh_cn',  //设置地图语言类型
             });
@@ -69,7 +69,7 @@
             function myicon(img) {
                 // 创建 AMap.Icon 实例：
                 var icon = new AMap.Icon({
-                    size: new AMap.Size(80, 80),    /// 图标尺寸
+                    size: new AMap.Size(45, 45),    /// 图标尺寸
                     image: "/SystemManagement/GetImgShow?Avatar=" + img+"",  // Icon的图像
                 /*    imageOffset: new AMap.Pixel(0, -20),*/  // 图像相对展示区域的偏移量，适于雪碧图等
                     imageSize: new AMap.Size(45, 45)   // 根据所设置的大小拉伸或压缩图片
@@ -147,15 +147,16 @@
                 $('input[name=lat]').val(map.getCenter().getLat());//获取当前的纬度
                 $('input[name=address]').val(e.poi.name);
             }
-
-
-
-
-
-                //$("#gmap").on(".amap-icon img").addClass("img-circle");
             })
-
         </script>
     }
 </div>
-
+<style>
+    .gmap {
+        border-radius: 10px;
+    }
+    .amap-icon {
+        /* border:1px solid red;*/
+        border-radius: 50%;
+    }
+</style>

@@ -315,7 +315,8 @@
     <Content Include="Content\toastr\toastr.min.css" />
     <Content Include="Content\upload\dropzone.css" />
     <Content Include="favicon.ico" />
-    <Content Include="Film\d0fed1d77667843d121076d410bc472c.mp4" />
+    <Content Include="Film\test.mp4" />
+    <Content Include="Film\test~1.mp4" />
     <Content Include="fonts\font-awesome\css\build.css" />
     <Content Include="fonts\font-awesome\css\font-awesome.css" />
     <Content Include="fonts\font-awesome\css\font-awesome.min.css" />
@@ -429,6 +430,7 @@
     <Content Include="fonts\weather\Img\tem4.gif" />
     <Content Include="fonts\weather\Img\tem5.gif" />
     <Content Include="Global.asax" />
+    <Content Include="Movie\Film.html" />
     <Content Include="Views\SpecialEffects\FlowerType\_PartialFlower3.html" />
     <Content Include="Views\SpecialEffects\FlowerType\_PartialFlower2.html" />
     <Content Include="Views\SpecialEffects\FlowerType\_PartialFlower1.html" />
@@ -671,6 +673,7 @@
     <Content Include="Content\plugins\summernote\font\summernote.eot" />
     <Content Include="Content\plugins\summernote\font\summernote.ttf" />
     <Content Include="Content\plugins\summernote\font\summernote.woff" />
+    <Content Include="Film\test.webm" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

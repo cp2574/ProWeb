@@ -63,7 +63,10 @@ namespace TheFamilyFriend.Controllers
                 members.Insert(0, UserManager.FindById(User.Identity.GetUserId()));
                 ViewBag.userlist = Newtonsoft.Json.JsonConvert.SerializeObject(members);
             }
-
+            var userID = User.Identity.GetUserId();
+            ///先读出当前用户的完整表.
+            var alluser = UserManager.FindById(userID);
+            ViewBag.userposition = "[" + alluser.Lng + "," + alluser.Lng + "]";
             return View();
         }
         public ActionResult SetUserPosition(string Lng,string Lat,string Id,string Address)

@@ -70,9 +70,7 @@
                         var m = $(this).attr("href");
                         id = m.substring(1, m.length)
                         num = m.substring(m.lastIndexOf("-")+1, m.length);
-                        createiframe(id,num);
-
-
+                        createiframe(id,num)
                         //因为渲染效果差，放弃使用其方法
                         @*$.ajax({
                             url: "@Url.Content("/SpecialEffects/Flowers")",

@@ -8,7 +8,7 @@ using TheFamilyFriend.HelperModel;
 
 namespace TheFamilyFriend.Controllers
 {
-    [Authorize(Roles ="Super,admin")]
+    [Authorize(Roles = "Super,admin,Relative")]
     public class PeopleController : BaseController
     {
         // GET: People

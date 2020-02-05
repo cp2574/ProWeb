@@ -62,7 +62,7 @@ namespace TheFamilyFriend.Controllers
             return Json(userlistUser);
         }
 
-
+        [AllowAnonymous]
         public ActionResult GetImgShow(string Avatar) {
 
             string imgpath;
