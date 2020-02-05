@@ -168,15 +168,19 @@
                         data: person(),
                     }).done(function (result) {
                         if (result.ReturnValue) {
-                            var img = $("#HeadPortrait").val()      
-                            var picturename = img.substring($("#HeadPortrait").val().indexOf('.'), $("#HeadPortrait").val().length).toUpperCase();
-                            if (picturename = ".JPG" || picturename == ".PNG" || picturename == ".JPEG"||picturename == ".GIF") {                            
-                                //alert(result.UserId)
-                                //增加肖像的上传处理
-                                initPortrait("HeadPortrait", result.UserId);//使用写入的ID进行更新
-                                $('#HeadPortrait').fileinput('upload'); //触发插件开始上传。                            
+                            var img = $("#HeadPortrait").val()  
+                            if (img!="") {
+                                var picturename = img.substring($("#HeadPortrait").val().indexOf('.'), $("#HeadPortrait").val().length).toUpperCase();
+                                if (picturename = ".JPG" || picturename == ".PNG" || picturename == ".JPEG" || picturename == ".GIF") {
+                                    //alert(result.UserId)
+                                    //增加肖像的上传处理
+                                    initPortrait("HeadPortrait", result.UserId);//使用写入的ID进行更新
+                                    $('#HeadPortrait').fileinput('upload'); //触发插件开始上传。                            
+                                }
                             }
-                            window.location.href = '/BosomFriend/' + result.message;
+                           
+                            // window.location.href = '/BosomFriend/' + result.message;
+                            toastr.success("新增成功！")
                         } else {
                             toastr.error(result.message)
                         }

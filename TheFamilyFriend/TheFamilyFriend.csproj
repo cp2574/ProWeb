@@ -194,6 +194,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BosomFriendController.cs" />
+    <Compile Include="Controllers\ClassmateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MovieAndMusicController.cs" />
@@ -722,6 +723,8 @@
     <Content Include="Scripts\qrcode.logo.js" />
     <Content Include="Views\SpecialEffects\Flower.cshtml" />
     <Content Include="Views\SpecialEffects\Atar.cshtml" />
+    <Content Include="Views\Classmate\Primary.cshtml" />
+    <Content Include="Views\BosomFriend\Classmate.cshtml" />
     <None Include="Web References\cn.com.webxml.www\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -824,13 +827,9 @@
     <Content Include="Views\People\Index.cshtml" />
     <Content Include="Views\People\Parents.cshtml" />
     <Content Include="Views\People\Sister.cshtml" />
-    <Content Include="Views\BosomFriend\Primary.cshtml" />
-    <Content Include="Views\BosomFriend\Senior.cshtml" />
-    <Content Include="Views\BosomFriend\Middle.cshtml" />
     <Content Include="Views\Home\PersonInfo.cshtml" />
     <Content Include="Views\Shared\_AppSetPartial.cshtml" />
     <Content Include="Views\SystemConfiguration\Index.cshtml" />
-    <Content Include="Views\BosomFriend\University.cshtml" />
     <Content Include="Views\BosomFriend\NewPeople.cshtml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <Content Include="Views\Home\Unauthorized.cshtml" />

@@ -25,88 +25,7 @@ namespace TheFamilyFriend.Controllers
         {
             return View();
         }
-        [AllowAnonymous]
-        /// <summary>
-        /// 小学同学
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Primary()
-        {
-            using (var kingbd = new KinshipDb())
-            {
-                var personage = kingbd.Personage.Where(x => x.Type == "小学同学" || x.UserName == "admin").ToList();
-                return View(personage);
-            }
-            
-        }
-      
-      
-        /// <summary>
-        /// 初中同学
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Middle()
-        {
-            using (var kingbd=new KinshipDb())
-            {
-             var personage=kingbd.Personage.Where(x => x.Type == "初中同学" || x.UserName== "admin").ToList();
-             return View(personage);
-            }
-        }
-        [AllowAnonymous]
-        /// <summary>
-        /// 头像
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult HeadPortrait(int PersonId)
-        {
-            string imgpath;
-            using (var kingbd = new KinshipDb())
-            {
-                var personage = kingbd.Personage.Find(PersonId);
-                if(string.IsNullOrEmpty(personage.HeadPortrait)||!System.IO.File.Exists(personage.HeadPortrait))
-                {
-                    imgpath = Server.MapPath("/Content/Images/Avatar/defult.png");
-                }
-                else
-                {
-                    imgpath = personage.HeadPortrait;
-                } 
-            }
-            byte[] buff = System.IO.File.ReadAllBytes(imgpath);
-            return File(buff, "image/jpeg");
-        }
-
-      
-        /// <summary>
-        /// 高中同学
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Senior()
-        {
-            using (var kingbd = new KinshipDb())
-            {
-                var personage = kingbd.Personage.Where(x => x.Type == "高中同学" || x.UserName == "admin").ToList();
-                return View(personage);
-            }
-        }
-
-
-      
-        /// <summary>
-        /// 大学同学
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult University()
-        {
-            using (var kingbd = new KinshipDb())
-            {
-                var personage = kingbd.Personage.Where(x => x.Type == "大学同学" || x.UserName == "admin").ToList();
-                return View(personage);
-            }
-        }
-
-      
+           
         /// <summary>
         /// 特殊人
         /// </summary>
@@ -120,6 +39,7 @@ namespace TheFamilyFriend.Controllers
             }
         }
 
+        #region 添加人员
         /// <summary>
         /// 添加新人
         /// </summary>
@@ -190,87 +110,20 @@ namespace TheFamilyFriend.Controllers
         }
 
 
+        #endregion
+
+
         /// <summary>
-        /// 更新头像
+        /// 同学模块
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost]
-        public JsonResult UpdateHeadPortrait(int id) {
-            var Files = HttpContext.Request.Files["HeadPortrait"];
-            string suffix = Files.FileName.Substring(Files.FileName.LastIndexOf('.'));
-            using (var KpDb = new KinshipDb())
-            {
-                Personage person = KpDb.Personage.Find(id);
-                var savefile=Path.Combine(ConfigurationManager.AppSettings.Get("HeadPortrait").ToString(), person.Name + suffix);
-                Files.SaveAs(savefile);
-                person.HeadPortrait = savefile;
-                KpDb.SaveChanges();
-            }
-            return Json("");
-        }
-        /// <summary>
-        /// 点赞
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        [HttpPost]       
-        public JsonResult Like(int ID) {
-            using (var kindb=new KinshipDb())
-            {
-                try
-                {
-                    var person = kindb.Personage.Find(ID);
-                    person.LikeGood = person.LikeGood + 1;
-                    kindb.SaveChanges();
-                    return Json(new { ReturnValue = true, Message = person.LikeGood });
-                }
-                catch (Exception)
-                {
-                    return Json(new { ReturnValue = false,Message = "数据异常！" });
-                }           
-            }            
+        public ActionResult Classmate() {
+
+            return View();
         }
 
-        public JsonResult redayPerson(int PseronId) {
 
-            using (var kpbd=new KinshipDb())
-            {           
-                return Json(kpbd.Personage.Find(PseronId));
-            }       
-        }
 
-        [HttpPost]
-        public JsonResult Generate(Personage person)
-        {
-            try
-            {
-                using (var KpDb = new KinshipDb())
-                {
-                    var getPerson = KpDb.Personage.Single(x => x.Name == person.Name);
-                    getPerson.Nickname = person.Nickname;
-                    getPerson.Phone = person.Phone;
-                    getPerson.Birthday = person.Birthday;
-                    getPerson.Gender = person.Gender;
-                    getPerson.Email = person.Email;
-                    getPerson.Hometown = person.Hometown;
-                    getPerson.Profession = person.Profession;
-                    if (KpDb.SaveChanges() > 0)
-                    {
-                        return Json(new { returnValue = true, Message = "修改成功！" });
-                    }
-                    else
-                    {
-                        return Json(new { returnValue = true, Message = "修改失败！" });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { returnValue=false,Message= ex.Message});
-            }
-
-        }
 
 
         #region 别针模块
