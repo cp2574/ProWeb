@@ -117,5 +117,13 @@ namespace TheFamilyFriend.Controllers
             return View();
         }
 
+
+
+
+
+        public ActionResult PhotoUpload() {
+
+            return View();
+        }
     }
 }

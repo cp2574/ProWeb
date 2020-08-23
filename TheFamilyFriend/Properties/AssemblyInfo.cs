@@ -33,3 +33,5 @@ using System.Runtime.InteropServices;
 // 方法是按如下所示使用 "*":
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+//绑定log4net.config文件
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", ConfigFileExtension = "config", Watch = true)]

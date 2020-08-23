@@ -13,37 +13,55 @@
             <li>
                 <a href="@Url.Action("Index", "WeatherReport")">天气状况</a>
             </li>
-            <li>
-                @Model.City
-            </li>
+            @*<li>
+                    @Model.City
+                </li>*@
         </ol>
     </div>
 </div>
-<div class="wrapper wrapper-content animated fadeIn">    
+<div class="wrapper wrapper-content animated fadeIn">
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>天气情况</h5>
+                    <div class="ibox-tools">
+                        <select class="form-control m-b" name="account" id="Selcity">
+                            <option>武汉</option>
+                            <option selected="selected">黄石</option>
+                            <option>黄冈</option>
+                            <option>恩施</option>
+                            <option>荆州</option>
+                            <option>宜昌</option>
+                            <option>神农架</option>
+                            <option>十堰</option>
+                            <option>咸宁</option>
+                            <option>襄樊</option>
+                            <option>孝感</option>
+                            <option>随州</option>
+                            <option>荆门</option>
+                            <option>鄂州</option>
+                        </select>
+                    </div>
+
                 </div>
-                <div class="ibox-content">                    
-                    <div class="row">
+                <div class="ibox-content">
+                    <div class="row ">
                         @{
                             <div class="col-lg-12">
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
-                                       当天
+                                        当天
                                     </div>
                                     <div class="panel-body">
                                         <p class="font-bold">
                                             @Model.Mangerweather.First().Temperature &nbsp;
-                                        @Model.Mangerweather.First().TimeAndweather.Split('日')[0]&nbsp;
-                                        <img src="~/fonts/weather/Img/@Model.Mangerweather.First().Gif" />
-                                         </p> 
-                                        <p>@Model.Mangerweather.First().Wind</p>                                     
+                                            @Model.Mangerweather.First().TimeAndweather.Split('日')[0]&nbsp;
+                                            <img src="~/fonts/weather/Img/@Model.Mangerweather.First().Gif" />
+                                        </p>
+                                        <p>@Model.Mangerweather.First().Wind</p>
                                         <p>@Model.Scene</p>
                                         <p>
-                                           友情提示
+                                            友情提示
                                         </p>
                                         <p>@Model.Ultraviolet</p>
                                     </div>
@@ -52,7 +70,7 @@
                             </div>
                         }
                     </div>
-                    <div class="row">
+                    <div class=" row ">
                         <div class="col-lg-12">
                             <div class="panel panel-info">
                                 <div class="panel-heading">未来两天</div>
@@ -67,7 +85,7 @@
                                                 <div class="col-lg-6">
                                                     <p class="font-bold">@item.TimeAndweather <img src="~/fonts/weather/Img/@item.Gif" /></p>
                                                     <p>@item.Temperature</p>
-                                                    <p>@item.Wind</p>                                                   
+                                                    <p>@item.Wind</p>
                                                 </div>
                                             }
                                             n++;
@@ -75,10 +93,10 @@
 
                                     }
                                 </div>
-                                
+
                             </div>
-                        </div> 
                         </div>
+                    </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="panel panel-info">
@@ -97,3 +115,26 @@
         </div>
     </div>
 </div>
+
+@section scripts{    
+    <script>
+        $(function () {
+            //alert($("#Selcity").val());
+            $.ajax("/WeatherReport/GetWeather", {
+                type: "post",
+                data:{ 'City': $("#Selcity").val()},
+            }).
+                done(function (result) {
+                if (result) {
+                    toastr.info("修改成功")
+                } else {
+                    toastr.error("修改失败")
+                }
+            }).fail(function (result) {
+                console.error(result)
+                toastr.error("请联系管理人员")
+            })
+
+        })
+    </script>
+    }

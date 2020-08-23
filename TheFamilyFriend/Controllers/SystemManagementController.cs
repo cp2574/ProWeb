@@ -200,7 +200,9 @@ namespace TheFamilyFriend.Controllers
             {
                 var _creatTime = DateTime.Now;
                 var _headerPic = "/Content/Images/Avatar/defult.png";
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber, CreateTime = _creatTime, Avatar = _headerPic };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email,
+                    PhoneNumber = model.PhoneNumber, CreateTime = _creatTime, Avatar = _headerPic,Lat= "39.54",Lng= "116.25"
+                };
                 var result = UserManager.FindByName(user.UserName);
                 if (result == null)
                 {

@@ -26,10 +26,10 @@ namespace TheFamilyFriend
             //模型更改时重新创建数据库
             //Database.SetInitializer<ApplicationDbContext>(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
             Database.SetInitializer<ApplicationDbContext>(null);
-            System.Timers.Timer objTimer = new System.Timers.Timer();
-            objTimer.Interval = 10800000;
-            objTimer.Enabled = true;
-            objTimer.Elapsed += new ElapsedEventHandler(TimerEvent);
+            //System.Timers.Timer objTimer = new System.Timers.Timer();
+            //objTimer.Interval = 10800000;
+            //objTimer.Enabled = true;
+            //objTimer.Elapsed += new ElapsedEventHandler(TimerEvent);
 
           
 

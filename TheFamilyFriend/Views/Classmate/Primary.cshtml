@@ -209,9 +209,12 @@
 
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row" id="PersonContext">
-            @{ foreach (var item in Model)
+            @{ 
+                
+                foreach (var item in Model)
                 {
-                    <div class="col-md-3">
+                   
+                    <div class="col-sm-3">
                         <div class="contact-box center-version">
                             <a href="#">
                                 <img alt="图片" class="img-circle" src="@Url.Action("HeadPortrait", "Classmate", new { PersonId = @item.PersonId })" />
@@ -277,7 +280,7 @@
                             </div>
                         </div>
                     </div>
-                }
+               }
             }
         </div>
     </div>

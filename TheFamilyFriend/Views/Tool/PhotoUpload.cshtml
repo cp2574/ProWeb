@@ -1,0 +1,186 @@
+﻿@{
+    ViewBag.Title = "拍照上传";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">主页</a>
+            </li>
+            <li class="active">
+                <a href="@Url.Action("PhotoUpload", "Tool")"><strong>@ViewBag.Title</strong></a>
+            </li>
+        </ol>
+    </div>
+</div>
+
+
+<!-- 用于展示摄像头视频流 -->
+<video id="video" autoplay style="width: 480px;height: 320px"></video>
+<div>
+    <button id="capture" onclick="handleClickCapture()">拍照</button>
+</div>
+
+<!-- 展示拍摄的照片 -->
+<canvas id="canvas" width="480" height="320"></canvas>
+
+
+
+@section scripts{
+    <script>
+ var video = document.getElementById('video');
+ var capture = document.getElementById('capture');
+ var ctx = document.getElementById('canvas').getContext('2d');
+
+ /**
+ * 调用用户媒体设备
+ * param constraints 配置信息
+ * param success 成功回调函数
+ * param error 失败回调函数
+ */
+ function getUserMediaToPhoto(constraints,success,error) {
+ if(navigator.mediaDevices.getUserMedia){
+ navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+ }else if (navigator.webkitGetUserMedia) {
+ navigator.webkitGetUserMedia(constraints,success,error);
+ }else if(navigator.mozGetUserMedia){
+ navigator.mozGetUserMedia(constraints,success,error);
+ }else if(navigator.getUserMedia){
+ navigator.getUserMedia(constraints,success,error);
+ }
+ }
+
+ /**
+ * 成功回调函数
+ * param stream 视频流
+ */
+ function success(stream){
+ var CompatibleURL = window.URL || window.webkitURL;
+ try {
+ video.src = CompatibleURL.createObjectURL(stream);
+ } catch (e) {
+ video.srcObject = stream;
+ }
+ video.play();
+ }
+
+ /**
+ * 失败回调
+ * param error 错误对象
+ */
+ function error(error) {
+ console.log('无法访问媒体设备', error);
+ }
+
+ if(navigator.mediaDevices.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.getUserMedia){
+ getUserMediaToPhoto({video:{width:480,height:320}},success,error);
+ }else{
+ alert('不支持访问用户媒体设备');
+ }
+
+ /**
+ * 拍照按钮点击事件
+ */
+ function handleClickCapture() {
+ ctx.drawImage(video,0,0,480,320);
+ }
+    </script>
+
+
+
+}
+
+
+@*<div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <button id="capture" class="btn btn-w-m btn-info">拍照</button>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    主要面板
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        <video id="video" width="480" height="320" controls></video>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    成功面板
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        <canvas id="canvas" width="480" height="320"></canvas>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section scripts{
+        <script>
+            //访问用户媒体设备的兼容方法
+            function getUserMedia(constraints, success, error) {
+                if (navigator.mediaDevices.getUserMedia) {
+                    //最新的标准API
+                    navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+                } else if (navigator.webkitGetUserMedia) {
+                    //webkit核心浏览器
+                    navigator.webkitGetUserMedia(constraints, success, error)
+                } else if (navigator.mozGetUserMedia) {
+                    //firfox浏览器
+                    navigator.mozGetUserMedia(constraints, success, error);
+                } else if (navigator.getUserMedia) {
+                    //旧版API
+                    navigator.getUserMedia(constraints, success, error);
+                }
+            }
+
+            let video = document.getElementById('video');
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+
+            function success(stream) {
+                //兼容webkit核心浏览器
+                let CompatibleURL = window.URL || window.webkitURL;
+                //将视频流设置为video元素的源
+                console.log(stream);
+
+                //video.src = CompatibleURL.createObjectURL(stream);
+                video.srcObject = stream;
+                video.play();
+            }
+
+            function error(error) {
+                console.log(`访问用户媒体设备失败${error.name}, ${error.message}`);
+            }
+
+            if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+                //调用用户媒体设备, 访问摄像头
+                getUserMedia({ video: { width: 480, height: 320 } }, success, error);
+            } else {
+                alert('不支持访问用户媒体');
+            }
+
+            document.getElementById('capture').addEventListener('click', function () {
+                context.drawImage(video, 0, 0, 480, 320);
+            })
+        </script>
+    }*@

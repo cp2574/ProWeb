@@ -158,7 +158,7 @@
         }
         $(function () {
             var oFileInput = new FileInput();
-            oFileInput.Init("HeadPortrait", "/BosomFriend/UpdateHeadPortrait");
+            oFileInput.Init("HeadPortrait", "/Classmate/UpdateHeadPortrait");
             $("#SaveBtn").on("click", function () {
                 if (person()=="") {
                     toastr.warning("*号不能为空！");//toastr.warning    toastr.success
@@ -264,7 +264,7 @@
         };
         function initPortrait(ctrlName, id) {
             var control = $('#' + ctrlName);
-            var imageurl = '/BosomFriend/UpdateHeadPortrait?id=' + id + '&r=' + Math.random();
+            var imageurl = '/Classmate/UpdateHeadPortrait?id=' + id + '&r=' + Math.random();
             //重要，需要更新控件的附加参数内容，以及图片初始化显示
             control.fileinput('refresh', {
                 uploadExtraData: { id: id },
